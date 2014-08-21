@@ -17,24 +17,26 @@ class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[
 
   override def receive: Receive = {
     case p@PageRequest(rawUrl, previousRequest, depth) =>
-      val url = rawUrl //process(rawUrl, previousRequest)
-      log.debug(url)
+      val url = rawUrl
       if (needVisit(url, depth)) {
+        log.info(url)
         visitedUrls += url
         context.actorOf(HttpUrlGetter.props(p))
       }
     case i@ImageRequest(rawUrl, previousRequest, depth) =>
-      val url = rawUrl//process(rawUrl, Some(previousRequest))
-      log.debug(url)
+      val url = rawUrl
       if (needVisit(url, depth)) {
+        log.info(url)
         visitedUrls += url
         context.actorOf(HttpUrlGetter.props(i))
       }
   }
 
-  def needVisit(url: String, depth: Int): Boolean = {
+  private def needVisit(url: String, depth: Int): Boolean = {
     depth <= maxDepth && !visitedUrls.contains(url) && !exclude(url) && !url.endsWith("#") && url.length > 10
   }
+
+
 }
 
 

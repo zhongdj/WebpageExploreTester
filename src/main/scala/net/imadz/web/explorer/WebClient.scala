@@ -3,7 +3,7 @@ package net.imadz.web.explorer
 import java.util.regex.{Pattern, Matcher}
 
 import scala.concurrent.Future
-import com.ning.http.client.AsyncHttpClient
+import com.ning.http.client.{AsyncCompletionHandlerBase, AsyncHttpClient}
 import scala.concurrent.Promise
 import java.util.concurrent.Executor
 
@@ -18,8 +18,13 @@ object AsyncWebClient extends WebClient {
   private val client = new AsyncHttpClient
 
   def get(url: String)(implicit exec: Executor): Future[String] = {
-    println(url)
-    val f = client.prepareGet(url).execute();
+    //println(url)
+    val f = client.prepareGet(url).execute(new AsyncCompletionHandlerBase{
+      override def onThrowable(t: Throwable): Unit = {
+        println("Exception Found on URL: " + url )
+        super.onThrowable(t)
+      }
+    });
     val p = Promise[String]()
     f.addListener(new Runnable {
       def run = {

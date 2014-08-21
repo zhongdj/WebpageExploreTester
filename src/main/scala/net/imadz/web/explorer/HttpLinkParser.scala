@@ -5,6 +5,7 @@ import akka.actor.Actor.Receive
 import net.imadz.web.explorer._
 
 import scala.collection.mutable.ListBuffer
+import scala.util.matching.Regex
 
 /**
  * Created by geek on 8/20/14.
@@ -24,80 +25,18 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
     findLinks(body) foreach (newLink => dispatch(newLink))
   }
 
-//  val A_TAG = "(?s)(?i)<a ([^>]+)>.+?</a>".r
-  val A_TAG = "(?m)(?i)href=.*".r
-  val HREF_ATTR = """\s*(?i)href\s*=\s*(?:"([^"]*)"|'([^']*)'|([^'">\s]+))\s*""".r
+  val A_TAG = """(?s)(?i)<a (.*)>(.+)?</a>""".r
+  val HREF_ATTR = """(?s)\s+(?i)href\s*=\s*(?:"([^"]*)"|'([^']*)'|([^'">\s]+))\s*""".r
 
-//  def findPageLinks(body: String): Iterator[String] = {
-//    for {
-//      anchor <- A_TAG.findAllMatchIn(body)
-//      HREF_ATTR(dquot, quot, bare) <- anchor.subgroups
-//    } yield if (dquot != null) dquot
-//    else if (quot != null) quot
-//    else bare
-//  }
-abstract class State {
-  def read(line: String, buffer: ListBuffer[String]) : State
-}
-
-
-  object PendingAnchorState extends State {
-    override def read(line: String, buffer: ListBuffer[String]): State = {
-      if (line.contains("<a")) {
-        if (!line.contains("href")) {
-          PendingHrefState
-        } else {
-          val i = line.indexOf("href")
-          val nohref = line.substring(i)
-          val q1 = nohref.indexOf("\"")
-          val noq1 = nohref.substring(q1 + 1)
-          val q2 = noq1.indexOf("\"")
-          val url: String = noq1.substring(0, q2)
-          if (!url.startsWith("http")) {
-            buffer += "http://www.nike.com" + url
-          } else {
-            buffer += url
-          }
-          PendingAnchorState
-        }
-      } else {
-        PendingAnchorState
-      }
-
-    }
-  }
-
-  object PendingHrefState extends State {
-    override def read(line: String, buffer: ListBuffer[String]): State = {
-      if (!line.contains("href")) {
-        PendingHrefState
-      } else {
-        val i = line.indexOf("href")
-        val nohref = line.substring(i)
-        val q1 = nohref.indexOf("\"")
-        println("====================================================================================")
-         println (line)
-        val noq1 = nohref.substring(q1 + 1)
-        val q2 = noq1.indexOf("\"")
-        println("====================================================================================")
-        println (noq1)
-
-        val url: String = if (q2 < 0) noq1 else noq1.substring(0, q2)
-        if (!url.startsWith("http")) {
-          buffer += "http://www.nike.com" + url
-        } else {
-          buffer += url
-        }
-        PendingAnchorState
-      }
-    }
-  }
   def findPageLinks(body: String): Iterator[String] = {
-    val result = body.split("\\n").iterator.foldLeft[(ListBuffer[String], State)]((ListBuffer.empty[String], PendingAnchorState)) { case ((buffer, state), line) =>
-      (buffer, state.read(line, buffer))
-    }
-    result._1.iterator
+    for {
+      A_TAG(attrs, name) <- A_TAG findAllIn body
+      HREF_ATTR(dquot, quot, bare) <- HREF_ATTR findAllIn attrs
+    } yield if (dquot != null) dquot
+    else if (quot != null) quot
+    else bare
   }
+
 
   val IMG_TAG = "(?s)(?i)<img ([^>]+)>.+?</img>".r
   val IMG_SRC = """\s*(?i)src\s*=\s*(?:"([^"]*)"|'([^']*)'|([^'">\s]+))\s*""".r
@@ -111,8 +50,28 @@ abstract class State {
     else bare
   }
 
+
+  def processUrl(rawUrl: String, contextUrl: String): String = {
+    if (rawUrl.startsWith("http") || rawUrl.startsWith("https")) rawUrl
+    else if(rawUrl.startsWith("/"))
+    {
+      if (contextUrl.endsWith("/"))
+      contextUrl.take(contextUrl.length -1 ) + rawUrl
+      else
+      contextUrl + rawUrl
+    }
+    else if(rawUrl.endsWith(".html"))
+    {
+      if (contextUrl.endsWith("/"))
+        contextUrl + rawUrl
+      else
+        contextUrl + "/" + rawUrl
+    }
+    else rawUrl
+  }
+
   private def findLinks(body: String): List[HttpRequest] = {
-    val pages: List[PageRequest] = findPageLinks(body) map { url => PageRequest(url, Some(httpRequest), httpRequest.depth + 1)} toList
+    val pages: List[PageRequest] = findPageLinks(body) map {rawUrl => processUrl(rawUrl, httpRequest.url)} map { url => PageRequest(url, Some(httpRequest), httpRequest.depth + 1)} toList
     val images: List[ImageRequest] = findImageLinks(body) map { url =>
       ImageRequest(url, httpRequest.asInstanceOf[PageRequest], httpRequest.depth + 1)
     } toList

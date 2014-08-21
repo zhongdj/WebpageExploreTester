@@ -1,12 +1,12 @@
 package net.imadz.web.explorer
 
-import akka.actor.{Props, Actor}
+import akka.actor.{ActorLogging, Props, Actor}
 import akka.actor.Actor.Receive
 
 /**
  * Created by geek on 8/20/14.
  */
-class HttpErrorRecorder(responseCode: Int, httpRequest: HttpRequest) extends Actor {
+class HttpErrorRecorder(responseCode: Int, httpRequest: HttpRequest) extends Actor  with ActorLogging {
 
   self ! httpRequest
 
@@ -18,11 +18,11 @@ class HttpErrorRecorder(responseCode: Int, httpRequest: HttpRequest) extends Act
   }
 
   def logPageError(request: PageRequest): Unit = {
-    println(request)
+    log.error(request.toString)
   }
 
   def logImageError(request: ImageRequest): Unit = {
-    println(request)
+    log.error(request.toString)
   }
 }
 
