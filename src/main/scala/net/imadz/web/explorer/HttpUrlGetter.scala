@@ -17,18 +17,22 @@ class HttpUrlGetter(httpRequest: HttpRequest) extends Actor {
   def client: WebClient = AsyncWebClient
 
   override def receive: Receive = {
-    case p@PageRequest(url, pre, _) =>
+    case p@PageRequest(_, url, pre, _) =>
       import scala.concurrent.ExecutionContext.Implicits.global
-      client get url onComplete {
+      val headers: Map[String, String] = httpRequest.headers
+      client.get(headers)(url) onComplete {
         case Success(body) => context.actorOf(HttpLinkParser.props(body, p, context.parent))
         case Failure(BadStatus(code)) => context.actorOf(HttpErrorRecorder.props(code, p))
+        case Failure(t) => self ! p
       }
 
-    case i@ImageRequest(url, pre, _) =>
+    case i@ImageRequest(_, url, pre, _) =>
       import scala.concurrent.ExecutionContext.Implicits.global
-      client get url onComplete {
+      val headers: Map[String, String] = httpRequest.headers
+      client.get(headers)(url) onComplete {
         case Success(ignore) => None
         case Failure(BadStatus(code)) => context.actorOf(HttpErrorRecorder.props(code, i))
+        case Failure(t) => self ! i
       }
   }
 }

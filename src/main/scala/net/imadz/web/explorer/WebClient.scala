@@ -8,7 +8,7 @@ import scala.concurrent.Promise
 import java.util.concurrent.Executor
 
 trait WebClient {
-  def get(url: String)(implicit exec: Executor): Future[String]
+  def get(headers: Map[String, String])(url: String)(implicit exec: Executor): Future[String]
 }
 
 case class BadStatus(status: Int) extends RuntimeException
@@ -17,15 +17,17 @@ object AsyncWebClient extends WebClient {
 
   private val client = new AsyncHttpClient
 
-  def get(url: String)(implicit exec: Executor): Future[String] = {
+  def get(headers: Map[String, String])(url: String)(implicit exec: Executor): Future[String] = {
     //println(url)
-    val f = client.prepareGet(url).execute(new AsyncCompletionHandlerBase{
+    val builder = headers.foldLeft(client.prepareGet(url)) { (builder, tuple) => builder.addHeader(tuple._1, tuple._2)}
+    val p = Promise[String]()
+    val f = builder.execute(new AsyncCompletionHandlerBase {
       override def onThrowable(t: Throwable): Unit = {
-        println("Exception Found on URL: " + url )
-        super.onThrowable(t)
+        println("Exception Found on URL: " + url)
+        //super.onThrowable(t)
+        p.failure(t)
       }
     });
-    val p = Promise[String]()
     f.addListener(new Runnable {
       def run = {
         val response = f.get
@@ -41,8 +43,8 @@ object AsyncWebClient extends WebClient {
 
 }
 
-object WebClientTest extends App {
 
+object WebClientTest extends App {
 
 
 }

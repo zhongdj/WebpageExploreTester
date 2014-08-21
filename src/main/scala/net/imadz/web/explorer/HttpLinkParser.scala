@@ -45,9 +45,9 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
     for {
       anchor <- IMG_TAG.findAllMatchIn(body)
       IMG_SRC(dquot, quot, bare) <- anchor.subgroups
-    } yield if (dquot != null) dquot
-    else if (quot != null) quot
-    else bare
+    } yield if (dquot != null) dquot trim
+    else if (quot != null) quot trim
+    else bare trim
   }
 
 
@@ -73,9 +73,9 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
   }
 
   private def findLinks(body: String): List[HttpRequest] = {
-    val pages: List[PageRequest] = findPageLinks(body) map {rawUrl => processUrl(rawUrl, httpRequest.url)} map { url => PageRequest(url, Some(httpRequest), httpRequest.depth + 1)} toList
+    val pages: List[PageRequest] = findPageLinks(body) map {rawUrl => processUrl(rawUrl, httpRequest.url)} map { url => PageRequest(httpRequest.headers, url, Some(httpRequest), httpRequest.depth + 1)} toList
     val images: List[ImageRequest] = findImageLinks(body) map { url =>
-      ImageRequest(url, httpRequest.asInstanceOf[PageRequest], httpRequest.depth + 1)
+      ImageRequest(httpRequest.headers, url, httpRequest.asInstanceOf[PageRequest], httpRequest.depth + 1)
     } toList
 
     pages ::: images

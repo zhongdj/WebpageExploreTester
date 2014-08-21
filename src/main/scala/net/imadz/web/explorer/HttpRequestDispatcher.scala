@@ -11,24 +11,26 @@ class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[
 
   var visitedUrls = Set[String]()
 
-  self ! PageRequest(domainUrl, None, 0)
+  self ! PageRequest(headers, domainUrl, None, 0)
 
   def exclude(url: String) = excludes.exists(url.startsWith(_))
 
   override def receive: Receive = {
-    case p@PageRequest(rawUrl, previousRequest, depth) =>
+    case p@PageRequest(_, rawUrl, previousRequest, depth) =>
       val url = rawUrl
       if (needVisit(url, depth)) {
         log.info(url)
         visitedUrls += url
         context.actorOf(HttpUrlGetter.props(p))
+        log.info("cached url number: " + visitedUrls.size)
       }
-    case i@ImageRequest(rawUrl, previousRequest, depth) =>
+    case i@ImageRequest(_, rawUrl, previousRequest, depth) =>
       val url = rawUrl
       if (needVisit(url, depth)) {
         log.info(url)
         visitedUrls += url
         context.actorOf(HttpUrlGetter.props(i))
+        log.info("cached url number: " + visitedUrls.size)
       }
   }
 
