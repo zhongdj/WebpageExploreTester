@@ -9,7 +9,7 @@ import akka.event.LoggingReceive
 class Main extends Actor with ActorLogging {
 
   //  val initialUrl = "http://www.633qq.com/html/se/72116.html";
-  val initialUrl = "http://173.203.143.60/";
+  val initialUrl = "http://hybris51-prod.benefitdigital.com.cn/";
 
   def headers = Map[String, String](
     //    "Cookie" ->

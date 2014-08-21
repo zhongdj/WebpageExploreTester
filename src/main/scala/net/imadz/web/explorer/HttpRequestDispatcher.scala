@@ -39,8 +39,10 @@ class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[
   override def receive: Receive = LoggingReceive {
     case p@PageRequest(_, rawUrl, previousRequest, depth) =>
       onRequest(p) { request =>
-        pageGetterCount += 1
-        context.actorOf(HttpUrlGetter.props(request), "PageGetter-" + pageGetterCount)
+        if (obeyDomainConstraints(rawUrl)) {
+          pageGetterCount += 1
+          context.actorOf(HttpUrlGetter.props(request), "PageGetter-" + pageGetterCount)
+        }
       }
     case i@ImageRequest(_, rawUrl, previousRequest, depth) =>
       onRequest(i) { request =>
@@ -64,7 +66,7 @@ class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[
   }
 
   private def needVisit(url: String, depth: Int): Boolean = {
-    !visitedUrls.contains(url) && !exclude(url) && obeyDomainConstraints(url) && !url.contains("#") && url.length > 10 //depth <= maxDepth &&
+    !visitedUrls.contains(url) && !exclude(url) && !url.contains("#") && url.length > 10 //depth <= maxDepth &&
   }
 
   private def obeyDomainConstraints(url: String): Boolean = {
