@@ -39,13 +39,13 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
   }
 
 
-  val IMG_TAG = "(?s)(?i)<img ([^>]+)>.+?</img>".r
+  val IMG_TAG = "(?s)(?i)<img ([^<]+)>".r
   val IMG_SRC = """\s*(?i)src\s*=\s*(?:"([^"]*)"|'([^']*)'|([^'">\s]+))\s*""".r
 
   def findImageLinks(body: String): Iterator[String] = {
     for {
-      anchor <- IMG_TAG.findAllMatchIn(body)
-      IMG_SRC(dquot, quot, bare) <- anchor.subgroups
+      IMG_TAG(anchor) <- IMG_TAG.findAllIn(body)
+      IMG_SRC(dquot, quot, bare) <- IMG_SRC findAllIn(anchor)
     } yield if (dquot != null) dquot trim
     else if (quot != null) quot trim
     else bare trim
@@ -69,7 +69,7 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
   }
 
   def trancateInavlidsChars(rawUrl: String): String = {
-    val invalidChars = '|' :: ' ' :: '\\' :: Nil
+    val invalidChars = '|' :: ' ' :: '\\' :: '\"' :: '\'':: Nil
     val invalidIndexes = invalidChars map {rawUrl.indexOf(_)} filter {_ > 0}
     val minIndex = invalidIndexes.foldLeft(Int.MaxValue){(min, index) => Math.min(min, index)}
     if (minIndex < Int.MaxValue) rawUrl.substring(0, minIndex)
@@ -81,7 +81,13 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
     } map {rawUrl => trancateInavlidsChars(rawUrl)} map { url => PageRequest(httpRequest.headers, url, Some(httpRequest), httpRequest.depth + 1)
     } toList
 
-    val images: List[ImageRequest] = findImageLinks(body) map { url =>
+    val images: List[ImageRequest] = findImageLinks(body) filter (invalids)  map { rawUrl =>
+      val newImageUrl = processUrl(rawUrl, httpRequest.url)
+//      log.error("---------------------------------------------------------------------------------")
+//      log.error("orignial image url: " + rawUrl)
+//      log.error("processed imageUrl: " + newImageUrl)
+      newImageUrl
+    } map {rawUrl => trancateInavlidsChars(rawUrl)} map { url =>
       ImageRequest(httpRequest.headers, url, httpRequest.asInstanceOf[PageRequest], httpRequest.depth + 1)
     } toList
 

@@ -26,12 +26,12 @@ class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[
     context.setReceiveTimeout(Duration.Undefined)
     val url = request.url
     if (needVisit(url, request.depth)) {
-      log.info(url)
+      //log.info(url)
       visitedUrls += url
 
       func(request)
 
-      log.info("cached url number: " + visitedUrls.size)
+      //log.info("cached url number: " + visitedUrls.size)
     }
     context.setReceiveTimeout(90 second)
   }
