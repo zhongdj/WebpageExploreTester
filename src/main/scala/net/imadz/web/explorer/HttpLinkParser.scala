@@ -52,13 +52,15 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
 
 
   def processUrl(rawUrl: String, contextUrl: String): String = {
+    val domainRegex = new Regex("""(http|https)://.*?/""")
+    val domainUrl = domainRegex.findFirstIn(contextUrl).get
     if (rawUrl.startsWith("http") || rawUrl.startsWith("https")) rawUrl
     else if(rawUrl.startsWith("/"))
     {
-      if (contextUrl.endsWith("/"))
-      contextUrl.take(contextUrl.length -1 ) + rawUrl
+      if (domainUrl.endsWith("/"))
+        domainUrl.take(domainUrl.length -1 ) + rawUrl
       else
-      contextUrl + rawUrl
+        domainUrl + rawUrl
     }
     else if(rawUrl.endsWith(".html"))
     {
