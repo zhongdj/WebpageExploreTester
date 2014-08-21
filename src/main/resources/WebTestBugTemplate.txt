@@ -1,7 +1,8 @@
+Title:{title}
 Action Performed
 {bugsteps}
 Expected Result
-{expectedResult}
+Page is ok.
 Actual Result
 {actualResult}
 Error Message

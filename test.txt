@@ -1,22 +1,391 @@
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/category/,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/category/skincare?start=0&amp;limit=9&amp;sort_by=ranking_int,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/category/skincare?start=9&amp;limit=9&amp;sort_by=ranking_int,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/main/skincare,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)),3)),4)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/browse,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/category/makeup/foundation/cream,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)),3)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/nicepackage/nicepackage/cn-kp-best-of-benefit,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/nicepackage/cn-kp-best-of-benefit,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/nicepackage,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/whatsnew,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)),3)),4)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/main/,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/main/skincare,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/view/parentsku/10IB121,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/2,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)),3)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/view/parentsku/BADGALIB120,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/2,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)),3)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/view/parentsku/ONEHOTIB172,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/2,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)),3)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/view/badgal-liner-waterproof,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/qa,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/brightSkincare,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)),3)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/view/triple-performing-facial-emulsion-spf-15-pa,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/qa,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/brightSkincare,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)),3)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/view/parentsku/BADGALIB174,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/2,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)),3)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/view/parentsku/DALLASIB108,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/2,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)),3)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/view/it%27s-potent-eye-cream,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/qa,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/brightSkincare,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)),3)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/view/parentsku/NONAME_IB194,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/2,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)),3)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/qa,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/brightSkincare,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)),3)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/view/parentsku/GETEVE,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/3,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)),3)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/view/parentsku/YOUREBIB131,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/3,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)),3)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/view/ooh-la-lift,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/view/b-right-radiant-skincare-by-benefit-intro-kit,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/socialclub,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/view/ultra-shines,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/socialclub,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/',Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/socialclub,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/view/%2525E7%252583%2525AD%2525E8%252588%25259E%2525E7%25258F%2525AD%2525E5%2525B7%2525B4%2525E8%25259C%25259C%2525E7%2525B2%252589,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/socialclub,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)
-PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/product/view/yourebel,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/beyondthegloss/the-porefessional-tips-and-tricks,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/beyondthegloss/the-porefessional,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/beyondthegloss,Some(PageRequest(Map(User-Agent -> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.76 Safari/537.36),http://hybris51-prod.benefitdigital.com.cn/,None,0)),1)),2)),3)),4)
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/nicepackage?intid=hppromo_vkb
+http://hybris51-prod.benefitdigital.com.cn/nicepackage/cn-kp-best-of-benefit
+http://hybris51-prod.benefitdigital.com.cn/nicepackage/nicepackage/cn-kp-best-of-benefit
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/nicepackage/cn-kp-best-of-benefit
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/brightSkincare
+http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/qa
+http://hybris51-prod.benefitdigital.com.cn/product/view/triple-performing-facial-emulsion-spf-15-pa
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/qa
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/beyondthegloss
+http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/beyondthegloss/the-porefessional
+http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/beyondthegloss/the-porefessional-tips-and-tricks
+http://hybris51-prod.benefitdigital.com.cn/product/view/yourebel
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/beyondthegloss/the-porefessional-tips-and-tricks
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/brightSkincare
+http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/qa
+http://hybris51-prod.benefitdigital.com.cn/product/view/it%27s-potent-eye-cream
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/qa
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/brightSkincare
+http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/qa
+http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/qa
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons
+http://hybris51-prod.benefitdigital.com.cn/product/view/ooh-la-lift
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/product/main/skincare
+http://hybris51-prod.benefitdigital.com.cn/product/main/
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/product/main/skincare
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/brightSkincare
+http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/qa
+http://hybris51-prod.benefitdigital.com.cn/product/view/badgal-liner-waterproof
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/qa
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons
+http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/2
+http://hybris51-prod.benefitdigital.com.cn/product/view/parentsku/DALLASIB108
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/2
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/brand/socialclub
+http://hybris51-prod.benefitdigital.com.cn/brand/'
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/brand/socialclub
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons
+http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/2
+http://hybris51-prod.benefitdigital.com.cn/product/view/parentsku/NONAME_IB194
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/2
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons
+http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/2
+http://hybris51-prod.benefitdigital.com.cn/product/view/parentsku/10IB121
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/2
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons
+http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/2
+http://hybris51-prod.benefitdigital.com.cn/product/view/parentsku/BADGALIB120
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/2
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons
+http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/2
+http://hybris51-prod.benefitdigital.com.cn/product/view/parentsku/BADGALIB174
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/2
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons
+http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/2
+http://hybris51-prod.benefitdigital.com.cn/product/view/parentsku/ONEHOTIB172
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/2
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/brand/socialclub
+http://hybris51-prod.benefitdigital.com.cn/product/view/b-right-radiant-skincare-by-benefit-intro-kit
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/brand/socialclub
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons
+http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/3
+http://hybris51-prod.benefitdigital.com.cn/product/view/parentsku/YOUREBIB131
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/3
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/brand/socialclub
+http://hybris51-prod.benefitdigital.com.cn/product/view/ultra-shines
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/brand/socialclub
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/product/category/skincare/spf
+http://hybris51-prod.benefitdigital.com.cn/product/browse
+http://hybris51-prod.benefitdigital.com.cn/product/
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/product/browse
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/product/main/skincare
+http://hybris51-prod.benefitdigital.com.cn/product/category/skincare?start=0&amp;limit=13&amp;sort_by=ranking_int
+http://hybris51-prod.benefitdigital.com.cn/product/category/
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/product/category/skincare?start=0&amp;limit=13&amp;sort_by=ranking_int
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons
+http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/3
+http://hybris51-prod.benefitdigital.com.cn/product/view/parentsku/GETEVE
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/brand/beautyschool/productcomparisons/3
+Title:404 page not found
+Action Performed
+http://hybris51-prod.benefitdigital.com.cn/
+http://hybris51-prod.benefitdigital.com.cn/brand/socialclub
+http://hybris51-prod.benefitdigital.com.cn/product/view/%2525E7%252583%2525AD%2525E8%252588%25259E%2525E7%25258F%2525AD%2525E5%2525B7%2525B4%2525E8%25259C%25259C%2525E7%2525B2%252589
+Expected Result
+Page is ok.
+Actual Result
+404 page not found.
+Error Message
+{errorMessage}
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://hybris51-prod.benefitdigital.com.cn/brand/socialclub
