@@ -1,25 +1,28 @@
 package net.imadz.web.explorer
 
-import akka.actor.{Terminated, ActorRef, Props, Actor}
-import akka.actor.Actor.Receive
-import akka.pattern.pipe
+import akka.actor._
+import akka.event.LoggingReceive
+import net.imadz.web.explorer.HttpErrorRecorder.HttpError
 
-import scala.concurrent.Future
-import scala.util.{Success, Failure}
+import scala.util.{Failure, Success}
 
 /**
  * Created by geek on 8/20/14.
  */
-class HttpUrlGetter(httpRequest: HttpRequest) extends Actor {
+class HttpUrlGetter(httpRequest: HttpRequest) extends Actor with ActorLogging {
 
   self ! httpRequest
 
   def client: WebClient = AsyncWebClient
 
-  override def receive: Receive = {
+  override def receive: Receive = LoggingReceive {
     case p@PageRequest(_, url, pre, _) =>
-
+      log.debug("========================Getter Receive Start==========================================")
+      log.debug(url)
+      log.debug("========================Getter Receive End  ==========================================")
       import scala.concurrent.ExecutionContext.Implicits.global
+
+
       val headers: Map[String, String] = httpRequest.headers
       client.get(headers)(url) onComplete {
         case Success(body) =>
@@ -28,8 +31,8 @@ class HttpUrlGetter(httpRequest: HttpRequest) extends Actor {
           context.watch(child)
         case Failure(BadStatus(code)) =>
           HttpUrlGetter.reporterCount += 1
-          val child = context.actorOf(HttpErrorRecorder.props(code, p), "HttpErrorRecorder-" + HttpUrlGetter.reporterCount)
-          context.watch(child)
+          context.actorSelection(HttpErrorRecorder.path) ! HttpError(code, p)
+          context.stop(self)
         case Failure(t) => self ! p
       }
 
@@ -40,19 +43,21 @@ class HttpUrlGetter(httpRequest: HttpRequest) extends Actor {
         case Success(ignore) =>
           None
         case Failure(BadStatus(code)) =>
-          val child = context.actorOf(HttpErrorRecorder.props(code, i))
-          context.watch(child)
+          context.actorSelection(HttpErrorRecorder.path) ! HttpError(code, i)
+          context.stop(self)
         case Failure(t) => self ! i
       }
     case Terminated(child) =>
       context.stop(self)
+
   }
 }
 
 object HttpUrlGetter {
 
-  var reporterCount : Int = 0
-  var parserCount : Int = 0
+  var reporterCount: Int = 0
+  var parserCount: Int = 0
+
   def props(httpRequest: HttpRequest) = Props(classOf[HttpUrlGetter], httpRequest)
 
 }

@@ -1,7 +1,8 @@
 package net.imadz.web.explorer
 
-import akka.actor.{Props, ActorRef, Actor}
+import akka.actor.{ActorLogging, Props, ActorRef, Actor}
 import akka.actor.Actor.Receive
+import akka.event.LoggingReceive
 import net.imadz.web.explorer._
 
 import scala.collection.mutable.ListBuffer
@@ -10,11 +11,11 @@ import scala.util.matching.Regex
 /**
  * Created by geek on 8/20/14.
  */
-class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRef) extends Actor {
+class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRef) extends Actor with ActorLogging {
 
   self ! body
 
-  override def receive: Receive = {
+  override def receive: Receive = LoggingReceive {
     case body: String =>
       parse(body) { request =>
         dispatcher ! request
@@ -32,9 +33,9 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
     for {
       A_TAG(attrs, name) <- A_TAG findAllIn body
       HREF_ATTR(dquot, quot, bare) <- HREF_ATTR findAllIn attrs
-    } yield if (dquot != null) dquot
-    else if (quot != null) quot
-    else bare
+    } yield if (dquot != null) dquot trim
+    else if (quot != null) quot trim
+    else bare trim
   }
 
 
@@ -52,35 +53,48 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
 
 
   def processUrl(rawUrl: String, contextUrl: String): String = {
-    val domainRegex = new Regex("""(http|https)://.*?/""")
-    val domainUrl = domainRegex.findFirstIn(contextUrl).get
+    val domainRegex = new Regex( """(http|https)://.*?/""")
+    val domainUrl = domainRegex.findFirstIn(contextUrl).getOrElse(contextUrl + "/")
     if (rawUrl.startsWith("http") || rawUrl.startsWith("https")) rawUrl
-    else if(rawUrl.startsWith("/"))
-    {
+    else if (rawUrl.startsWith("/")) {
       if (domainUrl.endsWith("/"))
-        domainUrl.take(domainUrl.length -1 ) + rawUrl
+        domainUrl.take(domainUrl.length - 1) + rawUrl
       else
         domainUrl + rawUrl
     }
-    else if(rawUrl.endsWith(".html"))
-    {
-      if (contextUrl.endsWith("/"))
-        contextUrl + rawUrl
-      else
-        contextUrl + "/" + rawUrl
+    else {
+      val prefixUrl = new Regex( """(http|https)://.*/""").findFirstIn(contextUrl).getOrElse(contextUrl)
+      prefixUrl + rawUrl
     }
+  }
+
+  def trancateInavlidsChars(rawUrl: String): String = {
+    val invalidChars = '|' :: ' ' :: '\\' :: Nil
+    val invalidIndexes = invalidChars map {rawUrl.indexOf(_)} filter {_ > 0}
+    val minIndex = invalidIndexes.foldLeft(Int.MaxValue){(min, index) => Math.min(min, index)}
+    if (minIndex < Int.MaxValue) rawUrl.substring(0, minIndex)
     else rawUrl
   }
 
   private def findLinks(body: String): List[HttpRequest] = {
-    val pages: List[PageRequest] = findPageLinks(body) map {rawUrl => processUrl(rawUrl, httpRequest.url)} map { url => PageRequest(httpRequest.headers, url, Some(httpRequest), httpRequest.depth + 1)} toList
+    val pages: List[PageRequest] = findPageLinks(body) filter (invalids)  map { rawUrl => processUrl(rawUrl, httpRequest.url)
+    } map {rawUrl => trancateInavlidsChars(rawUrl)} map { url => PageRequest(httpRequest.headers, url, Some(httpRequest), httpRequest.depth + 1)
+    } toList
+
     val images: List[ImageRequest] = findImageLinks(body) map { url =>
       ImageRequest(httpRequest.headers, url, httpRequest.asInstanceOf[PageRequest], httpRequest.depth + 1)
     } toList
 
     pages ::: images
   }
+
+  def invalids: (String) => Boolean = {
+    rawUrl =>
+      rawUrl.size > 0 && !rawUrl.contains("#") && !rawUrl.contains("javascript") && !rawUrl.startsWith("mailto:")
+  }
 }
+
+
 
 object HttpLinkParser {
 

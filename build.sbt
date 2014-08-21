@@ -6,6 +6,10 @@ scalaVersion := "2.10.2"
 
 fork in run := true
 
+resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
+
+libraryDependencies += "org.scalaz.stream" %% "scalaz-stream" % "0.4.1"
+
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % "2.2.1",
   "com.typesafe.akka" %% "akka-testkit" % "2.2.1",
