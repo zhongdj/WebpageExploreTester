@@ -1,6 +1,6 @@
 package net.imadz.web.explorer
 
-import akka.actor.{Terminated, Actor, ActorLogging}
+import akka.actor.{Actor, ActorLogging, Terminated}
 import akka.event.LoggingReceive
 
 /**
@@ -9,7 +9,8 @@ import akka.event.LoggingReceive
 class Main extends Actor with ActorLogging {
 
   //  val initialUrl = "http://www.633qq.com/html/se/72116.html";
-  val initialUrl = "http://hybris51-prod.benefitdigital.com.cn/";
+  //  val initialUrl = "http://hybris51-prod.benefitdigital.com.cn/";
+   val initialUrl = "http://www.nike.com/";
 
   def headers = Map[String, String](
     //    "Cookie" ->
@@ -24,7 +25,7 @@ class Main extends Actor with ActorLogging {
     "http://nikeplus.nike.com"
   )
 
-  val domainConstraints = Set("hybris51-prod.benefitdigital.com.cn")
+  val domainConstraints = Set("hybris51-prod.benefitdigital.com.cn", "nike.com")
 
   val dispatcher = context.actorOf(HttpRequestDispatcher.props(headers, excludes, initialUrl, domainConstraints, 100), "HttpRequestDispatcher")
   context.watch(dispatcher)
