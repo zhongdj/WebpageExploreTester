@@ -13,8 +13,10 @@ class HttpErrorRecorder(responseCode: Int, httpRequest: HttpRequest) extends Act
   override def receive: Receive = {
     case p: PageRequest =>
       logPageError(p)
+      context.stop(self)
     case i: ImageRequest =>
       logImageError(i)
+      context.stop(self)
   }
 
   def logPageError(request: PageRequest): Unit = {
