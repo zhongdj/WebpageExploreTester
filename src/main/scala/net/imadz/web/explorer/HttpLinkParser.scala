@@ -1,11 +1,8 @@
 package net.imadz.web.explorer
 
-import akka.actor.{ActorLogging, Props, ActorRef, Actor}
-import akka.actor.Actor.Receive
+import akka.actor.{Actor, ActorLogging, ActorRef, Props}
 import akka.event.LoggingReceive
-import net.imadz.web.explorer._
 
-import scala.collection.mutable.ListBuffer
 import scala.util.matching.Regex
 
 /**
@@ -45,7 +42,7 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
   def findImageLinks(body: String): Iterator[String] = {
     for {
       IMG_TAG(anchor) <- IMG_TAG.findAllIn(body)
-      IMG_SRC(dquot, quot, bare) <- IMG_SRC findAllIn(anchor)
+      IMG_SRC(dquot, quot, bare) <- IMG_SRC findAllIn (anchor)
     } yield if (dquot != null) dquot trim
     else if (quot != null) quot trim
     else bare trim
@@ -56,7 +53,9 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
     val domainRegex = new Regex( """(http|https)://.*?/""")
     val domainUrl = domainRegex.findFirstIn(contextUrl).getOrElse(contextUrl + "/")
     if (rawUrl.startsWith("http") || rawUrl.startsWith("https")) rawUrl
-    else if (rawUrl.startsWith("/")) {
+    else if (rawUrl.startsWith("//")) {
+       "http:" + rawUrl
+    } else if (rawUrl.startsWith("/")) {
       if (domainUrl.endsWith("/"))
         domainUrl.take(domainUrl.length - 1) + rawUrl
       else
@@ -69,25 +68,29 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
   }
 
   def trancateInavlidsChars(rawUrl: String): String = {
-    val invalidChars = '|' :: ' ' :: '\\' :: '\"' :: '\'':: Nil
-    val invalidIndexes = invalidChars map {rawUrl.indexOf(_)} filter {_ > 0}
-    val minIndex = invalidIndexes.foldLeft(Int.MaxValue){(min, index) => Math.min(min, index)}
+    val invalidChars = '|' :: ' ' :: '\\' :: '\"' :: '\'' :: '{' :: '(' :: '[' :: Nil
+    val invalidIndexes = invalidChars map {
+      rawUrl.indexOf(_)
+    } filter {
+      _ > 0
+    }
+    val minIndex = invalidIndexes.foldLeft(Int.MaxValue) { (min, index) => Math.min(min, index)}
     if (minIndex < Int.MaxValue) rawUrl.substring(0, minIndex)
     else rawUrl
   }
 
   private def findLinks(body: String): List[HttpRequest] = {
-    val pages: List[PageRequest] = findPageLinks(body) filter (invalids)  map { rawUrl => processUrl(rawUrl, httpRequest.url)
-    } map {rawUrl => trancateInavlidsChars(rawUrl)} map { url => PageRequest(httpRequest.headers, url, Some(httpRequest), httpRequest.depth + 1)
+    val pages: List[PageRequest] = findPageLinks(body) filter (invalids) map { rawUrl => processUrl(rawUrl, httpRequest.url)
+    } map { rawUrl => trancateInavlidsChars(rawUrl)} map { url => PageRequest(httpRequest.headers, url, Some(httpRequest), httpRequest.depth + 1)
     } toList
 
-    val images: List[ImageRequest] = findImageLinks(body) filter (invalids)  map { rawUrl =>
+    val images: List[ImageRequest] = findImageLinks(body) filter (invalids) map { rawUrl =>
       val newImageUrl = processUrl(rawUrl, httpRequest.url)
-//      log.error("---------------------------------------------------------------------------------")
-//      log.error("orignial image url: " + rawUrl)
-//      log.error("processed imageUrl: " + newImageUrl)
+      //      log.error("---------------------------------------------------------------------------------")
+      //      log.error("orignial image url: " + rawUrl)
+      //      log.error("processed imageUrl: " + newImageUrl)
       newImageUrl
-    } map {rawUrl => trancateInavlidsChars(rawUrl)} map { url =>
+    } map { rawUrl => trancateInavlidsChars(rawUrl)} map { url =>
       ImageRequest(httpRequest.headers, url, httpRequest.asInstanceOf[PageRequest], httpRequest.depth + 1)
     } toList
 
@@ -99,7 +102,6 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
       rawUrl.size > 0 && !rawUrl.contains("#") && !rawUrl.contains("javascript") && !rawUrl.startsWith("mailto:")
   }
 }
-
 
 
 object HttpLinkParser {

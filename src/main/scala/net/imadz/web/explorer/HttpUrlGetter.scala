@@ -61,7 +61,7 @@ class HttpUrlGetter(httpRequest: HttpRequest) extends Actor with ActorLogging {
   }
 
   def handleFailure(t:Throwable, i: HttpRequest) {
-    log.error(t, i.toString)
+
     t match {
       case e: TimeoutException =>
         self ! i
@@ -79,7 +79,7 @@ class HttpUrlGetter(httpRequest: HttpRequest) extends Actor with ActorLogging {
           log.error(e, "Unhandled Exception")
         }
       case e: Throwable => log.error(e, "Unhandled Exception")
-      case _ =>
+      case _ =>  log.error(t, i.toString)
     }
   }
 }
