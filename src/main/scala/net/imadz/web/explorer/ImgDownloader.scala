@@ -1,0 +1,85 @@
+package net.imadz.web.explorer
+
+
+import java.util.concurrent.{ThreadFactory, Executors}
+
+import akka.actor.{Props, Actor}
+import java.util.concurrent.atomic.AtomicInteger
+import com.ning.http.client.{HttpResponseHeaders, AsyncHttpClient}
+import java.net.{URL, URLConnection, HttpURLConnection}
+import java.io._
+import scala.concurrent.ExecutionContext
+import scala.util.Try
+import akka.event.LoggingReceive
+
+/**
+ * Created by geek on 5/11/14.
+ */
+class ImgDownloader extends Actor {
+
+  import ImgDownloader.{ImgUrl, imgSeq, foldSeq, imgRepo, sizeFilter}
+
+  def receive = LoggingReceive {
+    case ImgUrl(urlString) =>
+      println(urlString)
+      val url = new URL(urlString)
+      val httpConnection = url.openConnection.asInstanceOf[HttpURLConnection]
+      val length = httpConnection.getHeaderField("Content-Length")
+
+      if (null == length || length.toInt > sizeFilter) {
+        val writer = createWriter(fileExtension(urlString))
+        val is = httpConnection.getInputStream
+
+        Try {
+          val buffer = new Array[Byte](64 * 1024)
+          var length = 0
+          length = is.read(buffer)
+          while (length > 0) {
+            writer.write(buffer, 0, length)
+            length = is.read(buffer)
+          }
+        } match {
+          case _ =>
+            writer.close
+            is.close
+            httpConnection.disconnect
+        }
+      }
+
+      context.stop(self)
+  }
+
+  def fileExtension(url: String) = {
+    url.substring(url.lastIndexOf('.') + 1)
+  }
+
+  def createWriter(fileExtension: String) = {
+    this.synchronized {
+      if (imgSeq.intValue >= 2000) {
+        foldSeq.incrementAndGet
+        imgSeq.set(0)
+      }
+      val dir = new File(imgRepo + File.separator + foldSeq.get)
+      if (!dir.exists) dir.mkdirs()
+    }
+    val imgFile = new File(imgRepo + File.separator + foldSeq.get + File.separator + imgSeq.getAndIncrement + "." + fileExtension)
+    if (imgFile.exists) imgFile.delete
+    else imgFile.createNewFile
+
+    new FileOutputStream(imgFile)
+  }
+}
+
+object ImgDownloader {
+  val userHome = System.getProperty("user.home")
+  val imgRepo = s"${userHome}" + File.separator + "imgRepo"
+  val imgSeq = new AtomicInteger(2000)
+  val foldSeq = new AtomicInteger(0)
+  val sizeFilter: Int = 64 * 1024
+
+  val downloaderSeq = new AtomicInteger(1)
+
+  case class ImgUrl(val url: String)
+  def propsOfImages = Props(classOf[ImgDownloader]).withDispatcher("images-download-dispatcher")
+
+}

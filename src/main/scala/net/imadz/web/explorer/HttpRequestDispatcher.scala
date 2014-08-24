@@ -41,16 +41,21 @@ class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[
       onRequest(p) { request =>
         if (obeyDomainConstraints(rawUrl)) {
           pageGetterCount += 1
-          context.actorOf(HttpUrlGetter.props(request), "PageGetter-" + pageGetterCount)
+          context.actorOf(HttpUrlGetter.propsOfPages(request), "PageGetter-" + pageGetterCount)
         }
       }
     case i@ImageRequest(_, rawUrl, previousRequest, depth) =>
       onRequest(i) { request =>
         imageGetterCount += 1
-        context.actorOf(HttpUrlGetter.props(i), "ImageGetter-" + imageGetterCount)
+        context.actorOf(HttpUrlGetter.propsOfPages(i), "ImageGetter-" + imageGetterCount)
       }
     case ReceiveTimeout =>
       context.stop(self)
+    case SlowDown =>
+      log.info("HttpRequestDispatcher is going to slow down 30 seconds")
+//      context.setReceiveTimeout(Duration.Undefined)
+//      context.setReceiveTimeout(30 seconds)
+//      context.become(waiting)
   }
 
   def waiting: Receive = {
@@ -63,6 +68,9 @@ class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[
     case message: HttpRequest =>
       queue = queue ::: message :: Nil
     case _ =>
+      log.info("HttpRequestDispatcher is going to slow down 30 seconds")
+      context.setReceiveTimeout(Duration.Undefined)
+      context.setReceiveTimeout(30 seconds)
   }
 
   private def needVisit(url: String, depth: Int): Boolean = {
@@ -80,9 +88,13 @@ class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[
 
 }
 
+object SlowDown
 
 object HttpRequestDispatcher {
+  val name: String = "HttpRequestDispatcher"
+  val path = "akka://Main/user/app/" + name
 
   def props(headers: Map[String, String], excludes: Set[String], initialUrl: String, domainConstraints: Set[String], maxDepth: Int) = Props(classOf[HttpRequestDispatcher], headers, excludes, initialUrl, domainConstraints, maxDepth)
+
 
 }

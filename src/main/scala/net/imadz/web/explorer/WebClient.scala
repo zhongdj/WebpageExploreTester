@@ -1,11 +1,10 @@
 package net.imadz.web.explorer
 
-import java.util.regex.{Pattern, Matcher}
+import java.io.{BufferedReader, InputStreamReader}
+import java.net.{HttpURLConnection, URL}
+import java.util.concurrent.{Executor, Executors, ThreadFactory}
 
-import scala.concurrent.Future
-import com.ning.http.client.{AsyncCompletionHandlerBase, AsyncHttpClient}
-import scala.concurrent.Promise
-import java.util.concurrent.Executor
+import scala.concurrent.{ExecutionContext, Future}
 
 trait WebClient {
   def get(headers: Map[String, String])(url: String)(implicit exec: Executor): Future[String]
@@ -13,38 +12,70 @@ trait WebClient {
 
 case class BadStatus(status: Int) extends RuntimeException
 
-object AsyncWebClient extends WebClient {
+object AsyncWebClient {
 
-  private val client = new AsyncHttpClient
+  implicit val exec: ExecutionContext = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(2, new ThreadFactory {
+    var counter = 0;
 
-  def get(headers: Map[String, String])(url: String)(implicit exec: Executor): Future[String] = {
-    //println(url)
-    val builder = headers.foldLeft(client.prepareGet(url)) { (builder, tuple) => builder.addHeader(tuple._1, tuple._2)}
-    val p = Promise[String]()
-    val f = builder.execute(new AsyncCompletionHandlerBase {
-      override def onThrowable(t: Throwable): Unit = {
-        println("Exception Found on URL: " + url)
-        //super.onThrowable(t)
-        p.failure(t)
+    override def newThread(r: Runnable): Thread = {
+      counter += 1
+      new Thread(r, "AsyncWebClient-Pool-" + counter)
+    }
+  }))
+
+  def get(headers: Map[String, String])(url: String): Future[String] = {
+
+    Future {
+      var conn: HttpURLConnection = null
+      var reader: BufferedReader = null
+      try {
+        conn = new URL(url).openConnection().asInstanceOf[HttpURLConnection]
+        conn.setReadTimeout(60000)
+        conn.setDoInput(true)
+        headers.foreach { case (k: String, v: String) => conn.setRequestProperty(k, v)}
+        reader = new BufferedReader(new InputStreamReader(conn.getInputStream))
+        var line = reader.readLine
+        val resultBuilder = new StringBuilder(line)
+
+        while (line != null) {
+          line = reader.readLine
+          resultBuilder.append("\n").append(line)
+        }
+        resultBuilder.toString
+      } finally {
+        if (null != reader) reader.close
+        conn.asInstanceOf[HttpURLConnection].disconnect
       }
-    });
-    f.addListener(new Runnable {
-      def run = {
-        val response = f.get
-        if (response.getStatusCode < 400)
-          p.success(response.getResponseBodyExcerpt(131072))
-        else p.failure(BadStatus(response.getStatusCode))
-      }
-    }, exec)
-    p.future
+    }
   }
 
-  def shutdown(): Unit = client.close()
+  val imageHeaderExec: ExecutionContext = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(5, new ThreadFactory {
+    var counter = 0;
 
-}
+    override def newThread(r: Runnable): Thread = {
+      counter += 1
+      new Thread(r, "ImageHeaders-Pool-" + counter)
+    }
+  }))
 
+  def connectOnly(headers: Map[String, String])(url: String): Future[Int] = Future {
+    var conn: HttpURLConnection = null
+    try {
+      conn = new URL(url).openConnection().asInstanceOf[HttpURLConnection]
+      conn.setReadTimeout(60000)
+      conn.setDoInput(true)
+      headers.foreach { case (k: String, v: String) => conn.setRequestProperty(k, v)}
+      if (conn.getResponseCode < 400) {
+        conn.getResponseCode
+      } else {
+        throw new BadStatus(conn.getResponseCode)
+      }
+    } finally {
+      conn.asInstanceOf[HttpURLConnection].disconnect
+    }
+  }(imageHeaderExec)
 
-object WebClientTest extends App {
-
+  def shutdown(): Unit = {
+  } //client.close()
 
 }

@@ -17,10 +17,17 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
       parse(body) { request =>
         dispatcher ! request
       }
+      context.stop(self)
   }
 
   private def parse(body: String)(dispatch: HttpRequest => Unit) = {
-    findLinks(body) foreach (newLink => dispatch(newLink))
+    try {
+       findLinks(body) foreach (newLink => dispatch(newLink))
+    } catch {
+      case t =>
+        context.stop(self)
+        throw t
+    }
   }
 
   val A_TAG = """(?s)(?i)<a (.*)>(.+)?</a>""".r
@@ -106,7 +113,7 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
 
 object HttpLinkParser {
 
-  def props(body: String, httpRequest: PageRequest, dispatcher: ActorRef) = Props(classOf[HttpLinkParser], body, httpRequest, dispatcher)
+  def props(body: String, httpRequest: PageRequest, dispatcher: ActorRef) = Props(classOf[HttpLinkParser], body, httpRequest, dispatcher).withDispatcher("parser-dispatcher")
 
 }
 

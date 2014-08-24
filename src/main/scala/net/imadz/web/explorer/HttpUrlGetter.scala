@@ -1,12 +1,15 @@
 package net.imadz.web.explorer
 
 import java.net.ConnectException
-import java.util.concurrent.TimeoutException
+import java.util.concurrent.{Executors, ThreadFactory, TimeoutException}
 
 import akka.actor._
 import akka.event.LoggingReceive
 import net.imadz.web.explorer.HttpErrorRecorder.HttpError
+import net.imadz.web.explorer.ImgDownloadLead.ImgDownloadRequest
+import net.imadz.web.explorer.ParserLead.ParseRequest
 
+import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
 
 /**
@@ -18,50 +21,50 @@ class HttpUrlGetter(httpRequest: HttpRequest) extends Actor with ActorLogging {
 
   self ! httpRequest
 
-  def client: WebClient = AsyncWebClient
+  def client = AsyncWebClient
+
+  import net.imadz.web.explorer.HttpUrlGetter.exec
 
   override def receive: Receive = LoggingReceive {
     case p@PageRequest(_, url, pre, _) =>
-//      log.debug("========================Getter Receive Start==========================================")
-//      log.debug(url)
-//      log.debug("========================Getter Receive End  ==========================================")
-      import scala.concurrent.ExecutionContext.Implicits.global
-
 
       val headers: Map[String, String] = httpRequest.headers
+
       client.get(headers)(url) onComplete {
         case Success(body) =>
-          HttpUrlGetter.parserCount += 1
-          val child = context.actorOf(HttpLinkParser.props(body, p, context.parent), "HttpLinkParser-" + HttpUrlGetter.parserCount)
-          context.watch(child)
+          context.actorSelection(ParserLead.path) ! ParseRequest(body, p)
+          context.stop(self)
         case Failure(BadStatus(code)) =>
           HttpUrlGetter.reporterCount += 1
           context.actorSelection(HttpErrorRecorder.path) ! HttpError(code, p)
           context.stop(self)
-        case Failure(t) => handleFailure(t, p)
+        case Failure(t) =>
+          context.stop(self)
+          //handleFailure(t, p)
       }
 
     case i@ImageRequest(_, url, pre, _) =>
-//      log.debug("========================Getter Receive Start==========================================")
-//      log.debug(url)
-//      log.debug("========================Getter Receive End  ==========================================")
-      import scala.concurrent.ExecutionContext.Implicits.global
       val headers: Map[String, String] = httpRequest.headers
-      client.get(headers)(url) onComplete {
-        case Success(ignore) =>
-          None
+//      context.actorSelection(ImgDownloadLead.path) ! ImgDownloadRequest(url, pre)
+//      context.stop(self)
+      client.connectOnly(headers)(url) onComplete {
+        case Success(x) =>
+          log.info("image @ " + url + " is available.")
+          context.actorSelection(ImgDownloadLead.path) ! ImgDownloadRequest(url, pre)
+          context.stop(self)
         case Failure(BadStatus(code)) =>
+          log.error("image @ " + url + " is unavailable.")
           context.actorSelection(HttpErrorRecorder.path) ! HttpError(code, i)
           context.stop(self)
-        case Failure(t) => handleFailure(t, i)
+        case Failure(t) =>
+          context.stop(self)
+          //handleFailure(t, i)
       }
-    case Terminated(child) =>
-      context.stop(self)
 
   }
 
-  def handleFailure(t:Throwable, i: HttpRequest) {
-
+  def handleFailure(t: Throwable, i: HttpRequest): Unit = {
+    //context.parent ! SlowDown
     t match {
       case e: TimeoutException =>
         self ! i
@@ -77,9 +80,14 @@ class HttpUrlGetter(httpRequest: HttpRequest) extends Actor with ActorLogging {
           self ! i
         } else {
           log.error(e, "Unhandled Exception")
+          context.stop(self)
         }
-      case e: Throwable => log.error(e, "Unhandled Exception")
-      case _ =>  log.error(t, i.toString)
+      case e: Throwable =>
+        log.error(e, "Unhandled Exception")
+        context.stop(self)
+      case _ =>
+        log.error(t, i.toString)
+        context.stop(self)
     }
   }
 }
@@ -88,8 +96,16 @@ object HttpUrlGetter {
 
   var reporterCount: Int = 0
   var parserCount: Int = 0
+  implicit val exec: ExecutionContext = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(2, new ThreadFactory {
+    var counter = 0;
 
-  def props(httpRequest: HttpRequest) = Props(classOf[HttpUrlGetter], httpRequest)
+    override def newThread(r: Runnable): Thread = {
+      counter += 1
+      new Thread(r, "HttpUrlGetter-onComplete-Pool-" + counter)
+    }
+  }))
+
+  def propsOfPages(httpRequest: HttpRequest) = Props(classOf[HttpUrlGetter], httpRequest).withDispatcher("pages-dispatcher")
 
 }
 
