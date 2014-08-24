@@ -77,7 +77,7 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
   }
 
   def trancateInavlidsChars(rawUrl: String): String = {
-    val invalidChars = '|'  :: '\\' :: '\"' :: '\'' :: '{' :: '(' :: '[' :: Nil
+    val invalidChars = '|'  :: '\\' :: '\"' :: '\'' :: '{' :: '[' :: Nil
     val invalidIndexes = invalidChars map {
       rawUrl.indexOf(_)
     } filter {
@@ -93,6 +93,7 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
     } map { rawUrl => trancateInavlidsChars(rawUrl)} map { url => PageRequest(httpRequest.headers, url, Some(httpRequest), httpRequest.depth + 1)
     } toList
 
+    /*
     val images: List[ImageRequest] = findImageLinks(body) filter (invalids) map { rawUrl =>
       val newImageUrl = processUrl(rawUrl, httpRequest.url)
       //      log.error("---------------------------------------------------------------------------------")
@@ -104,6 +105,8 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
     } toList
 
     pages ::: images
+    */
+    pages
   }
 
   def invalids: (String) => Boolean = {
