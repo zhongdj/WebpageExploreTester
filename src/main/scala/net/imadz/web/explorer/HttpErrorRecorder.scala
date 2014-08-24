@@ -12,6 +12,8 @@ import net.imadz.web.explorer.HttpErrorRecorder.HttpError
  */
 class HttpErrorRecorder extends Actor with ActorLogging {
 
+  //TODO 408 Error
+
   var writer : PrintWriter= _
 
   override def receive: Receive = LoggingReceive {

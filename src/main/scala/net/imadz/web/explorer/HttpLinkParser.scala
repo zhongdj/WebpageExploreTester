@@ -10,6 +10,8 @@ import scala.util.matching.Regex
  */
 class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRef) extends Actor with ActorLogging {
 
+  //TODO url encode
+
   self ! body
 
   override def receive: Receive = LoggingReceive {
@@ -75,7 +77,7 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
   }
 
   def trancateInavlidsChars(rawUrl: String): String = {
-    val invalidChars = '|' :: ' ' :: '\\' :: '\"' :: '\'' :: '{' :: '(' :: '[' :: Nil
+    val invalidChars = '|'  :: '\\' :: '\"' :: '\'' :: '{' :: '(' :: '[' :: Nil
     val invalidIndexes = invalidChars map {
       rawUrl.indexOf(_)
     } filter {

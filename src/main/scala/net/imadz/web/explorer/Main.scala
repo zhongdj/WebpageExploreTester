@@ -10,17 +10,17 @@ class Main extends Actor with ActorLogging {
 
   //val initialUrl = "http://hybris51-prod.benefitdigital.com.cn/";
 
-  val initialUrl = "http://www.nike.com/";
+  val initialUrl = "http://m.nike.com/cn/zh_cn/";
 
-  def headers = //Map.empty[String, String]
+  def headers =
     Map[String, String](
       "Accept" -> "image/webp,*/*;q=0.8",
-      "Accept-Encoding" -> "gzip,deflate,sdch",
-      "Accept-Language" -> "en-US,en;q=0.8,zh-CN;q=0.6",
-      "Cache-Control" -> "no-cache",
-      "Connection" -> "keep-alive",
-      "Pragma" -> "no-cache",
-      "Referer" -> "http://www.se566.com/html/se/79306.html",
+//      "Accept-Encoding" -> "gzip,deflate,sdch",
+//      "Accept-Language" -> "en-US,en;q=0.8,zh-CN;q=0.6",
+//      "Cache-Control" -> "no-cache",
+//      "Connection" -> "keep-alive",
+//      "Pragma" -> "no-cache",
+//      "Referer" -> "http://www.se566.com/html/se/79306.html",
       "User-Agent" -> "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.94 Safari/537.36"
     )
 
@@ -40,7 +40,7 @@ class Main extends Actor with ActorLogging {
 
   val parserLead = context.actorOf(Props(classOf[ParserLead], dispatcher), ParserLead.name)
 
-  val imageDownloadLead = context.actorOf(Props(classOf[ImgDownloadLead]), ImgDownloadLead.name)
+  //val imageDownloadLead = context.actorOf(Props(classOf[ImgDownloadLead]), ImgDownloadLead.name)
 
   override def receive: Receive = LoggingReceive {
     case url: String => context.actorOf(HttpRequestDispatcher.props(headers, excludes, url, domainConstraints, 10))

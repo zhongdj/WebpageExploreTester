@@ -30,7 +30,7 @@ class HttpUrlGetter(httpRequest: HttpRequest) extends Actor with ActorLogging {
 
       val headers: Map[String, String] = httpRequest.headers
 
-      client.get(headers)(url) onComplete {
+      client.get(headers)(java.net.URLEncoder.encode(url, "UTF8")) onComplete {
         case Success(body) =>
           context.actorSelection(ParserLead.path) ! ParseRequest(body, p)
           context.stop(self)
@@ -47,7 +47,7 @@ class HttpUrlGetter(httpRequest: HttpRequest) extends Actor with ActorLogging {
       val headers: Map[String, String] = httpRequest.headers
 //      context.actorSelection(ImgDownloadLead.path) ! ImgDownloadRequest(url, pre)
 //      context.stop(self)
-      client.connectOnly(headers)(url) onComplete {
+      client.connectOnly(headers)(java.net.URLEncoder.encode(url, "UTF8")) onComplete {
         case Success(x) =>
           log.info("image @ " + url + " is available.")
           context.actorSelection(ImgDownloadLead.path) ! ImgDownloadRequest(url, pre)

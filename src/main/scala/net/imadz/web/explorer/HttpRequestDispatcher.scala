@@ -26,7 +26,7 @@ class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[
     context.setReceiveTimeout(Duration.Undefined)
     val url = request.url
     if (needVisit(url, request.depth)) {
-      //log.info(url)
+      log.info(url)
       visitedUrls += url
 
       func(request)
@@ -34,6 +34,10 @@ class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[
       //log.info("cached url number: " + visitedUrls.size)
     }
     context.setReceiveTimeout(90 second)
+  }
+
+  def printMessage: Receive = {
+    case m => println(m)
   }
 
   override def receive: Receive = LoggingReceive {
@@ -56,7 +60,7 @@ class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[
 //      context.setReceiveTimeout(Duration.Undefined)
 //      context.setReceiveTimeout(30 seconds)
 //      context.become(waiting)
-  }
+  } andThen printMessage
 
   def waiting: Receive = {
     case ReceiveTimeout =>
