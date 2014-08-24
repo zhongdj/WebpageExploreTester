@@ -1,18 +1,13 @@
 -----------------------------------A New Bug Begin-----------------------
 Title:{title}
-
 Action Performed
 {bugsteps}
-
 Expected Result
 Page is ok.
-
 Actual Result
 {actualResult}
-
 Error Message
 {errorMessage}
-
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
