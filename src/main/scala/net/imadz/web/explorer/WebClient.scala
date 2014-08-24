@@ -14,7 +14,7 @@ case class BadStatus(status: Int) extends RuntimeException
 
 object AsyncWebClient {
 
-  implicit val exec: ExecutionContext = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(2, new ThreadFactory {
+  implicit val exec: ExecutionContext = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(200, new ThreadFactory {
     var counter = 0;
 
     override def newThread(r: Runnable): Thread = {
@@ -33,6 +33,9 @@ object AsyncWebClient {
         conn.setReadTimeout(60000)
         conn.setDoInput(true)
         headers.foreach { case (k: String, v: String) => conn.setRequestProperty(k, v)}
+        if (conn.getResponseCode >= 400) {
+          throw new BadStatus(conn.getResponseCode)
+        }
         reader = new BufferedReader(new InputStreamReader(conn.getInputStream))
         var line = reader.readLine
         val resultBuilder = new StringBuilder(line)
