@@ -1,34 +1,14 @@
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
-Action Performed
-http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E5%9B%BD%E5%AE%B6%E8%B6%B3%E7%90%83%E9%98%9F-%E7%90%83%E8%BF%B7%E8%A3%85%E5%A4%87-%E8%B6%B3%E7%90%83/7puZck8ZaowZ896
-Expected Result
-Page is ok.
-Actual Result
-404 page not found.
-Error Message
-{errorMessage}
-Additional Environment Info
-Country you are testing in: China 
-Geo Tested: CN
-OS(s) you found the bug on: Mac OS X / Version 10.7.5
-Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://m.nike.com/cn/zh_cn/
------------------------------------A New Bug End------------------------
-
-
------------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
 http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-nike-pro-combat/7puZ9j9
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
@@ -39,16 +19,16 @@ URL that find the bug: http://m.nike.com/cn/zh_cn/
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
 http://m.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-tech-pack-%E7%B3%BB%E5%88%97/7ptZdly
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
@@ -59,16 +39,36 @@ URL that find the bug: http://m.nike.com/cn/zh_cn/
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E5%9B%BD%E5%AE%B6%E8%B6%B3%E7%90%83%E9%98%9F-%E7%90%83%E8%BF%B7%E8%A3%85%E5%A4%87-%E8%B6%B3%E7%90%83/7puZck8ZaowZ896
+Expected Result
+Page is ok.
+Actual Result
+404 error raised.
+Error Message
+Not Found
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://m.nike.com/cn/zh_cn/
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
 http://m.nike.com/cn/zh_cn/pw/%E5%84%BF%E7%AB%A5-7-12%E5%B2%81-%E5%A5%B3%E5%AD%A9-%E5%A5%97%E5%A4%B4%E8%A1%AB-%E9%95%BF%E8%A2%96%E8%BF%90%E5%8A%A8%E8%A1%AB-%E6%9C%8D%E8%A3%85/7pwZ7pxZbgdZ88nZ9ipZcj1
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
@@ -79,154 +79,28 @@ URL that find the bug: http://m.nike.com/cn/zh_cn/
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:410 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7puZbqtZ7ub
-http://m.nike.com/cn/zh_cn/pd/max-fit-over-the-calf-%E8%B6%B3%E7%90%83%E8%A2%9C%EF%BC%88%E5%A4%A7%E7%A0%81%EF%BC%89/pid-10037944/pgid-10024062
+http://m.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E8%AE%AD%E7%BB%83-%E9%9E%8B%E7%B1%BB/7ptZbrkZ9hk
+http://m.nike.com/cn/zh_cn/pd/studio-wrap-pack-2-print-%E4%B8%89%E4%BD%93%E5%BC%8F%E9%9E%8B%E7%B1%BB%E7%B3%BB%E7%BB%9F/pid-10068654/pgid-10024038
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+410 error raised.
 Error Message
-{errorMessage}
+Gone
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7puZbqtZ7ub
+URL that find the bug: http://m.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E8%AE%AD%E7%BB%83-%E9%9E%8B%E7%B1%BB/7ptZbrkZ9hk
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
-Action Performed
-http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7puZbqtZ7ub
-http://m.nike.com/cn/zh_cn/pd/elite-crew-%E7%AF%AE%E7%90%83%E8%A2%9C/pid-10075660/pgid-10023402
-Expected Result
-Page is ok.
-Actual Result
-404 page not found.
-Error Message
-{errorMessage}
-Additional Environment Info
-Country you are testing in: China 
-Geo Tested: CN
-OS(s) you found the bug on: Mac OS X / Version 10.7.5
-Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7puZbqtZ7ub
------------------------------------A New Bug End------------------------
-
-
------------------------------------A New Bug Begin-----------------------
-Title:404 page not found
-Action Performed
-http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90/7pu
-http://m.nike.com/cn/zh_cn/pd/elite-crew-%E7%AF%AE%E7%90%83%E8%A2%9C/pid-10091387/pgid-10023402
-Expected Result
-Page is ok.
-Actual Result
-404 page not found.
-Error Message
-{errorMessage}
-Additional Environment Info
-Country you are testing in: China 
-Geo Tested: CN
-OS(s) you found the bug on: Mac OS X / Version 10.7.5
-Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90/7pu
------------------------------------A New Bug End------------------------
-
-
------------------------------------A New Bug Begin-----------------------
-Title:404 page not found
-Action Performed
-http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%83%8C%E5%8C%85-%E5%8F%8C%E8%82%A9%E5%8C%85-%E8%A3%85%E5%A4%87/7puZbqtZ90x
-http://m.nike.com/cn/zh_cn/pd/embarca-medium-%E5%8F%8C%E8%82%A9%E5%8C%85/pid-10030922/pgid-10249169
-Expected Result
-Page is ok.
-Actual Result
-404 page not found.
-Error Message
-{errorMessage}
-Additional Environment Info
-Country you are testing in: China 
-Geo Tested: CN
-OS(s) you found the bug on: Mac OS X / Version 10.7.5
-Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%83%8C%E5%8C%85-%E5%8F%8C%E8%82%A9%E5%8C%85-%E8%A3%85%E5%A4%87/7puZbqtZ90x
------------------------------------A New Bug End------------------------
-
-
------------------------------------A New Bug Begin-----------------------
-Title:404 page not found
-Action Performed
-http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-nikeid%E4%B8%93%E5%B1%9E%E5%AE%9A%E5%88%B6-%E9%9E%8B%E7%B1%BB/1k9Z7puZbrk
-http://ecn11-store.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-nikeid%E4%B8%93%E5%B1%9E%E5%AE%9A%E5%88%B6-%E8%AE%AD%E7%BB%83/1k9Z7puZ9hk
-Expected Result
-Page is ok.
-Actual Result
-404 page not found.
-Error Message
-{errorMessage}
-Additional Environment Info
-Country you are testing in: China 
-Geo Tested: CN
-OS(s) you found the bug on: Mac OS X / Version 10.7.5
-Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-nikeid%E4%B8%93%E5%B1%9E%E5%AE%9A%E5%88%B6-%E9%9E%8B%E7%B1%BB/1k9Z7puZbrk
------------------------------------A New Bug End------------------------
-
-
------------------------------------A New Bug Begin-----------------------
-Title:404 page not found
-Action Performed
-http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-nikeid%E4%B8%93%E5%B1%9E%E5%AE%9A%E5%88%B6-%E9%9E%8B%E7%B1%BB/1k9Z7puZbrk
-http://ecn11-store.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-nikeid%E4%B8%93%E5%B1%9E%E5%AE%9A%E5%88%B6-%E7%BD%91%E7%90%83/1k9Z7puZ8r0
-Expected Result
-Page is ok.
-Actual Result
-404 page not found.
-Error Message
-{errorMessage}
-Additional Environment Info
-Country you are testing in: China 
-Geo Tested: CN
-OS(s) you found the bug on: Mac OS X / Version 10.7.5
-Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-nikeid%E4%B8%93%E5%B1%9E%E5%AE%9A%E5%88%B6-%E9%9E%8B%E7%B1%BB/1k9Z7puZbrk
------------------------------------A New Bug End------------------------
-
-
------------------------------------A New Bug Begin-----------------------
-Title:404 page not found
-Action Performed
-http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/c/football
-http://store.nike.com/cn/zh_cn/pw/%E8%B6%B3%E7%90%83-%E6%89%8B%E5%A5%97-%E8%A3%85%E5%A4%87/bqtZ896Z8jx
-Expected Result
-Page is ok.
-Actual Result
-404 page not found.
-Error Message
-{errorMessage}
-Additional Environment Info
-Country you are testing in: China 
-Geo Tested: CN
-OS(s) you found the bug on: Mac OS X / Version 10.7.5
-Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://m.nike.com/cn/zh_cn/c/football
------------------------------------A New Bug End------------------------
-
-
------------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
 http://m.nike.com/cn/zh_cn/c/tennis
@@ -234,9 +108,9 @@ http://store.nike.com/cn/zh_cn/pw/%E7%BD%91%E7%90%83-%E8%83%8C%E5%BF%83-%E6%9C%8
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
@@ -247,7 +121,7 @@ URL that find the bug: http://m.nike.com/cn/zh_cn/c/tennis
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
 http://m.nike.com/cn/zh_cn/c/golf
@@ -255,9 +129,9 @@ http://www.nike.com/cn/zh_cn/c/golf/dont-sleep-on-summer
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
@@ -268,7 +142,175 @@ URL that find the bug: http://m.nike.com/cn/zh_cn/c/golf
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://m.nike.com/cn/zh_cn/c/golf
+http://www.nike.com/cn/zh_cn/c/golf/mens-shoes
+Expected Result
+Page is ok.
+Actual Result
+404 error raised.
+Error Message
+Not Found
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://m.nike.com/cn/zh_cn/c/golf
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:404 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://m.nike.com/cn/zh_cn/c/football
+http://store.nike.com/cn/zh_cn/pw/%E8%B6%B3%E7%90%83-%E6%89%8B%E5%A5%97-%E8%A3%85%E5%A4%87/bqtZ896Z8jx
+Expected Result
+Page is ok.
+Actual Result
+404 error raised.
+Error Message
+Not Found
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://m.nike.com/cn/zh_cn/c/football
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:410 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7puZbqtZ7ub
+http://m.nike.com/cn/zh_cn/pd/max-fit-over-the-calf-%E8%B6%B3%E7%90%83%E8%A2%9C%EF%BC%88%E5%A4%A7%E7%A0%81%EF%BC%89/pid-10037944/pgid-10024062
+Expected Result
+Page is ok.
+Actual Result
+410 error raised.
+Error Message
+Gone
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7puZbqtZ7ub
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:410 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7puZbqtZ7ub
+http://m.nike.com/cn/zh_cn/pd/elite-crew-%E7%AF%AE%E7%90%83%E8%A2%9C/pid-10075660/pgid-10023402
+Expected Result
+Page is ok.
+Actual Result
+410 error raised.
+Error Message
+Gone
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7puZbqtZ7ub
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:404 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://m.nike.com/cn/zh_cn/c/running
+http://store.nike.com/cn/zh_cn/pw/%E8%B7%91%E6%AD%A5-%E6%89%8B%E5%A5%97-%E8%A3%85%E5%A4%87/bqtZ8yzZ8jx
+Expected Result
+Page is ok.
+Actual Result
+404 error raised.
+Error Message
+Not Found
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://m.nike.com/cn/zh_cn/c/running
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:410 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90/7pu
+http://m.nike.com/cn/zh_cn/pd/elite-crew-%E7%AF%AE%E7%90%83%E8%A2%9C/pid-10091387/pgid-10023402
+Expected Result
+Page is ok.
+Actual Result
+410 error raised.
+Error Message
+Gone
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90/7pu
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:410 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%83%8C%E5%8C%85-%E5%8F%8C%E8%82%A9%E5%8C%85-%E8%A3%85%E5%A4%87/7puZbqtZ90x
+http://m.nike.com/cn/zh_cn/pd/embarca-medium-%E5%8F%8C%E8%82%A9%E5%8C%85/pid-10030922/pgid-10249169
+Expected Result
+Page is ok.
+Actual Result
+410 error raised.
+Error Message
+Gone
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%83%8C%E5%8C%85-%E5%8F%8C%E8%82%A9%E5%8C%85-%E8%A3%85%E5%A4%87/7puZbqtZ90x
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:410 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://m.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-Flyknit-%E9%9E%8B%E7%B1%BB/7ptZbrkZdmc
+http://m.nike.com/cn/zh_cn/pd/flyknit-air-max-%E8%B7%91%E6%AD%A5%E9%9E%8B/pid-10050199/pgid-10023264
+Expected Result
+Page is ok.
+Actual Result
+410 error raised.
+Error Message
+Gone
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://m.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-Flyknit-%E9%9E%8B%E7%B1%BB/7ptZbrkZdmc
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:410 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
 http://m.nike.com/cn/zh_cn/c/skateboarding
@@ -276,9 +318,9 @@ http://store.nike.com/cn/zh_cn/pd/dunk-low-premium-sb-%E7%AF%AE%E7%90%83%E9%9E%8
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+410 error raised.
 Error Message
-{errorMessage}
+Gone
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
@@ -289,724 +331,476 @@ URL that find the bug: http://m.nike.com/cn/zh_cn/c/skateboarding
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://www.nike.com/cn/zh_cn/c/basketball/rise/lookbook
-http://store.nike.com/cn/zh_cn/pd/elite-crew-%E7%AF%AE%E7%90%83%E8%A2%9C/pid-10075660/pgid-10023402?intpromo=rise%3Arise-lookbook%3Alg%3Aelite-crew-look1
+http://www.nike.com/language_tunnel
+http://www.nike.com/ca/en_ca/
+http://www.nike.com/ca/en_ca/lp/better-world
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://www.nike.com/cn/zh_cn/c/basketball/rise/lookbook
+URL that find the bug: http://www.nike.com/ca/en_ca/
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://www.nike.com/cn/zh_cn/c/basketball/rise/lookbook
-http://store.nike.com/cn/zh_cn/pd/high-top-hero-t%E6%81%A4/pid-10072006/pgid-10024080?intpromo=rise%3Arise-lookbook%3Alg%3Ahigh-top-hero-look9
+http://m.nike.com/cn/zh_cn/c/jordan
+http://www.nike.com/cn/zh_cn/c/jordan/jordan-fa14-lookbook
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://www.nike.com/cn/zh_cn/c/basketball/rise/lookbook
+URL that find the bug: http://m.nike.com/cn/zh_cn/c/jordan
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://www.nike.com/cn/zh_cn/c/basketball/rise
-http://www.nike.com/cn/zh_cn/c/basketball/nikerise.qq.com
+http://www.nike.com/language_tunnel
+http://www.nike.com/in/en_gb/
+http://www.nike.com/in/en_gb/c/running/pegasus-31
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://www.nike.com/cn/zh_cn/c/basketball/rise
+URL that find the bug: http://www.nike.com/in/en_gb/
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:400 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/c/women/style-guide
-http://store.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7ptZbqtZ7ub
-http://store.nike.com/cn/zh_cn/pd/max-fit-over-the-calf-%E8%B6%B3%E7%90%83%E8%A2%9C%EF%BC%88%E5%A4%A7%E7%A0%81%EF%BC%89/pid-10037943/pgid-10024062
+http://m.nike.com/cn/zh_cn/pw/usab-collection/n6a
+http://www.nike.com/cn/zh_cn/sl/store-locator
+http://www.nike.com/zh/zh_cn/c/nikeid/what-is-nikeid
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+400 error raised.
 Error Message
-{errorMessage}
+Bad Request
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7ptZbqtZ7ub
+URL that find the bug: http://www.nike.com/cn/zh_cn/sl/store-locator
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:401 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/c/women/style-guide
-http://store.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7ptZbqtZ7ub
-http://store.nike.com/cn/zh_cn/pd/max-fit-over-the-calf-%E8%B6%B3%E7%90%83%E8%A2%9C%EF%BC%88%E5%A4%A7%E7%A0%81%EF%BC%89/pid-10037944/pgid-10024062
+http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-nikeid%E4%B8%93%E5%B1%9E%E5%AE%9A%E5%88%B6/1k9Z7pu
+http://ecn11-store.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-nikeid%E4%B8%93%E5%B1%9E%E5%AE%9A%E5%88%B6-%E8%AE%AD%E7%BB%83/1k9Z7puZ9hk
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+401 error raised.
 Error Message
-{errorMessage}
+Unauthorized
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7ptZbqtZ7ub
+URL that find the bug: http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-nikeid%E4%B8%93%E5%B1%9E%E5%AE%9A%E5%88%B6/1k9Z7pu
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:401 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/c/women/style-guide
-http://store.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7ptZbqtZ7ub
-http://store.nike.com/cn/zh_cn/pd/max-fit-over-the-calf-%E8%B6%B3%E7%90%83%E8%A2%9C%EF%BC%88%E5%A4%A7%E7%A0%81%EF%BC%89/pid-10091388/pgid-10024062
+http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-nikeid%E4%B8%93%E5%B1%9E%E5%AE%9A%E5%88%B6/1k9Z7pu
+http://ecn11-store.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-nikeid%E4%B8%93%E5%B1%9E%E5%AE%9A%E5%88%B6-%E7%BD%91%E7%90%83/1k9Z7puZ8r0
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+401 error raised.
 Error Message
-{errorMessage}
+Unauthorized
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7ptZbqtZ7ub
+URL that find the bug: http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-nikeid%E4%B8%93%E5%B1%9E%E5%AE%9A%E5%88%B6/1k9Z7pu
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:401 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/c/women/style-guide
-http://store.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7ptZbqtZ7ub
-http://store.nike.com/cn/zh_cn/pd/max-fit-over-the-calf-%E8%B6%B3%E7%90%83%E8%A2%9C%EF%BC%88%E5%A4%A7%E7%A0%81%EF%BC%89/pid-10075667/pgid-10024062
+http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-nikeid%E4%B8%93%E5%B1%9E%E5%AE%9A%E5%88%B6/1k9Z7pu
+http://ecn11-store.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-nikeid%E4%B8%93%E5%B1%9E%E5%AE%9A%E5%88%B6-%E9%AB%98%E5%B0%94%E5%A4%AB/1k9Z7puZaha
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+401 error raised.
 Error Message
-{errorMessage}
+Unauthorized
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7ptZbqtZ7ub
+URL that find the bug: http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-nikeid%E4%B8%93%E5%B1%9E%E5%AE%9A%E5%88%B6/1k9Z7pu
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:400 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-https://secure-store.nike.com/CN/checkout/mobile/index.jsp?l=cart
-http://help-zh-cn.nike.com/app/home
-http://help-zh-cn.nike.com/app/answers/detail/article/size-chart-men-tops-standard/
+http://www.nike.com/language_tunnel
+http://www.nike.com/ch/en_gb/
+http://www.nike.com/nikeos/p/nikegolf/en_EU/
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+400 error raised.
 Error Message
-{errorMessage}
+Bad Request
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://help-zh-cn.nike.com/app/home
+URL that find the bug: http://www.nike.com/ch/en_gb/
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/c/women/style-guide
-http://store.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E6%9C%8D%E8%A3%85/7ptZbgd
-http://store.nike.com/cn/zh_cn/pd/4-rival-%E8%B7%91%E6%AD%A5%E7%9F%AD%E8%A3%A4/pid-10075468/pgid-10023254
+http://www.nike.com/language_tunnel
+http://www.nike.com/ch/en_gb/
+http://www.nike.com/ch/en_gb/c/football/tiempo-v
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E6%9C%8D%E8%A3%85/7ptZbgd
+URL that find the bug: http://www.nike.com/ch/en_gb/
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E9%9E%8B%E7%B1%BB/7ptZbrk
-http://m.nike.com/cn/zh_cn/pd/air-max-1-foco-bonito-%E8%BF%90%E5%8A%A8%E9%9E%8B/pid-10074097
-http://m.nike.com/cn/zh_cn/pd/air-max-1-foco-bonito-%E8%BF%90%E5%8A%A8%E9%9E%8B/
+http://www.nike.com/language_tunnel
+http://www.nike.com/ch/en_gb/
+http://www.nike.com/ch/en_gb/c/sportswear/womens-air-max-lunar-90
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://m.nike.com/cn/zh_cn/pd/air-max-1-foco-bonito-%E8%BF%90%E5%8A%A8%E9%9E%8B/pid-10074097
+URL that find the bug: http://www.nike.com/ch/en_gb/
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E7%AF%AE%E7%90%83-%E9%9E%8B%E7%B1%BB/7puZbrkZ8r1
-http://store.nike.com/cn/zh_cn/pw/%E7%AF%AE%E7%90%83-%E9%9E%8B%E7%B1%BB/brkZ8r1
-http://store.nike.com/cn/zh_cn/pd/zoom-crusader-outdoor-xdr-%E7%AF%AE%E7%90%83%E9%9E%8B/pid-10075575/pgid-10024011
+http://www.nike.com/language_tunnel
+http://www.nike.com/ch/en_gb/
+http://www.nike.com/ch/en_gb/c/sportswear/air-superiority
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E7%AF%AE%E7%90%83-%E9%9E%8B%E7%B1%BB/brkZ8r1
+URL that find the bug: http://www.nike.com/ch/en_gb/
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E7%AF%AE%E7%90%83-%E9%9E%8B%E7%B1%BB/7puZbrkZ8r1
-http://store.nike.com/cn/zh_cn/pw/%E7%AF%AE%E7%90%83-%E9%9E%8B%E7%B1%BB/brkZ8r1
-http://store.nike.com/cn/zh_cn/pd/zoom-1-get-buckets-xdr-%E7%AF%AE%E7%90%83%E9%9E%8B/pid-10075585/pgid-10023736
+http://www.nike.com/language_tunnel
+http://www.nike.com/ch/en_gb/
+http://www.nike.com/ch/en_gb/c/sportswear/mens-air-max-lunar-90
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E7%AF%AE%E7%90%83-%E9%9E%8B%E7%B1%BB/brkZ8r1
+URL that find the bug: http://www.nike.com/ch/en_gb/
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/c/womens-training
-http://store.nike.com/cn/zh_cn/pw/%E6%96%B0%E5%93%81-%E5%A5%B3%E5%AD%90-%E8%AE%AD%E7%BB%83/meZ7ptZ9hk
-http://store.nike.com/cn/zh_cn/pd/studio-wrap-pack-2-print-%E4%B8%89%E4%BD%93%E5%BC%8F%E9%9E%8B%E7%B1%BB%E7%B3%BB%E7%BB%9F/pid-10068654/pgid-10024038
+http://www.nike.com/language_tunnel
+http://www.nike.com/ch/de_de/
+http://www.nike.com/ch/de_de/c/running
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E6%96%B0%E5%93%81-%E5%A5%B3%E5%AD%90-%E8%AE%AD%E7%BB%83/meZ7ptZ9hk
+URL that find the bug: http://www.nike.com/ch/de_de/
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/c/womens-training
-http://www.nike.com/cn/zh_cn/c/womens-training
-http://store.nike.com/cn/zh_cn/pd/studio-wrap-pack-2-print-three-part-footwear-system/pid-1517981/pgid-1515733
+http://www.nike.com/language_tunnel
+http://www.nike.com/ch/de_de/
+http://www.nike.com/ch/de_de/c/sportswear/womens-air-max-lunar-90
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://www.nike.com/cn/zh_cn/c/womens-training
+URL that find the bug: http://www.nike.com/ch/de_de/
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/c/sportswear
-http://store.nike.com/cn/zh_cn/pw/roshe-%E8%BF%90%E5%8A%A8%E7%94%9F%E6%B4%BB-%E9%9E%8B%E7%B1%BB/brkZc8eZdng
-http://store.nike.com/cn/zh_cn/pd/roshe-run-hyperfuse-%E8%BF%90%E5%8A%A8%E9%9E%8B/pid-10063446/pgid-10023997
+http://www.nike.com/language_tunnel
+http://www.nike.com/ch/de_de/
+http://www.nike.com/ch/de_de/c/sportswear/mens-air-max-lunar-90
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/roshe-%E8%BF%90%E5%8A%A8%E7%94%9F%E6%B4%BB-%E9%9E%8B%E7%B1%BB/brkZc8eZdng
+URL that find the bug: http://www.nike.com/ch/de_de/
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/c/running
-http://store.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E8%B7%91%E6%AD%A5-%E6%9C%8D%E8%A3%85/7ptZbgdZ8yz
-http://store.nike.com/cn/zh_cn/pd/rival-stretch-woven-%E8%B7%91%E6%AD%A5%E7%9F%AD%E8%A3%99/pid-10064365/pgid-10054808
+http://www.nike.com/language_tunnel
+http://www.nike.com/ch/it_it/
+http://www.nike.com/ch/it_it/c/sportswear/mens-air-max-lunar-90
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E8%B7%91%E6%AD%A5-%E6%9C%8D%E8%A3%85/7ptZbgdZ8yz
+URL that find the bug: http://www.nike.com/ch/it_it/
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/c/running
-http://store.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E8%B7%91%E6%AD%A5-%E6%9C%8D%E8%A3%85/7ptZbgdZ8yz
-http://store.nike.com/cn/zh_cn/pd/2-epic-run-%E8%B7%91%E6%AD%A5%E5%B9%B3%E8%A7%92%E8%A3%A4/pid-10074703/pgid-10054891
+http://www.nike.com/language_tunnel
+http://www.nike.com/ch/it_it/
+http://www.nike.com/ch/it_it/c/sportswear/womens-air-max-lunar-90
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E8%B7%91%E6%AD%A5-%E6%9C%8D%E8%A3%85/7ptZbgdZ8yz
+URL that find the bug: http://www.nike.com/ch/it_it/
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/c/running
-http://store.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E8%B7%91%E6%AD%A5-%E6%9C%8D%E8%A3%85/7ptZbgdZ8yz
-http://store.nike.com/cn/zh_cn/pd/vapor-cyclone-packable-%E8%B7%91%E6%AD%A5%E5%A4%B9%E5%85%8B/pid-10038383/pgid-10023830
+http://help-zh-cn.nike.com/app/landing/contact
+http://help-zh-cn.nike.com/app/landing/products
+http://help-zh-cn.nike.com/app/answers/detail/article/size-chart-men-tops-standard/snav/p/navt/Size%20Charts
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E8%B7%91%E6%AD%A5-%E6%9C%8D%E8%A3%85/7ptZbgdZ8yz
+URL that find the bug: http://help-zh-cn.nike.com/app/landing/products
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/c/running
-http://store.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E8%B7%91%E6%AD%A5-%E6%9C%8D%E8%A3%85/7ptZbgdZ8yz
-http://store.nike.com/cn/zh_cn/pd/rival-stretch-woven-%E8%B7%91%E6%AD%A5%E7%9F%AD%E8%A3%99/pid-10075123/pgid-10054808
+http://help-zh-cn.nike.com/app/landing/contact
+http://help-zh-cn.nike.com/app/landing/products
+http://help-zh-cn.nike.com/app/answers/detail/article/size-chart-women-tops-standard
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E8%B7%91%E6%AD%A5-%E6%9C%8D%E8%A3%85/7ptZbgdZ8yz
+URL that find the bug: http://help-zh-cn.nike.com/app/landing/products
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://www.nike.com/cn/zh_cn/c/basketball/rise/lookbook
-http://store.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E7%90%83%E7%B1%BB-%E8%A3%85%E5%A4%87/7puZbqtZbi4
-http://store.nike.com/cn/zh_cn/pd/elite-tournament-4-panel-%E7%AF%AE%E7%90%83%EF%BC%887%E5%8F%B7%EF%BC%89/pid-10037461/pgid-10123281
+http://help-zh-cn.nike.com/app/landing/contact
+http://help-zh-cn.nike.com/app/landing/products
+http://help-zh-cn.nike.com/app/answers/detail/article/size-chart-kids-boys-youth-tops
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E7%90%83%E7%B1%BB-%E8%A3%85%E5%A4%87/7puZbqtZbi4
+URL that find the bug: http://help-zh-cn.nike.com/app/landing/products
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://www.nike.com/cn/zh_cn/c/basketball/rise/lookbook
-http://store.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7puZbqtZ7ub
-http://store.nike.com/cn/zh_cn/pd/elite-crew-%E7%AF%AE%E7%90%83%E8%A2%9C/pid-10091385/pgid-10023402
+http://help-zh-cn.nike.com/app/landing/contact
+http://help-zh-cn.nike.com/app/landing/products
+http://help-zh-cn.nike.com/app/answers/detail/article/size-chart-gear-nikeplus-fuelband
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7puZbqtZ7ub
+URL that find the bug: http://help-zh-cn.nike.com/app/landing/products
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:400 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-http://www.nike.com/cn/zh_cn/c/basketball/rise/lookbook
-http://store.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7puZbqtZ7ub
-http://store.nike.com/cn/zh_cn/pd/elite-crew-%E7%AF%AE%E7%90%83%E8%A2%9C/pid-10091386/pgid-10023402
-Expected Result
-Page is ok.
-Actual Result
-404 page not found.
-Error Message
-{errorMessage}
-Additional Environment Info
-Country you are testing in: China 
-Geo Tested: CN
-OS(s) you found the bug on: Mac OS X / Version 10.7.5
-Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7puZbqtZ7ub
------------------------------------A New Bug End------------------------
-
-
------------------------------------A New Bug Begin-----------------------
-Title:404 page not found
-Action Performed
-http://m.nike.com/cn/zh_cn/
-http://www.nike.com/cn/zh_cn/c/basketball/rise/lookbook
-http://store.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7puZbqtZ7ub
-http://store.nike.com/cn/zh_cn/pd/elite-crew-%E7%AF%AE%E7%90%83%E8%A2%9C/pid-10091387/pgid-10023402
-Expected Result
-Page is ok.
-Actual Result
-404 page not found.
-Error Message
-{errorMessage}
-Additional Environment Info
-Country you are testing in: China 
-Geo Tested: CN
-OS(s) you found the bug on: Mac OS X / Version 10.7.5
-Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7puZbqtZ7ub
------------------------------------A New Bug End------------------------
-
-
------------------------------------A New Bug Begin-----------------------
-Title:404 page not found
-Action Performed
-http://m.nike.com/cn/zh_cn/
-http://www.nike.com/cn/zh_cn/c/basketball/rise/lookbook
-http://store.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7puZbqtZ7ub
-http://store.nike.com/cn/zh_cn/pd/dri-fit-elite-hi-quarter-%E7%AF%AE%E7%90%83%E8%A2%9C%EF%BC%881%E5%8F%8C%EF%BC%89/pid-10074989/pgid-10023403
-Expected Result
-Page is ok.
-Actual Result
-404 page not found.
-Error Message
-{errorMessage}
-Additional Environment Info
-Country you are testing in: China 
-Geo Tested: CN
-OS(s) you found the bug on: Mac OS X / Version 10.7.5
-Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%A2%9C%E5%AD%90-%E8%A3%85%E5%A4%87/7puZbqtZ7ub
------------------------------------A New Bug End------------------------
-
-
------------------------------------A New Bug Begin-----------------------
-Title:404 page not found
-Action Performed
-http://m.nike.com/cn/zh_cn/
-http://www.nike.com/cn/zh_cn/c/basketball/rise/lookbook
-http://store.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E7%90%83%E8%A1%A3-%E6%9C%8D%E8%A3%85/7puZbgdZbhlZcj1
-http://store.nike.com/cn/zh_cn/pd/jordan-fly-elephant-print-sleeveless-%E4%B8%8A%E8%A1%A3/pid-10062548/pgid-10023945
-Expected Result
-Page is ok.
-Actual Result
-404 page not found.
-Error Message
-{errorMessage}
-Additional Environment Info
-Country you are testing in: China 
-Geo Tested: CN
-OS(s) you found the bug on: Mac OS X / Version 10.7.5
-Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E7%90%83%E8%A1%A3-%E6%9C%8D%E8%A3%85/7puZbgdZbhlZcj1
------------------------------------A New Bug End------------------------
-
-
------------------------------------A New Bug Begin-----------------------
-Title:404 page not found
-Action Performed
-http://m.nike.com/cn/zh_cn/
-http://www.nike.com/cn/zh_cn/c/basketball/rise/lookbook
-http://store.nike.com/cn/zh_cn/pw/%E5%84%BF%E7%AB%A5/7px
-http://store.nike.com/cn/zh_cn/pd/sunray-protect-%E5%87%89%E6%8B%96%E9%9E%8B/pid-10073991/pgid-10251196
-Expected Result
-Page is ok.
-Actual Result
-404 page not found.
-Error Message
-{errorMessage}
-Additional Environment Info
-Country you are testing in: China 
-Geo Tested: CN
-OS(s) you found the bug on: Mac OS X / Version 10.7.5
-Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E5%84%BF%E7%AB%A5/7px
------------------------------------A New Bug End------------------------
-
-
------------------------------------A New Bug Begin-----------------------
-Title:404 page not found
-Action Performed
-http://m.nike.com/cn/zh_cn/
-http://www.nike.com/cn/zh_cn/c/basketball/rise/lookbook
-http://store.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%80%90%E5%85%8B%E8%B5%A4%E8%B6%B3%E7%B3%BB%E5%88%97-%E9%9E%8B%E7%B1%BB/7puZbrkZ9zm
-http://store.nike.com/cn/zh_cn/pd/free-flyknit-chukka-%E7%AF%AE%E7%90%83%E9%9E%8B/pid-10066568/pgid-10230739
-Expected Result
-Page is ok.
-Actual Result
-404 page not found.
-Error Message
-{errorMessage}
-Additional Environment Info
-Country you are testing in: China 
-Geo Tested: CN
-OS(s) you found the bug on: Mac OS X / Version 10.7.5
-Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E8%80%90%E5%85%8B%E8%B5%A4%E8%B6%B3%E7%B3%BB%E5%88%97-%E9%9E%8B%E7%B1%BB/7puZbrkZ9zm
------------------------------------A New Bug End------------------------
-
-
------------------------------------A New Bug Begin-----------------------
-Title:404 page not found
-Action Performed
-http://m.nike.com/cn/zh_cn/
-http://www.nike.com/cn/zh_cn/c/basketball/rise/lookbook
-http://store.nike.com/cn/zh_cn/pw/%E5%84%BF%E7%AB%A5-%E5%A9%B4%E7%AB%A50-3%E5%B2%81-%E9%9E%8B%E7%B1%BB/7pxZbrkZbpa
-http://store.nike.com/cn/zh_cn/pd/sunray-protect-%E5%A5%B3%E5%B9%BC%E5%87%89%E6%8B%96%E9%9E%8B/pid-10073992/pgid-10251197
-Expected Result
-Page is ok.
-Actual Result
-404 page not found.
-Error Message
-{errorMessage}
-Additional Environment Info
-Country you are testing in: China 
-Geo Tested: CN
-OS(s) you found the bug on: Mac OS X / Version 10.7.5
-Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/cn/zh_cn/pw/%E5%84%BF%E7%AB%A5-%E5%A9%B4%E7%AB%A50-3%E5%B2%81-%E9%9E%8B%E7%B1%BB/7pxZbrkZbpa
------------------------------------A New Bug End------------------------
-
-
------------------------------------A New Bug Begin-----------------------
-Title:404 page not found
-Action Performed
-http://m.nike.com/cn/zh_cn/
-https://m.nike.com/cn/zh_cn/s/profile
-http://www.nike.com
-http://www.nike.com/us/en_us/
-http://www.nike.com/us/en_us/c/NIKEiD/what-is-NIKEiD
-Expected Result
-Page is ok.
-Actual Result
-404 page not found.
-Error Message
-{errorMessage}
-Additional Environment Info
-Country you are testing in: China 
-Geo Tested: CN
-OS(s) you found the bug on: Mac OS X / Version 10.7.5
-Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://www.nike.com/us/en_us/
------------------------------------A New Bug End------------------------
-
-
------------------------------------A New Bug Begin-----------------------
-Title:404 page not found
-Action Performed
-http://m.nike.com/cn/zh_cn/
-https://m.nike.com/cn/zh_cn/s/profile
-http://www.nike.com
-http://www.nike.com/at/de_de/
-http://www.nike.com/at/de_de/c/NIKEiD/what-is-NIKEiD
-Expected Result
-Page is ok.
-Actual Result
-404 page not found.
-Error Message
-{errorMessage}
-Additional Environment Info
-Country you are testing in: China 
-Geo Tested: CN
-OS(s) you found the bug on: Mac OS X / Version 10.7.5
-Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://www.nike.com/at/de_de/
------------------------------------A New Bug End------------------------
-
-
------------------------------------A New Bug Begin-----------------------
-Title:404 page not found
-Action Performed
-http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/c/women/style-guide
-http://store.nike.com/cn/zh_cn/outfit/17113
-http://www.nike.com/cn/zh_cn/sfg/womens-shoe-sizing-chart
-http://www.nike.com/cn/zh_cn/sfg/Message%20not%20found
-Expected Result
-Page is ok.
-Actual Result
-404 page not found.
-Error Message
-{errorMessage}
-Additional Environment Info
-Country you are testing in: China 
-Geo Tested: CN
-OS(s) you found the bug on: Mac OS X / Version 10.7.5
-Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://www.nike.com/cn/zh_cn/sfg/womens-shoe-sizing-chart
------------------------------------A New Bug End------------------------
-
-
------------------------------------A New Bug Begin-----------------------
-Title:404 page not found
-Action Performed
-http://m.nike.com/cn/zh_cn/
-http://m.nike.com/cn/zh_cn/c/women/style-guide
-http://store.nike.com/cn/zh_cn/outfit/17111
-http://www.nike.com/cn/zh_cn/sfg/womens-bra-sizing-chart
-http://www.nike.com/cn/zh_cn/sfg/%20https://www.nike.com/cdp/nikepro360fit
-Expected Result
-Page is ok.
-Actual Result
-404 page not found.
-Error Message
-{errorMessage}
-Additional Environment Info
-Country you are testing in: China 
-Geo Tested: CN
-OS(s) you found the bug on: Mac OS X / Version 10.7.5
-Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://www.nike.com/cn/zh_cn/sfg/womens-bra-sizing-chart
------------------------------------A New Bug End------------------------
-
-
------------------------------------A New Bug Begin-----------------------
-Title:404 page not found
-Action Performed
-http://m.nike.com/cn/zh_cn/
-https://m.nike.com/cn/zh_cn/s/profile
-http://www.nike.com
+http://www.nike.com/language_tunnel
 http://www.nike.com/kr/ko_kr/
 http://www.nike.com/ko/ko_kr/c/sportswear
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+400 error raised.
 Error Message
-{errorMessage}
+Bad Request
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
@@ -1017,19 +811,320 @@ URL that find the bug: http://www.nike.com/kr/ko_kr/
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-https://m.nike.com/cn/zh_cn/s/profile
-http://www.nike.com
-http://www.nike.com/at/de_de/
+http://www.nike.com/language_tunnel
+http://www.nike.com/ch/fr_fr/
+http://www.nike.com/ch/fr_fr/c/sportswear/mens-air-max-lunar-90
+Expected Result
+Page is ok.
+Actual Result
+404 error raised.
+Error Message
+Not Found
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://www.nike.com/ch/fr_fr/
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:404 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://www.nike.com/language_tunnel
+http://www.nike.com/ch/fr_fr/
+http://www.nike.com/ch/fr_fr/c/sportswear/womens-air-max-lunar-90
+Expected Result
+Page is ok.
+Actual Result
+404 error raised.
+Error Message
+Not Found
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://www.nike.com/ch/fr_fr/
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:404 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+https://secure-store.nike.com/CN/checkout/mobile/index.jsp?l=cart
+http://help-zh-cn.nike.com/app/home
+http://help-zh-cn.nike.com/app/answers/detail/article/size-chart-men-tops-standard/
+Expected Result
+Page is ok.
+Actual Result
+404 error raised.
+Error Message
+Not Found
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://help-zh-cn.nike.com/app/home
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:404 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://www.nike.com/language_tunnel
+http://www.nike.com/br/pt_br/
+http://www.nike.com/br/pt_br/: http://www.nike.com.br/categoria-vestuario/esporte-corrida/?Filtro=V82_V108
+Expected Result
+Page is ok.
+Actual Result
+404 error raised.
+Error Message
+Not Found
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://www.nike.com/br/pt_br/
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:404 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://www.nike.com/cn/zh_cn/c/running
+http://store.nike.com/cn/zh_cn/pw/%E8%B7%91%E6%AD%A5-%E6%8E%92%E6%B1%97%E5%86%85%E8%A1%A3-%E6%9C%8D%E8%A3%85/bgdZ8yzZ8jj
+Expected Result
+Page is ok.
+Actual Result
+404 error raised.
+Error Message
+Not Found
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://www.nike.com/cn/zh_cn/c/running
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:410 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://m.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E8%8C%84%E5%85%8B-%E6%9C%8D%E8%A3%85/7ptZbgdZ902Zcj1
+http://m.nike.com/cn/zh_cn/pd/vapor-cyclone-packable-%E8%B7%91%E6%AD%A5%E5%A4%B9%E5%85%8B/pid-10038383/pgid-10023830
+Expected Result
+Page is ok.
+Actual Result
+410 error raised.
+Error Message
+Gone
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://m.nike.com/cn/zh_cn/pw/%E5%A5%B3%E5%AD%90-%E8%8C%84%E5%85%8B-%E6%9C%8D%E8%A3%85/7ptZbgdZ902Zcj1
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:410 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://m.nike.com/cn/zh_cn/c/basketball
+http://store.nike.com/cn/zh_cn/pd/elite-crew-%E7%AF%AE%E7%90%83%E8%A2%9C/pid-10075660/pgid-10023402
+Expected Result
+Page is ok.
+Actual Result
+410 error raised.
+Error Message
+Gone
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://m.nike.com/cn/zh_cn/c/basketball
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:404 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://www.nike.com/language_tunnel
+http://www.nike.com/lu/de_de/
+http://www.nike.com/lu/de_de/c/NIKEiD/what-is-NIKEiD
+Expected Result
+Page is ok.
+Actual Result
+404 error raised.
+Error Message
+Not Found
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://www.nike.com/lu/de_de/
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:404 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://www.nike.com/language_tunnel
+http://www.nike.com/lu/de_de/
 http://help-de-eu.nike.com/app/answers/detail/article/size-chart-men-tops-standard
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://www.nike.com/lu/de_de/
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:404 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://www.nike.com/language_tunnel
+http://www.nike.com/lu/de_de/
+http://www.nike.com/cookie_settings.html
+Expected Result
+Page is ok.
+Actual Result
+404 error raised.
+Error Message
+Not Found
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://www.nike.com/lu/de_de/
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:410 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://www.nike.com/cn/zh_cn/c/basketball/rise/lookbook
+http://store.nike.com/cn/zh_cn/pd/elite-crew-%E7%AF%AE%E7%90%83%E8%A2%9C/pid-10075660/pgid-10023402?intpromo=rise%3Arise-lookbook%3Alg%3Aelite-crew-look1
+Expected Result
+Page is ok.
+Actual Result
+410 error raised.
+Error Message
+Gone
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://www.nike.com/cn/zh_cn/c/basketball/rise/lookbook
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:410 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://www.nike.com/cn/zh_cn/c/basketball/rise/lookbook
+http://store.nike.com/cn/zh_cn/pd/high-top-hero-t%E6%81%A4/pid-10072006/pgid-10024080?intpromo=rise%3Arise-lookbook%3Alg%3Ahigh-top-hero-look9
+Expected Result
+Page is ok.
+Actual Result
+410 error raised.
+Error Message
+Gone
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://www.nike.com/cn/zh_cn/c/basketball/rise/lookbook
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:410 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E7%90%83%E8%A1%A3-%E6%9C%8D%E8%A3%85/7puZbgdZbhlZcj1
+http://m.nike.com/cn/zh_cn/pd/jordan-fly-elephant-print-sleeveless-%E4%B8%8A%E8%A1%A3/pid-10062548/pgid-10023945
+Expected Result
+Page is ok.
+Actual Result
+410 error raised.
+Error Message
+Gone
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://m.nike.com/cn/zh_cn/pw/%E7%94%B7%E5%AD%90-%E7%90%83%E8%A1%A3-%E6%9C%8D%E8%A3%85/7puZbgdZbhlZcj1
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:404 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://www.nike.com/language_tunnel
+http://www.nike.com/se/en_gb/
+http://help-en-eu.nike.com/app/answers/detail/article/size-chart-men-tops-standard/
+Expected Result
+Page is ok.
+Actual Result
+404 error raised.
+Error Message
+Not Found
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://www.nike.com/se/en_gb/
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:404 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://www.nike.com/language_tunnel
+http://www.nike.com/at/de_de/
+http://www.nike.com/at/de_de/c/NIKEiD/what-is-NIKEiD
+Expected Result
+Page is ok.
+Actual Result
+404 error raised.
+Error Message
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
@@ -1040,74 +1135,90 @@ URL that find the bug: http://www.nike.com/at/de_de/
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:400 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-https://m.nike.com/cn/zh_cn/s/profile
-http://www.nike.com
-http://www.nike.com/us/en_us/
-http://store.nike.com/us/en_us/pw/mens-polos-shirts-clothing/7puZbgdZ9s1Z7tvZcj1
-http://store.nike.com/us/en_us/pd/tw-ultra-2-golf-polo/pid-647254/pgid-647256
+http://www.nike.com/language_tunnel
+http://www.nike.com/si/en_gb/
+http://www.nike.com/sl/en_gb/c/nikeid/what-is-nikeid
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+400 error raised.
 Error Message
-{errorMessage}
+Bad Request
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/us/en_us/pw/mens-polos-shirts-clothing/7puZbgdZ9s1Z7tvZcj1
+URL that find the bug: http://www.nike.com/si/en_gb/
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-https://m.nike.com/cn/zh_cn/s/profile
-http://www.nike.com
-http://www.nike.com/us/en_us/
-http://store.nike.com/us/en_us/pw/mens-shorts-clothing/7puZbgdZ9sdZcj3
-http://store.nike.com/us/en_us/pd/elite-stripe-basketball-shorts/pid-1566858/pgid-726463
+http://www.nike.com/language_tunnel
+http://www.nike.com/lu/fr_fr/
+http://www.nike.com/lu/fr_fr/c/NIKEiD/what-is-NIKEiD
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/us/en_us/pw/mens-shorts-clothing/7puZbgdZ9sdZcj3
+URL that find the bug: http://www.nike.com/lu/fr_fr/
 -----------------------------------A New Bug End------------------------
 
 
 -----------------------------------A New Bug Begin-----------------------
-Title:404 page not found
+Title:404 error raised.
 Action Performed
 http://m.nike.com/cn/zh_cn/
-https://m.nike.com/cn/zh_cn/s/profile
-http://www.nike.com
-http://www.nike.com/us/en_us/
-http://store.nike.com/us/en_us/pw/mens-shorts-clothing/7puZbgdZ9sdZcj3
-http://store.nike.com/us/en_us/pd/tech-shorts/pid-849387/pgid-849385
+http://www.nike.com/language_tunnel
+http://www.nike.com/lu/fr_fr/
+http://help-fr-eu.nike.com/app/answers/detail/article/size-chart-men-tops-standard/
 Expected Result
 Page is ok.
 Actual Result
-404 page not found.
+404 error raised.
 Error Message
-{errorMessage}
+Not Found
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
-URL that find the bug: http://store.nike.com/us/en_us/pw/mens-shorts-clothing/7puZbgdZ9sdZcj3
+URL that find the bug: http://www.nike.com/lu/fr_fr/
+-----------------------------------A New Bug End------------------------
+
+
+-----------------------------------A New Bug Begin-----------------------
+Title:404 error raised.
+Action Performed
+http://m.nike.com/cn/zh_cn/
+http://www.nike.com/language_tunnel
+http://www.nike.com/lu/fr_fr/
+http://www.nike.com/lu/fr_fr/c/skateboarding
+Expected Result
+Page is ok.
+Actual Result
+404 error raised.
+Error Message
+Not Found
+Additional Environment Info
+Country you are testing in: China 
+Geo Tested: CN
+OS(s) you found the bug on: Mac OS X / Version 10.7.5
+Browser(s) you found the bug on: Chrome Version 36.0.1985.143
+URL that find the bug: http://www.nike.com/lu/fr_fr/
 -----------------------------------A New Bug End------------------------
 
 

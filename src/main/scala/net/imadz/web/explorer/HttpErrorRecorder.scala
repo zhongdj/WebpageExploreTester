@@ -6,6 +6,7 @@ import scala.io.Source
 import akka.actor.{Actor, ActorLogging, Props}
 import akka.event.LoggingReceive
 import net.imadz.web.explorer.HttpErrorRecorder.HttpError
+import net.imadz.web.explorer.utils.HttpResponseUtil
 
 /**
  * Created by geek on 8/20/14.
@@ -26,28 +27,35 @@ class HttpErrorRecorder extends Actor with ActorLogging {
   def logPageError(responseCode: Int, request: PageRequest): Unit = {
     println("response code: " + responseCode + ", page url: " + request.url)
 
-    val bug: String = generateBug(request)
+    val bug: String = generateBug(responseCode, request)
 
     writer.println(bug.toString)
     writer.flush()
 
   }
 
-  def generateBug(request: HttpRequest): String = {
+  def generateBug(responseCode: Int,request: HttpRequest): String = {
     // Read the bug template
 //    println(new File("WebTestBugTemplate.txt").getAbsolutePath)
     val bugTemplates = Source.fromURL(getClass.getResource("/WebTestBugTemplate.txt")).getLines().mkString("\n")
     // Get the title
-    val title = "404 page not found"
+    val title = responseCode + " error raised."
     // Get the request path -> repro steps
     val previoursUrls = getPath(request.previousRequest)
     val urls = (previoursUrls.reverse mkString "\n") + "\n" + request.url
     // Get actual result
-    val actualResult = "" + "404 page not found."
+    val actualResult = "" + responseCode + " error raised."
+    // Get error Message
+    val errorMessage = HttpResponseUtil.getErrorMessage(responseCode)
+
     // Get additional info
     val bugUrl = previoursUrls.head
     // Generate a bug
-    val bug = bugTemplates.replace("{title}", title).replace("{bugsteps}", urls).replace("{actualResult}", actualResult).replace("{bugUrl}", bugUrl)
+    val bug = bugTemplates.replace("{title}", title)
+      .replace("{bugsteps}", urls)
+      .replace("{actualResult}", actualResult)
+      .replace("{errorMessage}", errorMessage)
+      .replace("{bugUrl}", bugUrl)
     bug
   }
 
@@ -60,7 +68,7 @@ class HttpErrorRecorder extends Actor with ActorLogging {
 
   def logImageError(responseCode: Int, request: ImageRequest): Unit = {
     println("response code: " + responseCode + ", image url: " + request.url)
-    val bug: String = generateBug(request)
+    val bug: String = generateBug(responseCode,request)
     writer.println(bug.toString)
     writer.flush()
   }
