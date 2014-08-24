@@ -1,15 +1,24 @@
+-----------------------------------A New Bug Begin-----------------------
 Title:{title}
+
 Action Performed
 {bugsteps}
+
 Expected Result
 Page is ok.
+
 Actual Result
 {actualResult}
+
 Error Message
 {errorMessage}
+
 Additional Environment Info
 Country you are testing in: China 
 Geo Tested: CN
 OS(s) you found the bug on: Mac OS X / Version 10.7.5
 Browser(s) you found the bug on: Chrome Version 36.0.1985.143
 URL that find the bug: {bugUrl}
+-----------------------------------A New Bug End------------------------
+
+
