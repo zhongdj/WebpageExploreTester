@@ -21,7 +21,7 @@ object ParserLead {
 
   var parserCount: Int = 0
   val name = "ParserLead"
-  val path = "akka://Main/user/app/" + name
+  val path = Main.path + name
   case class ParseRequest(body: String, page: PageRequest)
 
 }

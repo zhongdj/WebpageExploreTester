@@ -9,7 +9,7 @@ import scala.util.matching.Regex
 /**
  * Created by geek on 8/20/14.
  */
-class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[String], val domainUrl: String, val domainName: String,val domainConstraints: Set[String], val maxDepth: Int) extends Actor with ActorLogging {
+class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[String], val domainUrl: String, val domainName: String, val domainConstraints: Set[String], val maxDepth: Int) extends Actor with ActorLogging {
 
   var visitedUrls = Set[String]()
   var queue: List[HttpRequest] = Nil
@@ -36,10 +36,6 @@ class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[
     context.setReceiveTimeout(90 second)
   }
 
-  def printMessage: Receive = {
-    case m => println(m)
-  }
-
   override def receive: Receive = LoggingReceive {
     case p@PageRequest(_, rawUrl, rawName, previousRequest, depth) =>
       onRequest(p) { request =>
@@ -57,10 +53,10 @@ class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[
       context.stop(self)
     case SlowDown =>
       log.info("HttpRequestDispatcher is going to slow down 30 seconds")
-//      context.setReceiveTimeout(Duration.Undefined)
-//      context.setReceiveTimeout(30 seconds)
-//      context.become(waiting)
-  } andThen printMessage
+    //      context.setReceiveTimeout(Duration.Undefined)
+    //      context.setReceiveTimeout(30 seconds)
+    //      context.become(waiting)
+  }
 
   def waiting: Receive = {
     case ReceiveTimeout =>
@@ -96,9 +92,9 @@ object SlowDown
 
 object HttpRequestDispatcher {
   val name: String = "HttpRequestDispatcher"
-  val path = "akka://Main/user/app/" + name
+  val path = Main.path + name
 
-  def props(headers: Map[String, String], excludes: Set[String], initialUrl: String, initialName: String,domainConstraints: Set[String], maxDepth: Int) = Props(classOf[HttpRequestDispatcher], headers, excludes, initialUrl, initialName, domainConstraints, maxDepth)
+  def props(headers: Map[String, String], excludes: Set[String], initialUrl: String, initialName: String, domainConstraints: Set[String], maxDepth: Int) = Props(classOf[HttpRequestDispatcher], headers, excludes, initialUrl, initialName, domainConstraints, maxDepth)
 
 
 }

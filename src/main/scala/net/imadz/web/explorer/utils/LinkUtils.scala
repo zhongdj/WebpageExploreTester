@@ -1,71 +1,127 @@
 package net.imadz.web.explorer.utils
 
+import net.imadz.web.explorer.{HttpRequest, ImageRequest, PageRequest}
+
+import scala.util.matching.Regex
+
 /**
  * Created by geek on 8/21/14.
  */
 object LinkUtils {
 
-  val A_TAG = """(?s)(?i)<a (.*)>(.+)?</a>""".r
-  val HREF_ATTR = """(?s)\s+(?i)href\s*=\s*(?:"([^"]*)"|'([^']*)'|([^'">\s]+))\s*""".r
+  private val IMG_TAG = "(?s)(?i)<img ([^<]+)>".r
+  private val IMG_SRC = """\s*(?i)src\s*=\s*(?:"([^"]*)"|'([^']*)'|([^'">\s]+))\s*""".r
+  private val ANCHOR_GREEDY_TAG = """(?s)(?i)<a (.*)>(.+)?</a>""".r
+  private val ANCHOR_NON_GREEDY_TAG = """(?s)(?i)<a (.+?)>(.+?)</a>""".r
+  private val HREF_ATTR = """(?s)\s*(?i)href\s*=\s*(?:"([^"]*)"|'([^']*)'|([^'">\s]+))\s*""".r
+  private val COMP_TAG = """(?s)(?i)(?:[^>]*>([^<]*)<.*|(.*))""".r
+  private val invalidChars = '|' :: '\\' :: '\"' :: '\'' :: '{' :: '[' :: Nil
 
-  def findPageLinks(body: String): Iterator[String] = {
-    for {
-      A_TAG(attrs, name) <- A_TAG findAllIn body
-      HREF_ATTR(dquot, quot, bare) <- HREF_ATTR findAllIn attrs
-    } yield if (dquot != null) dquot
-    else if (quot != null) quot
-    else bare
+  def findLinks(htmlContent: String, httpRequest: PageRequest, withImageLink: Boolean = false): List[HttpRequest] = {
+
+    val pages: List[PageRequest] = findPageLinkWithName(htmlContent) filter { case (rawUrl, _) =>
+      isValidUrl(rawUrl)
+    } map { case (rawUrl, name) =>
+      absoluteUrl(rawUrl, httpRequest.url) -> name
+    } map { case (rawUrl, name) =>
+      trancateInavlidChars(rawUrl) -> name
+    } map { case (rawUrl, name) =>
+      PageRequest(httpRequest.headers, rawUrl, name, Some(httpRequest), httpRequest.depth + 1)
+    } toList
+
+    if (withImageLink) {
+      val images: List[ImageRequest] = findImageLinks(htmlContent) filter (isValidUrl) map { rawUrl =>
+        absoluteUrl(rawUrl, httpRequest.url)
+      } map { rawUrl =>
+        trancateInavlidChars(rawUrl)
+      } map { url =>
+        ImageRequest(httpRequest.headers, url, "image_no_names", httpRequest.asInstanceOf[PageRequest], httpRequest.depth + 1)
+      } toList
+
+      pages ::: images
+    } else {
+      pages
+    }
   }
 
+  private def isValidUrl: (String) => Boolean = {
+    case rawUrl =>
+      rawUrl.size > 0 && !rawUrl.contains("#") && !rawUrl.contains("javascript") && !rawUrl.startsWith("mailto:")
+  }
+
+
+  private def findPageLinkWithName(body: String): List[(String, String)] = {
+    for {
+      ANCHOR_NON_GREEDY_TAG(anchorTag, anchorTextValue) <- ANCHOR_NON_GREEDY_TAG findAllIn body
+      key <- extractUrl(anchorTag)
+    } yield {
+      (key, extractLinkName(anchorTextValue))
+    }
+  } toList
+
+  private def extractUrl(anchorTagWithAttrs: String): Option[String] = {
+
+    val result = {
+      for {
+        HREF_ATTR(dquot, quot, bare) <- HREF_ATTR findAllIn anchorTagWithAttrs
+      } yield {
+        if (dquot != null) dquot.trim
+        else if (quot != null) quot.trim
+        else bare.trim
+      }
+    } toList
+
+    if (!result.isEmpty) Some(result.head)
+    else None
+  }
+
+  private def extractLinkName(y: String): String = {
+    for {
+      COMP_TAG(name1, name2) <- COMP_TAG.findAllIn(y)
+    } yield {
+      if (null != name1) name1 trim
+      else if (null != name2) name2 trim
+      else ""
+    }
+  }.toList.mkString.trim
+
+
+  private def absoluteUrl(rawUrl: String, contextUrl: String): String = {
+    val domainRegex = new Regex( """(http|https)://.*?/""")
+    val domainUrl = domainRegex.findFirstIn(contextUrl).getOrElse(contextUrl + "/")
+    if (rawUrl.startsWith("http") || rawUrl.startsWith("https")) rawUrl
+    else if (rawUrl.startsWith("//")) {
+      "http:" + rawUrl
+    } else if (rawUrl.startsWith("/")) {
+      if (domainUrl.endsWith("/"))
+        domainUrl.take(domainUrl.length - 1) + rawUrl
+      else
+        domainUrl + rawUrl
+    } else {
+      val prefixUrl = new Regex( """(http|https)://.*/""").findFirstIn(contextUrl).getOrElse(contextUrl)
+      prefixUrl + rawUrl
+    }
+  }
+
+  private def trancateInavlidChars(rawUrl: String): String = {
+    def exists: (Int) => Boolean = _ > 0
+    def position: (Char) => Int = rawUrl.indexOf(_)
+    lazy val minInvalidPosition = {
+      val invalidPositions = (invalidChars map position filter exists)
+      invalidPositions.foldLeft(Int.MaxValue) { (min, index) => Math.min(min, index)}
+    }
+    if (minInvalidPosition < rawUrl.length) rawUrl.substring(0, minInvalidPosition)
+    else rawUrl
+  }
+
+
+  private def findImageLinks(body: String): Iterator[String] = {
+    for {
+      IMG_TAG(anchor) <- IMG_TAG.findAllIn(body)
+      IMG_SRC(dquot, quot, bare) <- IMG_SRC findAllIn (anchor)
+    } yield if (dquot != null) dquot trim
+    else if (quot != null) quot trim
+    else bare trim
+  }
 }
 
-
-object LinkUtilsTest extends App {
-
-  val body =
-    """
-      |<div class="copy">
-      |								<a class="sportwatch_link img_link" href="/plus/products/sport_watch/"></a>
-      |								<div class="text">
-      |									<h3><a class="sportwatch_link" href="/plus/products/sport_watch/">Nike+ SportWatch GPS<span class="arrow">B</span></a></h3>
-      |									<p>適合想要進一步挑戰的積極跑者。使用 GPS 進行追蹤、記錄路段配速、提醒您跑步，還可以記下您的個人記錄。</p>
-      |								</div>
-      |							</div>
-      |       <div class="faq">
-      |								<a href="/plus/support#answers/detail/article/sportband-start" class="sprite"><span id="container"><span id="num">1. </span><span id="copy">Nike+ SportBand 入門指南</span></a></span>
-      |							</div>
-      |							<div class="faq">
-      |								<a href="/plus/support#answers/detail/article/nikerunapp-getstarted" class="sprite"><span id="container"><span id="num">2. </span><span id="copy">Nike+ Running 應用程式入門指南</span></a></span>
-      |							</div>
-      |							<div class="faq">
-      |								<a href="/plus/support#answers/detail/article/connect-install" class="sprite"><span id="container"><span id="num">3. </span><span id="copy">下載並安裝 Nike+ Connect</span></a></span>
-      |							</div>
-      |
-      |        <div class="exp-darkbar" data-qa="darkbar.container">
-      |            <div class="exp-darkbar-left-section">
-      |                <div class="active"><span class="facet-label nsg-text--nike-orange nsg-button-font-size--xsmall nsg-font-family--platform" data-qa="darkbar.shop">购买</span></div>
-      |                <div><a data-track-click="true" data-nav-tracking="nike plus" href="http://nikeplus.nike.com/plus/"><span class="facet-label nsg-text--nike-white nsg-button-font-size--xsmall nsg-font-family--platform" data-qa="darkbar.nikeplus">NIKE+</span></a></div>
-      |            </div>
-      |            <div class="exp-darkbar-right-section">
-      |
-      |                <div class="exp-default nsg-font-family--platform">
-      |                  <a data-track-click="true" data-nav-tracking="email sign up"
-      |                     data-path="http://store.nike.com//CN/zh_CN/?l=shop,email_signup"
-      |                     href="http://store.nike.com//CN/zh_CN/?l=shop,email_signup"
-      |                     data-qa="darkbar.email" class="exp-onenikenav-help">电子邮件注册
-      |                  </a>
-      |                </div>
-      |    <li class="exp-help-dropdown-title nsg-font-family--platform"><a href="http://www.nike.com/cn/zh_cn/c/help"  data-track-click="true" data-nav-tracking="get help:get help">获取帮助</a></li>
-      |
-      |                                          <li >
-      |                                              <a href="http://help-zh-cn.nike.com/app/answers/detail/article/returns-policy/"  data-track-click="true" data-nav-tracking="get help:returns">退换货</a>
-      |                                          </li>
-      |
-      |                                          <li >
-      |                                              <a href="https://secure-store.nike.com/cn/zh_cn/?l=shop,orderstatus"  data-track-click="true" data-nav-tracking="get help:order status">订单状态</a>
-      |                                          </li>
-      |
-    """.stripMargin
-
-  LinkUtils.findPageLinks( body ) foreach println
-}

@@ -8,9 +8,9 @@ import akka.event.LoggingReceive
  */
 class Main extends Actor with ActorLogging {
 
-  //val initialUrl = "http://hybris51-prod.benefitdigital.com.cn/";
+  val initialUrl = "http://hybris51-prod.benefitdigital.com.cn/";
 
-  val initialUrl = "http://www.nike.com/cn/zh_cn/";
+  //val initialUrl = "http://www.nike.com/cn/zh_cn/";
   val initialName = ""
 
   def headers =
@@ -32,7 +32,7 @@ class Main extends Actor with ActorLogging {
     "http://nikeplus.nike.com"
   )
 
-  val domainConstraints = Set("hybris51-prod.benefitdigital.com.cn", "nike.com")
+  val domainConstraints = Set("benefitdigital.com", "nike.com")
 
   val dispatcher = context.actorOf(HttpRequestDispatcher.props(headers, excludes, initialUrl, initialName,domainConstraints, 100), HttpRequestDispatcher.name)
   context.watch(dispatcher)
@@ -53,4 +53,9 @@ class Main extends Actor with ActorLogging {
   }
 
 
+}
+
+object Main {
+  val name = "Main"
+  val path = "akka://" + name+ "/user/app/"
 }

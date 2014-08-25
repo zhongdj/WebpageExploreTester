@@ -103,5 +103,5 @@ object HttpErrorRecorder {
   case class HttpError(responseCode: Int, httpRequest: HttpRequest)
 
   val name = "HttpErrorRecorder"
-  val path = "akka://Main/user/app/" + name
+  val path = Main.path + name
 }

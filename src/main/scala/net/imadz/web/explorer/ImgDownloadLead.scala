@@ -18,7 +18,7 @@ class ImgDownloadLead extends Actor {
 object ImgDownloadLead {
   var imageCount: Int = 0
   val name = "ImgDownloadLead"
-  val path = "akka://Main/user/app/" + name
+  val path = Main.path + name
 
   case class ImgDownloadRequest(url: String, p: PageRequest)
 
