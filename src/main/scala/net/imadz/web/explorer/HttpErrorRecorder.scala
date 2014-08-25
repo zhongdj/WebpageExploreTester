@@ -42,8 +42,6 @@ class HttpErrorRecorder extends Actor with ActorLogging {
     // Get the title
     val title = responseCode + " error raised."
     // Get the request path -> repro steps
-    val previoursUrls = getPath(request.previousRequest)
-
     val bugsteps = generateBugSteps(request)
     // Get actual result
     val actualResult = "" + responseCode + " error raised."
@@ -51,7 +49,10 @@ class HttpErrorRecorder extends Actor with ActorLogging {
     val errorMessage = HttpResponseUtil.getErrorMessage(responseCode)
 
     // Get additional info
-    val bugUrl = previoursUrls.head
+    val bugUrl = request.previousRequest match {
+      case Some(x) => x.url
+      case None => ""
+    }
     // Generate a bug
     val bug = bugTemplates.replace("{title}", title)
       .replace("{bugsteps}", bugsteps)
@@ -72,13 +73,6 @@ class HttpErrorRecorder extends Actor with ActorLogging {
   def generateAllRequest(request: Option[HttpRequest]): List[HttpRequest] = {
     request match {
       case Some(x) => generateAllRequest(x.previousRequest) ::: List(x)
-      case None => List()
-    }
-  }
-
-  def getPath(request: Option[HttpRequest]) : List[String] = {
-    request match {
-      case Some(r) => r.url :: getPath(r.previousRequest)
       case None => List()
     }
   }
