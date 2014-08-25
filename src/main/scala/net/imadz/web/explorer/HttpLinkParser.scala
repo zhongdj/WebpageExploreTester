@@ -1,8 +1,7 @@
 package net.imadz.web.explorer
 
-import akka.actor.{Actor, ActorLogging, ActorRef, Props}
+import akka.actor.{Props, Actor, ActorLogging, ActorRef}
 import akka.event.LoggingReceive
-
 import scala.util.matching.Regex
 
 /**
@@ -24,7 +23,7 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
 
   private def parse(body: String)(dispatch: HttpRequest => Unit) = {
     try {
-       findLinks(body) foreach (newLink => dispatch(newLink))
+      findLinks(body) foreach (newLink => dispatch(newLink))
     } catch {
       case t =>
         context.stop(self)
@@ -42,6 +41,54 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
     } yield if (dquot != null) dquot trim
     else if (quot != null) quot trim
     else bare trim
+  }
+
+  def findPageLinkWithName(body: String): Map[String, String] = {
+    {
+      val ANCHOR_TAG = """(?s)(?i)<a (.+?)>(.+?)</a>""".r
+      for {
+        ANCHOR_TAG(anchorTag, anchorTextValue) <- ANCHOR_TAG findAllIn body
+      } yield {
+        (anchorTag, anchorTextValue)
+      }
+    } map { x =>
+      for {
+        key <- findUrlInAnchor(x._1)
+      } yield (key, findLinkName(x._2))
+    } flatten
+  }.toMap
+
+  def findUrlInAnchor(anchorAttrs: String): Option[String] = {
+    val HREF_ATTR = """(?s)\s*(?i)href\s*=\s*(?:"([^"]*)"|'([^']*)'|([^'">\s]+))\s*""".r
+    val result = {
+      for {
+        HREF_ATTR(dquot, quot, bare) <- HREF_ATTR findAllIn anchorAttrs
+      } yield {
+        if (dquot != null) dquot.trim
+        else if (quot != null) quot.trim
+        else bare.trim
+      }
+    } toList
+
+    if (!result.isEmpty) Some(result.head)
+    else None
+
+  }
+
+  def findLinkName(y: String): String = {
+    val COMP_TAG = """(?s)(?i)(?:[^>]*>([^<]*)<.*|(.*))""".r
+
+    val result = {
+      for {
+        COMP_TAG(name1, name2) <- COMP_TAG.findAllIn(y)
+      } yield {
+        if (null != name1) name1 trim
+        else if (null != name2) name2 trim
+        else ""
+      }
+    } toList
+
+    result.mkString.trim
   }
 
 
@@ -63,7 +110,7 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
     val domainUrl = domainRegex.findFirstIn(contextUrl).getOrElse(contextUrl + "/")
     if (rawUrl.startsWith("http") || rawUrl.startsWith("https")) rawUrl
     else if (rawUrl.startsWith("//")) {
-       "http:" + rawUrl
+      "http:" + rawUrl
     } else if (rawUrl.startsWith("/")) {
       if (domainUrl.endsWith("/"))
         domainUrl.take(domainUrl.length - 1) + rawUrl
@@ -77,7 +124,7 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
   }
 
   def trancateInavlidsChars(rawUrl: String): String = {
-    val invalidChars = '|'  :: '\\' :: '\"' :: '\'' :: '{' :: '[' :: Nil
+    val invalidChars = '|' :: '\\' :: '\"' :: '\'' :: '{' :: '[' :: Nil
     val invalidIndexes = invalidChars map {
       rawUrl.indexOf(_)
     } filter {
@@ -89,8 +136,12 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
   }
 
   private def findLinks(body: String): List[HttpRequest] = {
-    val pages: List[PageRequest] = findPageLinks(body) filter (invalids) map { rawUrl => processUrl(rawUrl, httpRequest.url)
-    } map { rawUrl => trancateInavlidsChars(rawUrl)} map { url => PageRequest(httpRequest.headers, url, Some(httpRequest), httpRequest.depth + 1)
+    //    val pages: List[PageRequest] = findPageLinks(body) filter (invalids) map { rawUrl => processUrl(rawUrl, httpRequest.url)
+    //    } map { rawUrl => trancateInavlidsChars(rawUrl)} map { url => PageRequest(httpRequest.headers, url, Some(httpRequest), httpRequest.depth + 1)
+    //    } toList
+    //
+    val pages: List[PageRequest] = findPageLinkWithName(body) filter (x => invalids(x._1)) map { x => processUrl(x._1, httpRequest.url) -> x._2
+    } map { x => trancateInavlidsChars(x._1) -> x._2} map { x => PageRequest(httpRequest.headers, x._1, x._2, Some(httpRequest), httpRequest.depth + 1)
     } toList
 
     /*

@@ -7,6 +7,7 @@ import akka.actor.{Actor, ActorLogging, Props}
 import akka.event.LoggingReceive
 import net.imadz.web.explorer.HttpErrorRecorder.HttpError
 import net.imadz.web.explorer.utils.HttpResponseUtil
+import scala.None
 
 /**
  * Created by geek on 8/20/14.
@@ -42,7 +43,8 @@ class HttpErrorRecorder extends Actor with ActorLogging {
     val title = responseCode + " error raised."
     // Get the request path -> repro steps
     val previoursUrls = getPath(request.previousRequest)
-    val urls = (previoursUrls.reverse mkString "\n") + "\n" + request.url
+
+    val bugsteps = generateBugSteps(request)
     // Get actual result
     val actualResult = "" + responseCode + " error raised."
     // Get error Message
@@ -52,11 +54,26 @@ class HttpErrorRecorder extends Actor with ActorLogging {
     val bugUrl = previoursUrls.head
     // Generate a bug
     val bug = bugTemplates.replace("{title}", title)
-      .replace("{bugsteps}", urls)
+      .replace("{bugsteps}", bugsteps)
       .replace("{actualResult}", actualResult)
       .replace("{errorMessage}", errorMessage)
       .replace("{bugUrl}", bugUrl)
     bug
+  }
+
+  def generateBugSteps(request: HttpRequest) :String ={
+     val requests = generateAllRequest(Some(request))
+     val firstUrl = requests.head.url
+     val tail = requests.tail
+     val tailSteps =  tail map {x => "Click " + x.name + ", go to page " + x.url} mkString "\n"
+     "Go to " + firstUrl + "\n" + tailSteps
+  }
+
+  def generateAllRequest(request: Option[HttpRequest]): List[HttpRequest] = {
+    request match {
+      case Some(x) => generateAllRequest(x.previousRequest) ::: List(x)
+      case None => List()
+    }
   }
 
   def getPath(request: Option[HttpRequest]) : List[String] = {

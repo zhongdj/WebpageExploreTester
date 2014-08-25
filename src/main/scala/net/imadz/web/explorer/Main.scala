@@ -10,7 +10,8 @@ class Main extends Actor with ActorLogging {
 
   //val initialUrl = "http://hybris51-prod.benefitdigital.com.cn/";
 
-  val initialUrl = "http://m.nike.com/cn/zh_cn/";
+  val initialUrl = "http://www.nike.com/cn/zh_cn/";
+  val initialName = ""
 
   def headers =
     Map[String, String](
@@ -33,7 +34,7 @@ class Main extends Actor with ActorLogging {
 
   val domainConstraints = Set("hybris51-prod.benefitdigital.com.cn", "nike.com")
 
-  val dispatcher = context.actorOf(HttpRequestDispatcher.props(headers, excludes, initialUrl, domainConstraints, 100), HttpRequestDispatcher.name)
+  val dispatcher = context.actorOf(HttpRequestDispatcher.props(headers, excludes, initialUrl, initialName,domainConstraints, 100), HttpRequestDispatcher.name)
   context.watch(dispatcher)
 
   val httpErrorRecorder = context.actorOf(HttpErrorRecorder.props(), HttpErrorRecorder.name)
@@ -43,7 +44,7 @@ class Main extends Actor with ActorLogging {
   //val imageDownloadLead = context.actorOf(Props(classOf[ImgDownloadLead]), ImgDownloadLead.name)
 
   override def receive: Receive = LoggingReceive {
-    case url: String => context.actorOf(HttpRequestDispatcher.props(headers, excludes, url, domainConstraints, 10))
+    case url: String => context.actorOf(HttpRequestDispatcher.props(headers, excludes, url, initialName, domainConstraints, 10))
     case Terminated(dispatcherActor) =>
       context.children foreach context.stop
       context.stop(self)

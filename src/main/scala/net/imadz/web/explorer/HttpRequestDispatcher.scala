@@ -9,13 +9,13 @@ import scala.util.matching.Regex
 /**
  * Created by geek on 8/20/14.
  */
-class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[String], val domainUrl: String, val domainConstraints: Set[String], val maxDepth: Int) extends Actor with ActorLogging {
+class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[String], val domainUrl: String, val domainName: String,val domainConstraints: Set[String], val maxDepth: Int) extends Actor with ActorLogging {
 
   var visitedUrls = Set[String]()
   var queue: List[HttpRequest] = Nil
 
 
-  self ! PageRequest(headers, domainUrl, None, 0)
+  self ! PageRequest(headers, domainUrl, domainName, None, 0)
 
   def exclude(url: String) = excludes.exists(url.startsWith(_))
 
@@ -41,14 +41,14 @@ class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[
   }
 
   override def receive: Receive = LoggingReceive {
-    case p@PageRequest(_, rawUrl, previousRequest, depth) =>
+    case p@PageRequest(_, rawUrl, rawName, previousRequest, depth) =>
       onRequest(p) { request =>
         if (obeyDomainConstraints(rawUrl)) {
           pageGetterCount += 1
           context.actorOf(HttpUrlGetter.propsOfPages(request), "PageGetter-" + pageGetterCount)
         }
       }
-    case i@ImageRequest(_, rawUrl, previousRequest, depth) =>
+    case i@ImageRequest(_, rawUrl, rawName, previousRequest, depth) =>
       onRequest(i) { request =>
         imageGetterCount += 1
         context.actorOf(HttpUrlGetter.propsOfPages(i), "ImageGetter-" + imageGetterCount)
@@ -98,7 +98,7 @@ object HttpRequestDispatcher {
   val name: String = "HttpRequestDispatcher"
   val path = "akka://Main/user/app/" + name
 
-  def props(headers: Map[String, String], excludes: Set[String], initialUrl: String, domainConstraints: Set[String], maxDepth: Int) = Props(classOf[HttpRequestDispatcher], headers, excludes, initialUrl, domainConstraints, maxDepth)
+  def props(headers: Map[String, String], excludes: Set[String], initialUrl: String, initialName: String,domainConstraints: Set[String], maxDepth: Int) = Props(classOf[HttpRequestDispatcher], headers, excludes, initialUrl, initialName, domainConstraints, maxDepth)
 
 
 }

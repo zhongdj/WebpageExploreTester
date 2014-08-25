@@ -26,7 +26,7 @@ class HttpUrlGetter(httpRequest: HttpRequest) extends Actor with ActorLogging {
   import net.imadz.web.explorer.HttpUrlGetter.exec
 
   override def receive: Receive = LoggingReceive {
-    case p@PageRequest(_, url, pre, _) =>
+    case p@PageRequest(_, url, name, pre, _) =>
 
       val headers: Map[String, String] = httpRequest.headers
 
@@ -43,7 +43,7 @@ class HttpUrlGetter(httpRequest: HttpRequest) extends Actor with ActorLogging {
           //handleFailure(t, p)
       }
 
-    case i@ImageRequest(_, url, pre, _) =>
+    case i@ImageRequest(_, url, name, pre, _) =>
       val headers: Map[String, String] = httpRequest.headers
 //      context.actorSelection(ImgDownloadLead.path) ! ImgDownloadRequest(url, pre)
 //      context.stop(self)
