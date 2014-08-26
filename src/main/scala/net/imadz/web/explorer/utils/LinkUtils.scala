@@ -13,7 +13,7 @@ object LinkUtils {
   private val IMG_SRC = """\s*(?i)src\s*=\s*(?:"([^"]*)"|'([^']*)'|([^'">\s]+))\s*""".r
   private val ANCHOR_GREEDY_TAG = """(?s)(?i)<a (.*)>(.+)?</a>""".r
   private val ANCHOR_NON_GREEDY_TAG = """(?s)(?i)<a (.+?)>(.+?)</a>""".r
-  private val HREF_ATTR = """(?s)\s*(?i)href\s*=\s*(?:"([^"]*)"|'([^']*)'|([^'">\s]+))\s*""".r
+  private val HREF_ATTR = """(?s)\s*(?i)href\s*=\s*\\?(?:"([^"\\]*)\\?"|'([^'\\]*)\\?'|([^'">\s]+))\s*""".r
   private val COMP_TAG = """(?s)(?i)(?:[^>]*>([^<]*)<.*|(.*))""".r
   private val invalidChars = '|' :: '\\' :: '\"' :: '\'' :: '{' :: '[' :: Nil
 
@@ -50,7 +50,7 @@ object LinkUtils {
   }
 
 
-  private def findPageLinkWithName(body: String): List[(String, String)] = {
+  def findPageLinkWithName(body: String): List[(String, String)] = {
     for {
       ANCHOR_NON_GREEDY_TAG(anchorTag, anchorTextValue) <- ANCHOR_NON_GREEDY_TAG findAllIn body
       key <- extractUrl(anchorTag)
