@@ -17,6 +17,7 @@ import scala.util.{Failure, Success}
  */
 class HttpUrlGetter(httpRequest: HttpRequest) extends Actor with ActorLogging {
 
+  val downloadDirect = true
   val HANDSHAKE_NOT_COMPLETE: Int = 900
 
   self ! httpRequest
@@ -44,23 +45,25 @@ class HttpUrlGetter(httpRequest: HttpRequest) extends Actor with ActorLogging {
       }
 
     case i@ImageRequest(_, url, name, pre, _) =>
-      val headers: Map[String, String] = httpRequest.headers
-      context.actorSelection(ImgDownloadLead.path) ! ImgDownloadRequest(url, pre)
-      context.stop(self)
-      client.connectOnly(headers)(encodeUrl(url)) onComplete {
-        case Success(x) =>
-          log.info("image @ " + url + " is available.")
-          context.actorSelection(ImgDownloadLead.path) ! ImgDownloadRequest(url, pre)
-          context.stop(self)
-        case Failure(BadStatus(code)) =>
-          log.error("image @ " + url + " is unavailable.")
-          context.actorSelection(HttpErrorRecorder.path) ! HttpError(code, i)
-          context.stop(self)
-        case Failure(t) =>
-          context.stop(self)
+      if (downloadDirect) {
+        context.actorSelection(ImgDownloadLead.path) ! ImgDownloadRequest(url, pre)
+        context.stop(self)
+      } else {
+        val headers: Map[String, String] = httpRequest.headers
+        client.connectOnly(headers)(encodeUrl(url)) onComplete {
+          case Success(x) =>
+            log.info("image @ " + url + " is available.")
+            context.actorSelection(ImgDownloadLead.path) ! ImgDownloadRequest(url, pre)
+            context.stop(self)
+          case Failure(BadStatus(code)) =>
+            log.error("image @ " + url + " is unavailable.")
+            context.actorSelection(HttpErrorRecorder.path) ! HttpError(code, i)
+            context.stop(self)
+          case Failure(t) =>
+            context.stop(self)
           //handleFailure(t, i)
+        }
       }
-
   }
 
   def encodeUrl(url: String): String = {
