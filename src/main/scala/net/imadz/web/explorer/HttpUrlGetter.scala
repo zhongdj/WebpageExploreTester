@@ -45,8 +45,8 @@ class HttpUrlGetter(httpRequest: HttpRequest) extends Actor with ActorLogging {
 
     case i@ImageRequest(_, url, name, pre, _) =>
       val headers: Map[String, String] = httpRequest.headers
-//      context.actorSelection(ImgDownloadLead.path) ! ImgDownloadRequest(url, pre)
-//      context.stop(self)
+      context.actorSelection(ImgDownloadLead.path) ! ImgDownloadRequest(url, pre)
+      context.stop(self)
       client.connectOnly(headers)(encodeUrl(url)) onComplete {
         case Success(x) =>
           log.info("image @ " + url + " is available.")

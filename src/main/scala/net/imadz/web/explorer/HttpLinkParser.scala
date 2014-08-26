@@ -12,7 +12,7 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
 
   self ! body
 
-  override def receive: Receive = LoggingReceive {
+  override def receive: Receive = {
     case body: String =>
       parse(body) { request =>
         dispatcher ! request

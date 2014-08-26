@@ -49,10 +49,10 @@ class Main extends Actor with ActorLogging {
   override def receive: Receive = LoggingReceive {
     case url: String => context.actorOf(HttpRequestDispatcher.props(headers, excludes, url, initialName, domainConstraints, 10))
     case Terminated(dispatcherActor) =>
+      AsyncWebClient.shutdown
       context.children foreach context.stop
       context.stop(self)
       context.system.shutdown
-      AsyncWebClient.shutdown
   }
 
 

@@ -1,12 +1,12 @@
 package net.imadz.web.explorer
 
-import akka.actor.{Actor, ActorRef, FSM, Props}
+import akka.actor._
 import net.imadz.web.explorer.UrlBank._
 
 /**
  * Created by Scala on 14-8-25.
  */
-class UrlBank extends Actor with FSM[State, Data] {
+class UrlBank extends Actor with FSM[State, Data] with ActorLogging {
 
   startWith(Empty, NoHttpRequest)
 
@@ -47,39 +47,39 @@ class UrlBank extends Actor with FSM[State, Data] {
     case Asset(persistedTotal, cachedRequests) if cachedRequests.size == maxCacheSize =>
       stay using {
         persist(requests)
-        asset.copy(persisted = persistedTotal + requests.length  )
+        asset.copy(persisted = persistedTotal + requests.length)
       }
-    case Asset(_, cachedRequests) if requests.length + cachedRequests.size <=  maxCacheSize =>
+    case Asset(_, cachedRequests) if requests.length + cachedRequests.size <= maxCacheSize =>
       stay using {
         asset.copy(cache = cachedRequests ::: requests)
       }
-    case Asset(persistedTotal, cachedRequests) if requests.size + cachedRequests.length  > maxCacheSize =>
+    case Asset(persistedTotal, cachedRequests) if requests.size + cachedRequests.length > maxCacheSize =>
       stay using {
         val leftNumber = maxCacheSize - cachedRequests.size
         persist(requests.drop(leftNumber))
-        Asset(persistedTotal + leftNumber, cachedRequests:::requests.take(leftNumber))
+        Asset(persistedTotal + leftNumber, cachedRequests ::: requests.take(leftNumber))
       }
   }
 
   private def processWithDrawOnAbundance(n: Int, asset: Asset) = asset match {
     case Asset(_, cachedRequests) if cachedRequests.size > n =>
       stay using {
-        dispatcher ! cachedRequests.take(n)
+        dispatcher ! Payback(cachedRequests.take(n))
         asset.copy(cache = cachedRequests.drop(n))
       }
     case Asset(0, cachedRequests) if cachedRequests.size == n =>
       goto(Empty) using {
-        dispatcher ! cachedRequests
+        dispatcher ! Payback(cachedRequests)
         NoHttpRequest
       }
     case Asset(0, cachedRequests) if cachedRequests.size < n =>
       goto(InDebt) using {
-        dispatcher ! cachedRequests
+        dispatcher ! Payback(cachedRequests)
         Debt(n - cachedRequests.size)
       }
     case Asset(persistedTotal, cachedRequests) if cachedRequests.size == n =>
       stay using {
-        dispatcher ! cachedRequests
+        dispatcher ! Payback(cachedRequests)
         fillCache(persistedTotal)
       }
     case Asset(persistedTotal, cachedRequests) if cachedRequests.size < n =>
@@ -114,9 +114,18 @@ class UrlBank extends Actor with FSM[State, Data] {
     }
   }
 
-  private def persist(requests: List[HttpRequest]) = ???
+  var db = List[HttpRequest]()
 
-  private def pop(quantity: Int): List[HttpRequest] = ???
+  private def persist(requests: List[HttpRequest]) = {
+    db = db ::: requests
+  }
+
+  private def pop(quantity: Int): List[HttpRequest] = {
+    val old = db
+    db = db.drop(quantity)
+    old.take(quantity)
+  }
+
 
   initialize()
 }
@@ -125,7 +134,7 @@ object UrlBank {
 
   val maxCacheSize = 2000
 
-  var cache = List[HttpRequest]
+  var cache = List[HttpRequest]()
 
   //received events
   final case class Deposit(requests: List[HttpRequest])

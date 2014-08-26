@@ -1,7 +1,8 @@
 package net.imadz.web.explorer
 
-import akka.actor.{Actor, ActorLogging, Props, ReceiveTimeout}
+import akka.actor._
 import akka.event.LoggingReceive
+import net.imadz.web.explorer.UrlBank.{Deposit, Payback, WithDraw}
 
 import scala.concurrent.duration._
 import scala.util.matching.Regex
@@ -11,90 +12,84 @@ import scala.util.matching.Regex
  */
 class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[String], val domainUrl: String, val domainName: String, val domainConstraints: Set[String], val maxDepth: Int) extends Actor with ActorLogging {
 
-  var visitedUrls = Set[String]()
-  var queue: List[HttpRequest] = Nil
-
+  private var pageGetterCount: Int = 0
+  private var imageGetterCount: Int = 0
+  private var visitedUrls = Set[String]()
+  private val urlBank = context.actorOf(Props(classOf[UrlBank]), "UrlBank")
+  private val getterMaxCount = context.system.settings.config.getInt("imadz.web.explorer.getterCount")
+  urlBank ! WithDraw(getterMaxCount)
 
   self ! PageRequest(headers, domainUrl, domainName, None, 0)
 
-  def exclude(url: String) = excludes.exists(url.startsWith(_))
 
-  var pageGetterCount: Int = 0
-  var imageGetterCount: Int = 0
+  override def receive: Receive = processRequest
 
-  private def onRequest(request: HttpRequest)(func: HttpRequest => Unit) {
+  private def resetTimeout(block: => Unit) = {
     context.setReceiveTimeout(Duration.Undefined)
-    val url = request.url
-    if (needVisit(url, request.depth)) {
-      log.info(url)
-      visitedUrls += url
-
-      func(request)
-
-      //log.info("cached url number: " + visitedUrls.size)
-    }
-    context.setReceiveTimeout(90 second)
+    block
+    context.setReceiveTimeout(90 seconds)
   }
 
-  override def receive: Receive = LoggingReceive {
-    case p@PageRequest(_, rawUrl, rawName, previousRequest, depth) =>
-      onRequest(p) { request =>
-        if (obeyDomainConstraints(rawUrl)) {
-          pageGetterCount += 1
-          context.actorOf(HttpUrlGetter.propsOfPages(request), "PageGetter-" + pageGetterCount)
+  private def processRequest: Receive = LoggingReceive {
+    case request: HttpRequest =>
+      resetTimeout {
+        onRequest(request) { request =>
+          urlBank ! Deposit(List(request))
         }
       }
-    case i@ImageRequest(_, rawUrl, rawName, previousRequest, depth) =>
-      onRequest(i) { request =>
-        imageGetterCount += 1
-        context.actorOf(HttpUrlGetter.propsOfPages(i), "ImageGetter-" + imageGetterCount)
+    case Payback(requests) =>
+      resetTimeout {
+        requests foreach {
+          case request@PageRequest(_, rawUrl, rawName, previousRequest, depth) =>
+            if (obeyDomainConstraints(rawUrl)) {
+              pageGetterCount += 1
+              context.watch(context.actorOf(HttpUrlGetter.propsOfPages(request), "PageGetter-" + pageGetterCount))
+            }
+          case request@ImageRequest(_, rawUrl, rawName, previousRequest, depth) =>
+            imageGetterCount += 1
+            context.watch(context.actorOf(HttpUrlGetter.propsOfPages(request), "ImageGetter-" + imageGetterCount))
+        }
       }
     case ReceiveTimeout =>
+      log.info("visitedUrls size = " + visitedUrls.size)
       context.stop(self)
-    case SlowDown =>
-      log.info("HttpRequestDispatcher is going to slow down 30 seconds")
-    //      context.setReceiveTimeout(Duration.Undefined)
-    //      context.setReceiveTimeout(30 seconds)
-    //      context.become(waiting)
+    case Terminated(child) =>
+      resetTimeout {
+        urlBank ! WithDraw(1)
+      }
   }
 
-  def waiting: Receive = {
-    case ReceiveTimeout =>
-      if (queue.size > 0) {
-        context.unbecome
-        self ! queue.head
-        queue = queue.drop(1)
-      }
-    case message: HttpRequest =>
-      queue = queue ::: message :: Nil
-    case _ =>
-      log.info("HttpRequestDispatcher is going to slow down 30 seconds")
-      context.setReceiveTimeout(Duration.Undefined)
-      context.setReceiveTimeout(30 seconds)
+  private def onRequest(request: HttpRequest, checkUrl: Boolean = true)(func: HttpRequest => Unit) {
+    val url = request.url
+    if (!checkUrl) {
+      func(request)
+    } else if (needVisit(url, request.depth)) {
+      log.info(url)
+      visitedUrls += url
+      func(request)
+    }
   }
 
   private def needVisit(url: String, depth: Int): Boolean = {
     !visitedUrls.contains(url) && !exclude(url) && !url.contains("#") && url.length > 10 //depth <= maxDepth &&
   }
 
+  private def exclude(url: String) = excludes.exists(url.startsWith(_))
+
   private def obeyDomainConstraints(url: String): Boolean = {
     val domainPrefixReg = new Regex( """(http|https)://.*?/""")
     val domainUrl: String = domainPrefixReg.findFirstIn(url).getOrElse(url)
     if (domainUrl != "") {
-      domainConstraints.exists(x => domainUrl.contains(x))
+      domainConstraints.exists(keyword => domainUrl.contains(keyword))
     }
     else false
   }
 
 }
 
-object SlowDown
-
 object HttpRequestDispatcher {
   val name: String = "HttpRequestDispatcher"
   val path = Main.path + name
 
   def props(headers: Map[String, String], excludes: Set[String], initialUrl: String, initialName: String, domainConstraints: Set[String], maxDepth: Int) = Props(classOf[HttpRequestDispatcher], headers, excludes, initialUrl, initialName, domainConstraints, maxDepth)
-
-
 }

@@ -2,7 +2,7 @@ package net.imadz.web.explorer
 
 import java.io.{BufferedReader, InputStreamReader}
 import java.net.{HttpURLConnection, URL}
-import java.util.concurrent.{Executor, Executors, ThreadFactory}
+import java.util.concurrent.{ThreadPoolExecutor, Executor, Executors, ThreadFactory}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -14,7 +14,7 @@ case class BadStatus(status: Int) extends RuntimeException
 
 object AsyncWebClient {
 
-  implicit val exec: ExecutionContext = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(200, new ThreadFactory {
+  implicit val exec: ExecutionContext = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(5, new ThreadFactory {
     var counter = 0;
 
     override def newThread(r: Runnable): Thread = {
@@ -79,6 +79,7 @@ object AsyncWebClient {
   }(imageHeaderExec)
 
   def shutdown(): Unit = {
-  } //client.close()
+    exec.asInstanceOf[ThreadPoolExecutor].shutdownNow
+  } 
 
 }

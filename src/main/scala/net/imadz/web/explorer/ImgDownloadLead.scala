@@ -1,6 +1,7 @@
 package net.imadz.web.explorer
 
 import akka.actor.Actor
+import akka.event.LoggingReceive
 import net.imadz.web.explorer.ImgDownloadLead.ImgDownloadRequest
 import net.imadz.web.explorer.ImgDownloader.ImgUrl
 
@@ -8,7 +9,7 @@ import net.imadz.web.explorer.ImgDownloader.ImgUrl
  * Created by geek on 8/24/14.
  */
 class ImgDownloadLead extends Actor {
-  override def receive: Receive = {
+  override def receive: Receive = LoggingReceive {
     case ImgDownloadRequest(url, pageRequest) =>
       ImgDownloadLead.imageCount += 1
       context.actorOf(ImgDownloader.propsOfImages, "ImageDownloader-" + ImgDownloadLead.imageCount) ! ImgUrl(url)
