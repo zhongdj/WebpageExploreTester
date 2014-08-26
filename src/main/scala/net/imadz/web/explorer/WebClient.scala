@@ -2,7 +2,7 @@ package net.imadz.web.explorer
 
 import java.io.{BufferedReader, InputStreamReader}
 import java.net.{HttpURLConnection, URL}
-import java.util.concurrent.{ThreadPoolExecutor, Executor, Executors, ThreadFactory}
+import java.util.concurrent._
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -14,14 +14,17 @@ case class BadStatus(status: Int) extends RuntimeException
 
 object AsyncWebClient {
 
-  implicit val exec: ExecutionContext = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(5, new ThreadFactory {
+  lazy val pageGetThreadPool: ExecutorService = Executors.newFixedThreadPool(5, new ThreadFactory {
     var counter = 0;
 
     override def newThread(r: Runnable): Thread = {
       counter += 1
       new Thread(r, "AsyncWebClient-Pool-" + counter)
     }
-  }))
+  })
+  implicit val exec: ExecutionContext = {
+    ExecutionContext.fromExecutor(pageGetThreadPool)
+  }
 
   def get(headers: Map[String, String])(url: String): Future[String] = {
 
@@ -52,14 +55,18 @@ object AsyncWebClient {
     }
   }
 
-  val imageHeaderExec: ExecutionContext = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(5, new ThreadFactory {
+  lazy val imageGetThreadPool: ExecutorService = Executors.newFixedThreadPool(5, new ThreadFactory {
     var counter = 0;
 
     override def newThread(r: Runnable): Thread = {
       counter += 1
       new Thread(r, "ImageHeaders-Pool-" + counter)
     }
-  }))
+  })
+
+  val imageHeaderExec: ExecutionContext = {
+    ExecutionContext.fromExecutor(imageGetThreadPool)
+  }
 
   def connectOnly(headers: Map[String, String])(url: String): Future[Int] = Future {
     var conn: HttpURLConnection = null
@@ -79,7 +86,8 @@ object AsyncWebClient {
   }(imageHeaderExec)
 
   def shutdown(): Unit = {
-    exec.asInstanceOf[ThreadPoolExecutor].shutdownNow
-  } 
+    pageGetThreadPool.shutdown
+    imageGetThreadPool.shutdown
+  }
 
 }
