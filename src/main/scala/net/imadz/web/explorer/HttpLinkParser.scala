@@ -1,9 +1,7 @@
 package net.imadz.web.explorer
 
-import akka.actor.{Props, Actor, ActorLogging, ActorRef}
-import akka.event.LoggingReceive
+import akka.actor.{Actor, ActorLogging, ActorRef, Props}
 import net.imadz.web.explorer.utils.LinkUtils
-import scala.util.matching.Regex
 
 /**
  * Created by geek on 8/20/14.
@@ -22,7 +20,7 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
 
   private def parse(body: String)(dispatch: HttpRequest => Unit) = {
     try {
-      LinkUtils.findLinks(body, httpRequest) foreach (newLink => dispatch(newLink))
+      LinkUtils.findLinks(body, httpRequest, context.system.settings.config.getBoolean("imadz.web.explorer.downloadImage")) foreach (newLink => dispatch(newLink))
     } catch {
       case t =>
         context.stop(self)
