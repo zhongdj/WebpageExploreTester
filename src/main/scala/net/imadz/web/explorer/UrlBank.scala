@@ -10,36 +10,59 @@ class UrlBank extends Actor with FSM[State, Data] with ActorLogging {
 
   startWith(Empty, NoHttpRequest)
 
-  when(Empty) {
-    case Event(WithDraw(n), NoHttpRequest) =>
-      goto(InDebt) using Debt(n)
-    case Event(Deposit(requests), NoHttpRequest) =>
-      goto(Abundance) using deposit(requests)
-
+  def dataStr(data: Data): String = data match {
+    case NoHttpRequest => "NoHttpRequest"
+    case d: Debt => d toString
+    case Asset(persisted, cache) => "Asset(persisted = " + persisted + ", cacheSize =" + cache.size + ")"
   }
 
+  def wrap(sf: StateFunction): StateFunction = {
+
+    case event: Event =>
+      log.info("----------------------------------------------------------------------------")
+      log.info("Event: " + event.event + ", oldState: " + this.stateName + ", oldStateData: " + dataStr(event.stateData))
+      val state = sf(event)
+      log.info("newState: " + state.stateName + ", stateData: " + dataStr(state.stateData))
+      log.info("----------------------------------------------------------------------------")
+
+      state
+  }
+
+  when(Empty) {
+    wrap {
+      case Event(WithDraw(n), NoHttpRequest) =>
+        goto(InDebt) using Debt(n)
+      case Event(Deposit(requests), NoHttpRequest) =>
+        goto(Abundance) using deposit(requests)
+
+    }
+  }
   when(InDebt) {
-    case Event(WithDraw(m), Debt(n)) =>
-      stay using Debt(n + m)
-    case Event(Deposit(requests), Debt(n)) =>
-      if (requests.size > n) goto(Abundance) using {
-        dispatcher ! Payback(requests.take(n))
-        deposit(requests.drop(n))
-      } else if (requests.size == n) goto(Empty) using {
-        dispatcher ! Payback(requests)
-        NoHttpRequest
-      } else stay using {
-        dispatcher ! Payback(requests)
-        Debt(n - requests.size)
-      }
+    wrap {
+      case Event(WithDraw(m), Debt(n)) =>
+        stay using Debt(n + m)
+      case Event(Deposit(requests), Debt(n)) =>
+        if (requests.size > n) goto(Abundance) using {
+          dispatcher ! Payback(requests.take(n))
+          deposit(requests.drop(n))
+        } else if (requests.size == n) goto(Empty) using {
+          dispatcher ! Payback(requests)
+          NoHttpRequest
+        } else stay using {
+          dispatcher ! Payback(requests)
+          Debt(n - requests.size)
+        }
+    }
   }
 
 
   when(Abundance) {
-    case Event(WithDraw(n), asset: Asset) =>
-      processWithDrawOnAbundance(n, asset)
-    case Event(Deposit(requests), asset: Asset) =>
-      processWithDepositOnAbudance(requests, asset)
+    wrap {
+      case Event(WithDraw(n), asset: Asset) =>
+        processWithDrawOnAbundance(n, asset)
+      case Event(Deposit(requests), asset: Asset) =>
+        processWithDepositOnAbudance(requests, asset)
+    }
   }
 
   private def processWithDepositOnAbudance(requests: List[HttpRequest], asset: Asset) = asset match {
@@ -125,7 +148,6 @@ class UrlBank extends Actor with FSM[State, Data] with ActorLogging {
     db = db.drop(quantity)
     old.take(quantity)
   }
-
 
   initialize()
 }
