@@ -40,12 +40,10 @@ class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[
     case Payback(requests) =>
       resetTimeout {
         requests foreach {
-          case request@PageRequest(_, rawUrl, rawName, previousRequest, depth) =>
-            if (obeyDomainConstraints(rawUrl)) {
-              pageGetterCount += 1
-              context.watch(context.actorOf(HttpUrlGetter.propsOfPages(request), "PageGetter-" + pageGetterCount))
-            }
-          case request@ImageRequest(_, rawUrl, rawName, previousRequest, depth) =>
+          case request: PageRequest =>
+            pageGetterCount += 1
+            context.watch(context.actorOf(HttpUrlGetter.propsOfPages(request), "PageGetter-" + pageGetterCount))
+          case request: ImageRequest =>
             imageGetterCount += 1
             context.watch(context.actorOf(HttpUrlGetter.propsOfPages(request), "ImageGetter-" + imageGetterCount))
         }
@@ -64,14 +62,19 @@ class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[
     if (!checkUrl) {
       func(request)
     } else if (needVisit(url, request.depth)) {
-      log.info(url)
+      //log.info(url)
       visitedUrls += url
       func(request)
     }
   }
 
   private def needVisit(url: String, depth: Int): Boolean = {
-    !visitedUrls.contains(url) && !exclude(url) && !url.contains("#") && url.length > 10 //depth <= maxDepth &&
+    !visitedUrls.contains(url) &&
+      !exclude(url) &&
+      !url.contains("#") &&
+      url.length > 10 &&
+      depth <= maxDepth &&
+      obeyDomainConstraints(url)
   }
 
   private def exclude(url: String) = excludes.exists(url.startsWith(_))
