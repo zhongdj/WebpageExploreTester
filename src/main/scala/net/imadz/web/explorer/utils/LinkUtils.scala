@@ -86,7 +86,7 @@ object LinkUtils {
   }.toList.mkString.trim
 
 
-  private def absoluteUrl(rawUrl: String, contextUrl: String): String = {
+  def absoluteUrl(rawUrl: String, contextUrl: String): String = {
     val domainRegex = new Regex( """(http|https)://.*?/""")
     val domainUrl = domainRegex.findFirstIn(contextUrl).getOrElse(contextUrl + "/")
     if (rawUrl.startsWith("http") || rawUrl.startsWith("https")) rawUrl
