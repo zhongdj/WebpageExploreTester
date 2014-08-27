@@ -61,20 +61,29 @@ class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[
     val url = request.url
     if (!checkUrl) {
       func(request)
-    } else if (needVisit(url, request.depth)) {
+    } else if (needVisit(request, request.depth)) {
       //log.info(url)
       visitedUrls += url
       func(request)
     }
   }
 
-  private def needVisit(url: String, depth: Int): Boolean = {
-    !visitedUrls.contains(url) &&
-      !exclude(url) &&
-      !url.contains("#") &&
-      url.length > 10 &&
-      depth <= maxDepth &&
-      obeyDomainConstraints(url)
+  private def needVisit(request: HttpRequest, depth: Int): Boolean = {
+    if (request.previousRequest.isDefined) {
+      !visitedUrls.contains(request.url) &&
+        !exclude(request.url) &&
+        !request.url.contains("#") &&
+        request.url.length > 10 &&
+        depth <= maxDepth &&
+        obeyDomainConstraints(request.previousRequest.get.url)
+    } else {
+      !visitedUrls.contains(request.url) &&
+        !exclude(request.url) &&
+        !request.url.contains("#") &&
+        request.url.length > 10 &&
+        depth <= maxDepth &&
+        obeyDomainConstraints(request.url)
+    }
   }
 
   private def exclude(url: String) = excludes.exists(url.startsWith(_))
