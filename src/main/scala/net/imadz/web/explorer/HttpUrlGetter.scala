@@ -17,7 +17,7 @@ import scala.util.{Failure, Success}
  */
 class HttpUrlGetter(httpRequest: HttpRequest) extends Actor with ActorLogging {
 
-  val downloadDirect = true
+  val downloadDirect = false
   val HANDSHAKE_NOT_COMPLETE: Int = 900
 
   self ! httpRequest
@@ -31,7 +31,7 @@ class HttpUrlGetter(httpRequest: HttpRequest) extends Actor with ActorLogging {
 
       val headers: Map[String, String] = httpRequest.headers
 
-      client.get(headers)(encodeUrl(url)) onComplete {
+      client.get(headers)(encodeUrl(url))(context.parent, p) onComplete {
         case Success(body) =>
           context.actorSelection(ParserLead.path) ! ParseRequest(body, p)
           context.stop(self)
