@@ -22,7 +22,7 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRe
     try {
       LinkUtils.findLinks(body, httpRequest, context.system.settings.config.getBoolean("imadz.web.explorer.downloadImage")) foreach (newLink => dispatch(newLink))
     } catch {
-      case t =>
+      case t : Throwable =>
         context.stop(self)
         throw t
     }
