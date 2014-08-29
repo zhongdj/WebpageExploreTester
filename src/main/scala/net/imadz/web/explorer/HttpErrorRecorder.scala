@@ -1,35 +1,53 @@
 package net.imadz.web.explorer
 
-import java.io.{FileReader, File, PrintWriter, StringReader}
-import scala.io.Source
+import java.io.{File, PrintWriter}
 
-import akka.actor.{Actor, ActorLogging, Props}
+import akka.actor._
 import akka.event.LoggingReceive
-import net.imadz.web.explorer.HttpErrorRecorder.HttpError
+import net.imadz.web.explorer.HttpErrorRecorder.HttpErrorRequest
+import net.imadz.web.explorer.StateUpdate.{HttpErrorFound, ShuttingDown, Stopped}
 import net.imadz.web.explorer.utils.HttpResponseUtil
-import scala.None
+
+import scala.concurrent.duration._
+import scala.io.Source
 
 /**
  * Created by geek on 8/20/14.
  */
-class HttpErrorRecorder extends Actor with ActorLogging {
+class HttpErrorRecorder(errorHandler: Option[ActorRef], observer: Option[ActorRef]) extends Actor with ActorLogging {
 
   //TODO 408 Error
 
-  var writer : PrintWriter= _
+  var writer: PrintWriter = _
 
-  override def receive: Receive = LoggingReceive {
-    case HttpError(responseCode, pageRequest: PageRequest) =>
+  private def notifyHttpError: PartialFunction[Any, HttpErrorRequest] = {
+    case error: HttpErrorRequest =>
+      for (handler <- errorHandler) yield handler ! error
+      for (listener <- observer) yield listener ! HttpErrorFound(HttpError(error.responseCode, error.httpRequest))
+      error
+  }
+
+  private def logError: Receive = notifyHttpError andThen {
+    case HttpErrorRequest(responseCode, pageRequest: PageRequest) =>
       logPageError(responseCode, pageRequest)
-    case HttpError(responseCode, imageRequest: ImageRequest) =>
+    case HttpErrorRequest(responseCode, imageRequest: ImageRequest) =>
       logImageError(responseCode, imageRequest)
+  }
+
+  override def receive: Receive = logError orElse LoggingReceive {
     case Shutdown =>
+      for (listener <- observer) yield listener ! ShuttingDown(self)
+      context become shuttingDown
+      context.setReceiveTimeout(10 seconds)
+  }
+
+  private def shuttingDown: Receive = logError orElse LoggingReceive {
+    case ReceiveTimeout =>
+      for (listener <- observer) yield listener ! Stopped(self)
       context stop self
   }
 
   def logPageError(responseCode: Int, request: PageRequest): Unit = {
-    println("response code: " + responseCode + ", page url: " + request.url)
-
     val bug: String = generateBug(responseCode, request)
 
     writer.println(bug.toString)
@@ -37,9 +55,9 @@ class HttpErrorRecorder extends Actor with ActorLogging {
 
   }
 
-  def generateBug(responseCode: Int,request: HttpRequest): String = {
+  def generateBug(responseCode: Int, request: HttpRequest): String = {
     // Read the bug template
-//    println(new File("WebTestBugTemplate.txt").getAbsolutePath)
+    //    println(new File("WebTestBugTemplate.txt").getAbsolutePath)
     val bugTemplates = Source.fromURL(getClass.getResource("/WebTestBugTemplate.txt")).getLines().mkString("\n")
     // Get the title
     val title = responseCode + " error raised."
@@ -64,12 +82,12 @@ class HttpErrorRecorder extends Actor with ActorLogging {
     bug
   }
 
-  def generateBugSteps(request: HttpRequest) :String ={
-     val requests = generateAllRequest(Some(request))
-     val firstUrl = requests.head.url
-     val tail = requests.tail
-     val tailSteps =  tail map {x => "Click " + x.name + ", go to page " + x.url} mkString "\n"
-     "Go to " + firstUrl + "\n" + tailSteps
+  def generateBugSteps(request: HttpRequest): String = {
+    val requests = generateAllRequest(Some(request))
+    val firstUrl = requests.head.url
+    val tail = requests.tail
+    val tailSteps = tail map { x => "Click " + x.name + ", go to page " + x.url} mkString "\n"
+    "Go to " + firstUrl + "\n" + tailSteps
   }
 
   def generateAllRequest(request: Option[HttpRequest]): List[HttpRequest] = {
@@ -81,7 +99,7 @@ class HttpErrorRecorder extends Actor with ActorLogging {
 
   def logImageError(responseCode: Int, request: ImageRequest): Unit = {
     println("response code: " + responseCode + ", image url: " + request.url)
-    val bug: String = generateBug(responseCode,request)
+    val bug: String = generateBug(responseCode, request)
     writer.println(bug.toString)
     writer.flush()
   }
@@ -91,18 +109,41 @@ class HttpErrorRecorder extends Actor with ActorLogging {
     writer = new PrintWriter(new File("test.txt"))
   }
 
-  //@throws[T](classOf[Exception])
   override def postStop(): Unit = {
     super.postStop()
     writer.close
   }
 }
 
+case class HttpError(responseCode: Int, findInUrl: String, targetUrl: String, steps: List[NavigateSegment], raw: HttpRequest)
+
+object HttpError {
+
+  def stepsFrom(request: HttpRequest): List[NavigateSegment] = request match {
+    case PageRequest(_, url, _, None, _) => List[NavigateSegment](LandingPage(url))
+    case PageRequest(_, url, name, Some(previousPageRequest), _) => Step(name, url) :: stepsFrom(previousPageRequest)
+    case ImageRequest(_, url, _, pageRequest, _) => Step("Image", url) :: stepsFrom(pageRequest)
+  }
+
+  def apply(responseCode: Int, httpRequest: HttpRequest): HttpError = {
+    new HttpError(responseCode, httpRequest.url, httpRequest.previousRequest.get.url, stepsFrom(httpRequest), httpRequest)
+  }
+}
+
+sealed abstract class NavigateSegment(url: String)
+
+case class LandingPage(url: String) extends NavigateSegment(url)
+
+case class Step(linkName: String, targetUrl: String) extends NavigateSegment(targetUrl)
+
+
 object HttpErrorRecorder {
 
-  def props() = Props(classOf[HttpErrorRecorder])
+  def apply(context: ActorContext, errorHandler: Option[ActorRef], observer: Option[ActorRef]) = context.actorOf(props(errorHandler, observer), name)
 
-  case class HttpError(responseCode: Int, httpRequest: HttpRequest)
+  def props(errorHandler: Option[ActorRef], observer: Option[ActorRef]) = Props(classOf[HttpErrorRecorder], errorHandler, observer)
+
+  case class HttpErrorRequest(responseCode: Int, httpRequest: HttpRequest)
 
   val name = "HttpErrorRecorder"
   val path = Main.path + name
