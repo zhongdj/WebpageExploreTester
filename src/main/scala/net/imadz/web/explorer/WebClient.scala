@@ -5,6 +5,7 @@ import java.net.{HttpURLConnection, URL}
 import java.util.concurrent._
 
 import akka.actor.ActorRef
+import net.imadz.web.explorer.UrlBank.Deposit
 import net.imadz.web.explorer.utils.LinkUtils
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -29,7 +30,7 @@ object AsyncWebClient {
     ExecutionContext.fromExecutor(pageGetThreadPool)
   }
 
-  def get(headers: Map[String, String])(url: String)(dispatcher: ActorRef, pageRequest: PageRequest): Future[String] = {
+  def get(headers: Map[String, String])(url: String)(urlBank: ActorRef, pageRequest: PageRequest): Future[String] = {
 
     Future {
       var conn: HttpURLConnection = null
@@ -50,7 +51,7 @@ object AsyncWebClient {
           println("raw Url is: " + rawUrl)
           println("new Url is: " + newUrl)
           if (null != newUrl) {
-            dispatcher ! PageRequest(headers, newUrl, "RedirectPage", Some(pageRequest), pageRequest.depth + 1)
+            urlBank ! Deposit(List(PageRequest(headers, newUrl, "RedirectPage", Some(pageRequest), pageRequest.depth + 1)))
             ""
           } else {
             throw new BadStatus(conn.getResponseCode)
@@ -105,8 +106,8 @@ object AsyncWebClient {
   }(imageHeaderExec)
 
   def shutdown(): Unit = {
-    pageGetThreadPool.shutdown
-    imageGetThreadPool.shutdown
+    //pageGetThreadPool.shutdown
+    //imageGetThreadPool.shutdown
   }
 
 }
