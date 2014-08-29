@@ -13,7 +13,7 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, urlBank: ActorRef) 
   override def receive: Receive = {
     case body: String =>
       parse(body) { request =>
-        urlBank ! UrlBank.Deposit(request)
+        urlBank ! UrlBank.Deposit(List(request))
       }
       context.stop(self)
   }
@@ -22,7 +22,7 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, urlBank: ActorRef) 
     try {
       LinkUtils.findLinks(body, httpRequest, context.system.settings.config.getBoolean("imadz.web.explorer.downloadImage")) foreach (newLink => dispatch(newLink))
     } catch {
-      case t : Throwable =>
+      case t: Throwable =>
         context.stop(self)
         throw t
     }
