@@ -5,7 +5,7 @@ import java.util.concurrent.{Executors, ThreadFactory, TimeoutException}
 
 import akka.actor._
 import akka.event.LoggingReceive
-import net.imadz.web.explorer.HttpErrorRecorder.HttpError
+import net.imadz.web.explorer.HttpErrorRecorder.HttpErrorRequest
 import net.imadz.web.explorer.ImgDownloadLead.ImgDownloadRequest
 import net.imadz.web.explorer.ParserLead.ParseRequest
 
@@ -15,7 +15,7 @@ import scala.util.{Failure, Success}
 /**
  * Created by geek on 8/20/14.
  */
-class HttpUrlGetter(httpRequest: HttpRequest) extends Actor with ActorLogging {
+class HttpUrlGetter(httpRequest: HttpRequest, urlBank: ActorRef) extends Actor with ActorLogging {
 
   val downloadDirect = false
   val HANDSHAKE_NOT_COMPLETE: Int = 900
@@ -31,17 +31,20 @@ class HttpUrlGetter(httpRequest: HttpRequest) extends Actor with ActorLogging {
 
       val headers: Map[String, String] = httpRequest.headers
 
-      client.get(headers)(encodeUrl(url))(context.parent, p) onComplete {
+      client.get(headers)(encodeUrl(url))(urlBank, p) onComplete {
         case Success(body) =>
-          context.actorSelection(ParserLead.path) ! ParseRequest(body, p)
-          context.stop(self)
+          if (null != context) {
+            val parserLead: ActorSelection = context.actorSelection(ParserLead.path)
+            if (null != parserLead) parserLead ! ParseRequest(body, p)
+            context.stop(self)
+          }
         case Failure(BadStatus(code)) =>
           HttpUrlGetter.reporterCount += 1
-          context.actorSelection(HttpErrorRecorder.path) ! HttpError(code, p)
+          context.actorSelection(HttpErrorRecorder.path) ! HttpErrorRequest(code, p)
           context.stop(self)
         case Failure(t) =>
           context.stop(self)
-          //handleFailure(t, p)
+        //handleFailure(t, p)
       }
 
     case i@ImageRequest(_, url, name, pre, _) =>
@@ -57,7 +60,7 @@ class HttpUrlGetter(httpRequest: HttpRequest) extends Actor with ActorLogging {
             context.stop(self)
           case Failure(BadStatus(code)) =>
             log.error("image @ " + url + " is unavailable.")
-            context.actorSelection(HttpErrorRecorder.path) ! HttpError(code, i)
+            context.actorSelection(HttpErrorRecorder.path) ! HttpErrorRequest(code, i)
             context.stop(self)
           case Failure(t) =>
             context.stop(self)
@@ -112,7 +115,7 @@ object HttpUrlGetter {
     }
   }))
 
-  def propsOfPages(httpRequest: HttpRequest) = Props(classOf[HttpUrlGetter], httpRequest).withDispatcher("pages-dispatcher")
+  def propsOfPages(httpRequest: HttpRequest, urlBank: ActorRef) = Props(classOf[HttpUrlGetter], httpRequest, urlBank).withDispatcher("pages-dispatcher")
 
 }
 
