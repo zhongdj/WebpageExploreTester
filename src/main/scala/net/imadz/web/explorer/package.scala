@@ -5,7 +5,7 @@ package net.imadz.web
  */
 package object explorer {
 
-  abstract class HttpRequest() {
+  sealed abstract class HttpRequest() {
 
     def headers: Map[String, String]
 
