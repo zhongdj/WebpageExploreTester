@@ -10,17 +10,13 @@ import scala.util.matching.Regex
 /**
  * Created by geek on 8/20/14.
  */
-class HttpRequestDispatcher(val urlBank: ActorRef, val headers: Map[String, String], val excludes: Set[String], val domainUrl: String, val domainName: String, val domainConstraints: Set[String], val maxDepth: Int) extends Actor with ActorLogging {
+class HttpRequestDispatcher(val urlBank: ActorRef) extends Actor with ActorLogging {
 
   private var pageGetterCount: Int = 0
   private var imageGetterCount: Int = 0
-  private var visitedUrls = Set[String]()
   private val getterMaxCount = context.system.settings.config.getInt("imadz.web.explorer.getterCount")
 
   urlBank ! WithDraw(getterMaxCount)
-
-  self ! PageRequest(headers, domainUrl, domainName, None, 0)
-
 
   override def receive: Receive = processRequest
 
@@ -31,12 +27,6 @@ class HttpRequestDispatcher(val urlBank: ActorRef, val headers: Map[String, Stri
   }
 
   private def processRequest: Receive = LoggingReceive {
-    case request: HttpRequest =>
-      resetTimeout {
-        onRequest(request) { request =>
-          urlBank ! Deposit(List(request))
-        }
-      }
     case Payback(requests) =>
       resetTimeout {
         requests foreach {
@@ -49,59 +39,17 @@ class HttpRequestDispatcher(val urlBank: ActorRef, val headers: Map[String, Stri
         }
       }
     case ReceiveTimeout =>
-      log.info("visitedUrls size = " + visitedUrls.size)
       context.stop(self)
     case Terminated(child) =>
       resetTimeout {
         urlBank ! WithDraw(1)
       }
   }
-
-  private def onRequest(request: HttpRequest, checkUrl: Boolean = true)(func: HttpRequest => Unit) {
-    val url = request.url
-    if (!checkUrl) {
-      func(request)
-    } else if (needVisit(request, request.depth)) {
-      //log.info(url)
-      visitedUrls += url
-      func(request)
-    }
-  }
-
-  private def needVisit(request: HttpRequest, depth: Int): Boolean = {
-    if (request.previousRequest.isDefined) {
-      !visitedUrls.contains(request.url) &&
-        !exclude(request.url) &&
-        !request.url.contains("#") &&
-        request.url.length > 10 &&
-        depth <= maxDepth &&
-        obeyDomainConstraints(request.previousRequest.get.url)
-    } else {
-      !visitedUrls.contains(request.url) &&
-        !exclude(request.url) &&
-        !request.url.contains("#") &&
-        request.url.length > 10 &&
-        depth <= maxDepth &&
-        obeyDomainConstraints(request.url)
-    }
-  }
-
-  private def exclude(url: String) = excludes.exists(url.startsWith(_))
-
-  private def obeyDomainConstraints(url: String): Boolean = {
-    val domainPrefixReg = new Regex( """(http|https)://.*?/""")
-    val domainUrl: String = domainPrefixReg.findFirstIn(url).getOrElse(url)
-    if (domainUrl != "") {
-      domainConstraints.exists(keyword => domainUrl.contains(keyword))
-    }
-    else false
-  }
-
 }
 
 object HttpRequestDispatcher {
   val name: String = "HttpRequestDispatcher"
   val path = Main.path + name
 
-  def props(urlBank: ActorRef, headers: Map[String, String], excludes: Set[String], initialUrl: String, initialName: String, domainConstraints: Set[String], maxDepth: Int) = Props(classOf[HttpRequestDispatcher], urlBank, headers, excludes, initialUrl, initialName, domainConstraints, maxDepth)
+  def props(urlBank: ActorRef) = Props(classOf[HttpRequestDispatcher], urlBank)
 }

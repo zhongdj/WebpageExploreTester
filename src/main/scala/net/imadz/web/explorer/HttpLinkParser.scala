@@ -6,14 +6,14 @@ import net.imadz.web.explorer.utils.LinkUtils
 /**
  * Created by geek on 8/20/14.
  */
-class HttpLinkParser(body: String, httpRequest: PageRequest, dispatcher: ActorRef) extends Actor with ActorLogging {
+class HttpLinkParser(body: String, httpRequest: PageRequest, urlBank: ActorRef) extends Actor with ActorLogging {
 
   self ! body
 
   override def receive: Receive = {
     case body: String =>
       parse(body) { request =>
-        dispatcher ! request
+        urlBank ! UrlBank.Deposit(request)
       }
       context.stop(self)
   }

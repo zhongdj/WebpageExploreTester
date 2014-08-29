@@ -7,12 +7,12 @@ import net.imadz.web.explorer.ParserLead.ParseRequest
 /**
  * Created by geek on 8/24/14.
  */
-class ParserLead(dispatcher: ActorRef) extends Actor {
+class ParserLead(urlbank: ActorRef) extends Actor {
 
   override def receive: Receive = {
     case ParseRequest(body, page) =>
       ParserLead.parserCount += 1
-      context.actorOf(HttpLinkParser.props(body, page, dispatcher), "HttpLinkParser-" + ParserLead.parserCount)
+      context.actorOf(HttpLinkParser.props(body, page, urlbank), "HttpLinkParser-" + ParserLead.parserCount)
   }
 
 }

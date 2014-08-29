@@ -2,13 +2,20 @@ package net.imadz.web.explorer
 
 import akka.actor._
 import net.imadz.web.explorer.UrlBank._
+import scala.util.matching.Regex
+import net.imadz.web.explorer.UrlBank.Asset
+import net.imadz.web.explorer.UrlBank.WithDraw
+import net.imadz.web.explorer.UrlBank.Deposit
+import net.imadz.web.explorer.UrlBank.Debt
+import net.imadz.web.explorer.UrlBank.Payback
 
 /**
  * Created by Scala on 14-8-25.
  */
-class UrlBank extends Actor with FSM[State, Data] with ActorLogging {
+class UrlBank(val excludes: Set[String], val domainConstraints: Set[String], val maxDepth: Int) extends Actor with FSM[State, Data] with ActorLogging {
 
   startWith(Empty, NoHttpRequest)
+  var visitedUrls = Set[String]()
 
   def dataStr(data: Data): String = data match {
     case NoHttpRequest => "NoHttpRequest"
@@ -16,29 +23,47 @@ class UrlBank extends Actor with FSM[State, Data] with ActorLogging {
     case Asset(persisted, cache) => "Asset(persisted = " + persisted + ", cacheSize =" + cache.size + ")"
   }
 
-  def wrap(sf: StateFunction): StateFunction = {
+  def validateFunc(request: HttpRequest): Boolean = needVisit(request, request.depth)
 
+  def filterInvalidUrls: scala.PartialFunction[Event, Event] = {
+    case Event(Deposit(requests), data) =>
+      Event(Deposit(requests.filter(validateFunc)), data)
+    case otherEvent => otherEvent
+  }
+
+  def stayWhileNoRequest: StateFunction = {
+    case Event(Deposit(Nil), data) => stay
+  }
+
+  def logEventStart: scala.PartialFunction[Event, Event] = {
     case event: Event =>
       log.info("----------------------------------------------------------------------------")
       log.info("Event: " + event.event + ", oldState: " + this.stateName + ", oldStateData: " + dataStr(event.stateData))
-      val state = sf(event)
+      event
+  }
+
+  def logEventEnd: scala.PartialFunction[State, State] = {
+    case state: State =>
       log.info("newState: " + state.stateName + ", stateData: " + dataStr(state.stateData))
       log.info("----------------------------------------------------------------------------")
-
       state
   }
 
+
   when(Empty) {
-    wrap {
+    def processEvents: StateFunction = {
       case Event(WithDraw(n), NoHttpRequest) =>
         goto(InDebt) using Debt(n, sender)
       case Event(Deposit(requests), NoHttpRequest) =>
         goto(Abundance) using deposit(requests)
 
     }
+    filterInvalidUrls andThen logEventStart andThen (stayWhileNoRequest orElse processEvents) andThen logEventEnd
   }
+
   when(InDebt) {
-    wrap {
+    def processEvents: StateFunction = {
+
       case Event(WithDraw(m), Debt(n, dispatcher)) =>
         stay using Debt(n + m, dispatcher)
       case Event(Deposit(requests), Debt(n, dispatcher)) =>
@@ -52,17 +77,22 @@ class UrlBank extends Actor with FSM[State, Data] with ActorLogging {
           dispatcher ! Payback(requests)
           Debt(n - requests.size, dispatcher)
         }
+
     }
+    filterInvalidUrls andThen logEventStart andThen (stayWhileNoRequest orElse processEvents) andThen logEventEnd
   }
 
 
   when(Abundance) {
-    wrap {
+    def processEvents: StateFunction = {
+
       case Event(WithDraw(n), asset: Asset) =>
         processWithDrawOnAbundance(n, asset)
       case Event(Deposit(requests), asset: Asset) =>
         processWithDepositOnAbudance(requests, asset)
+
     }
+    filterInvalidUrls andThen logEventStart andThen (stayWhileNoRequest orElse processEvents) andThen logEventEnd
   }
 
   private def processWithDepositOnAbudance(requests: List[HttpRequest], asset: Asset) = asset match {
@@ -84,37 +114,42 @@ class UrlBank extends Actor with FSM[State, Data] with ActorLogging {
       }
   }
 
+  private def payBackRequests(receive: ActorRef, requests: List[HttpRequest]) = {
+    requests.foreach(r => visitedUrls += r.url)
+    receive ! Payback(requests)
+  }
+
   private def processWithDrawOnAbundance(n: Int, asset: Asset) = asset match {
     case Asset(_, cachedRequests) if cachedRequests.size > n =>
       stay using {
-        sender ! Payback(cachedRequests.take(n))
+        payBackRequests(sender, cachedRequests.take(n))
         asset.copy(cache = cachedRequests.drop(n))
       }
     case Asset(0, cachedRequests) if cachedRequests.size == n =>
       goto(Empty) using {
-        sender ! Payback(cachedRequests)
+        payBackRequests(sender, cachedRequests)
         NoHttpRequest
       }
     case Asset(0, cachedRequests) if cachedRequests.size < n =>
       goto(InDebt) using {
-        sender ! Payback(cachedRequests)
+        payBackRequests(sender, cachedRequests)
         Debt(n - cachedRequests.size, sender)
       }
     case Asset(persistedTotal, cachedRequests) if cachedRequests.size == n =>
       stay using {
-        sender ! Payback(cachedRequests)
+        payBackRequests(sender, cachedRequests)
         fillCache(persistedTotal)
       }
     case Asset(persistedTotal, cachedRequests) if cachedRequests.size < n =>
       if (persistedTotal + cachedRequests.size == n) goto(Empty) using {
-        sender ! Payback(cachedRequests ::: pop(persistedTotal))
+        payBackRequests(sender, cachedRequests ::: pop(persistedTotal))
         NoHttpRequest
       }
       else if (persistedTotal + cachedRequests.size > n) stay using {
-        sender ! Payback(cachedRequests ::: pop(n - cachedRequests.size))
+        payBackRequests(sender, cachedRequests ::: pop(n - cachedRequests.size))
         fillCache(persistedTotal + cachedRequests.size - n)
       } else goto(InDebt) using {
-        sender ! Payback(cachedRequests ::: pop(persistedTotal))
+        payBackRequests(sender, cachedRequests ::: pop(persistedTotal))
         Debt(n - persistedTotal - cachedRequests.size, sender)
       }
   }
@@ -133,6 +168,35 @@ class UrlBank extends Actor with FSM[State, Data] with ActorLogging {
     }
   }
 
+  def needVisit(request: HttpRequest, depth: Int): Boolean = {
+    if (request.previousRequest.isDefined) {
+      !visitedUrls.contains(request.url) &&
+        !exclude(request.url) &&
+        !request.url.contains("#") &&
+        request.url.length > 10 &&
+        depth <= maxDepth &&
+        obeyDomainConstraints(request.previousRequest.get.url)
+    } else {
+      !visitedUrls.contains(request.url) &&
+        !exclude(request.url) &&
+        !request.url.contains("#") &&
+        request.url.length > 10 &&
+        depth <= maxDepth &&
+        obeyDomainConstraints(request.url)
+    }
+  }
+
+  private def exclude(url: String) = excludes.exists(url.startsWith(_))
+
+  private def obeyDomainConstraints(url: String): Boolean = {
+    val domainPrefixReg = new Regex( """(http|https)://.*?/""")
+    val domainUrl: String = domainPrefixReg.findFirstIn(url).getOrElse(url)
+    if (domainUrl != "") {
+      domainConstraints.exists(keyword => domainUrl.contains(keyword))
+    }
+    else false
+  }
+
   var db = List[HttpRequest]()
 
   private def persist(requests: List[HttpRequest]) = {
@@ -146,6 +210,7 @@ class UrlBank extends Actor with FSM[State, Data] with ActorLogging {
   }
 
   initialize()
+
 }
 
 object UrlBank {
@@ -156,6 +221,10 @@ object UrlBank {
 
   //received events
   final case class Deposit(requests: List[HttpRequest])
+
+  object Deposit {
+    def apply(request: HttpRequest) = new Deposit(List(request))
+  }
 
   final case class WithDraw(n: Int)
 
@@ -180,5 +249,6 @@ object UrlBank {
 
   case class Asset(persisted: Int, cache: List[HttpRequest]) extends Data
 
-  def props = Props(classOf[UrlBank], "urlRepository")
+  def props(excludes: Set[String], domainConstraints: Set[String], maxDepth: Int) = Props(classOf[UrlBank], excludes, domainConstraints, maxDepth, "urlRepository")
+
 }
