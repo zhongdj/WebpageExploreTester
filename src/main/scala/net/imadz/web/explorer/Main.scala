@@ -1,9 +1,10 @@
 package net.imadz.web.explorer
 
-import akka.actor.{Actor, ActorLogging, Props, Terminated}
+import akka.actor._
 import akka.event.LoggingReceive
-import scala.util.matching.Regex
 import net.imadz.web.explorer.UrlBank.Deposit
+
+import scala.concurrent.duration._
 
 /**
  * Created by geek on 8/20/14.
@@ -32,34 +33,47 @@ class Main extends Actor with ActorLogging {
 
 
   val excludes = Set[String]()
-
   val domainConstraints = Set("http://help-en-cn.nike.com", "http://help-zh-cn.nike.com", "http://help-ja-jp.nike.com")
-
   val urlBank = context.actorOf(Props(classOf[UrlBank], excludes, domainConstraints, 100), "UrlBank")
-
   urlBank ! Deposit(PageRequest(headers, initialUrl, initialName, None, 0))
 
   val dispatcher = context.actorOf(HttpRequestDispatcher.props(urlBank), HttpRequestDispatcher.name)
-  context.watch(urlBank)
+  context.watch(dispatcher)
 
   val httpErrorRecorder = context.actorOf(HttpErrorRecorder.props(), HttpErrorRecorder.name)
 
   val parserLead = context.actorOf(Props(classOf[ParserLead], urlBank), ParserLead.name)
 
-  val imageDownloadLead = context.actorOf(Props(classOf[ImgDownloadLead]), ImgDownloadLead.name)
+  val imageDownloadLead = context.actorOf(Props(classOf[ImgDownloadLead], urlBank), ImgDownloadLead.name)
 
   override def receive: Receive = LoggingReceive {
     case url: String => context.actorOf(HttpRequestDispatcher.props(urlBank))
-    case Terminated(urlBank) =>
-      AsyncWebClient.shutdown
-      context.children foreach context.stop
-      context.stop(self)
-      context.system.shutdown
+    case Terminated(child) =>
+      if (context.children.isEmpty) {
+        shutdown
+      }
+      else if (child.equals(dispatcher)) self ! Shutdown
+    case Shutdown =>
+      context.children foreach {
+        _ ! Shutdown
+      }
+      context.setReceiveTimeout(15 seconds)
+    case ReceiveTimeout =>
+      shutdown
   }
 
+  def shutdown {
+    AsyncWebClient.shutdown
+    context stop self
+    context.system.shutdown
+  }
 }
+
+object Shutdown
 
 object Main {
   val name = "Main"
   val path = "akka://" + name + "/user/app/"
+
+
 }

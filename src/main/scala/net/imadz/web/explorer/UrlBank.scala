@@ -2,12 +2,9 @@ package net.imadz.web.explorer
 
 import akka.actor._
 import net.imadz.web.explorer.UrlBank._
+
+import scala.concurrent.duration._
 import scala.util.matching.Regex
-import net.imadz.web.explorer.UrlBank.Asset
-import net.imadz.web.explorer.UrlBank.WithDraw
-import net.imadz.web.explorer.UrlBank.Deposit
-import net.imadz.web.explorer.UrlBank.Debt
-import net.imadz.web.explorer.UrlBank.Payback
 
 /**
  * Created by Scala on 14-8-25.
@@ -56,6 +53,8 @@ class UrlBank(val excludes: Set[String], val domainConstraints: Set[String], val
         goto(InDebt) using Debt(n, sender)
       case Event(Deposit(requests), NoHttpRequest) =>
         goto(Abundance) using deposit(requests)
+      case Event(Shutdown, NoHttpRequest) =>
+        goto(WaitingForShutdown)
 
     }
     filterInvalidUrls andThen logEventStart andThen (stayWhileNoRequest orElse processEvents) andThen logEventEnd
@@ -77,6 +76,8 @@ class UrlBank(val excludes: Set[String], val domainConstraints: Set[String], val
           dispatcher ! Payback(requests)
           Debt(n - requests.size, dispatcher)
         }
+      case Event(Shutdown, NoHttpRequest) =>
+        goto(WaitingForShutdown)
 
     }
     filterInvalidUrls andThen logEventStart andThen (stayWhileNoRequest orElse processEvents) andThen logEventEnd
@@ -85,14 +86,26 @@ class UrlBank(val excludes: Set[String], val domainConstraints: Set[String], val
 
   when(Abundance) {
     def processEvents: StateFunction = {
-
       case Event(WithDraw(n), asset: Asset) =>
         processWithDrawOnAbundance(n, asset)
       case Event(Deposit(requests), asset: Asset) =>
         processWithDepositOnAbudance(requests, asset)
-
+      case Event(Shutdown, asset@Asset(_, cachedList)) =>
+        persist(cachedList)
+        goto(WaitingForShutdown)
     }
     filterInvalidUrls andThen logEventStart andThen (stayWhileNoRequest orElse processEvents) andThen logEventEnd
+  }
+
+  when(WaitingForShutdown, 10 seconds) {
+    case Event(StateTimeout, _) =>
+      context stop self
+      stay
+    case Event(Deposit(requests), _) => {
+      persist(requests)
+      stay
+    }
+    case otherEvent => stay
   }
 
   private def processWithDepositOnAbudance(requests: List[HttpRequest], asset: Asset) = asset match {
@@ -240,6 +253,8 @@ object UrlBank {
   case object InDebt extends State
 
   case object Abundance extends State
+
+  case object WaitingForShutdown extends State
 
   sealed trait Data
 

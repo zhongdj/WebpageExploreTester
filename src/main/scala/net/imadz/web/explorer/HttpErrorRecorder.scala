@@ -23,6 +23,8 @@ class HttpErrorRecorder extends Actor with ActorLogging {
       logPageError(responseCode, pageRequest)
     case HttpError(responseCode, imageRequest: ImageRequest) =>
       logImageError(responseCode, imageRequest)
+    case Shutdown =>
+      context stop self
   }
 
   def logPageError(responseCode: Int, request: PageRequest): Unit = {
