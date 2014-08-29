@@ -33,8 +33,10 @@ class Main extends Actor with ActorLogging {
 
   val domainConstraints = Set("http://help-en-cn.nike.com", "http://help-zh-cn.nike.com", "http://help-ja-jp.nike.com")
 
-  val dispatcher = context.actorOf(HttpRequestDispatcher.props(headers, excludes, initialUrl, initialName, domainConstraints, 100), HttpRequestDispatcher.name)
-  context.watch(dispatcher)
+  val urlBank = context.actorOf(Props(classOf[UrlBank]), "UrlBank")
+
+  val dispatcher = context.actorOf(HttpRequestDispatcher.props(urlBank, headers, excludes, initialUrl, initialName, domainConstraints, 100), HttpRequestDispatcher.name)
+  context.watch(urlBank)
 
   val httpErrorRecorder = context.actorOf(HttpErrorRecorder.props(), HttpErrorRecorder.name)
 
@@ -43,8 +45,8 @@ class Main extends Actor with ActorLogging {
   //val imageDownloadLead = context.actorOf(Props(classOf[ImgDownloadLead]), ImgDownloadLead.name)
 
   override def receive: Receive = LoggingReceive {
-    case url: String => context.actorOf(HttpRequestDispatcher.props(headers, excludes, url, initialName, domainConstraints, 100))
-    case Terminated(dispatcherActor) =>
+    case url: String => context.actorOf(HttpRequestDispatcher.props(urlBank, headers, excludes, url, initialName, domainConstraints, 100))
+    case Terminated(urlBank) =>
       AsyncWebClient.shutdown
       context.children foreach context.stop
       context.stop(self)

@@ -10,13 +10,13 @@ import scala.util.matching.Regex
 /**
  * Created by geek on 8/20/14.
  */
-class HttpRequestDispatcher(val headers: Map[String, String], val excludes: Set[String], val domainUrl: String, val domainName: String, val domainConstraints: Set[String], val maxDepth: Int) extends Actor with ActorLogging {
+class HttpRequestDispatcher(val urlBank: ActorRef, val headers: Map[String, String], val excludes: Set[String], val domainUrl: String, val domainName: String, val domainConstraints: Set[String], val maxDepth: Int) extends Actor with ActorLogging {
 
   private var pageGetterCount: Int = 0
   private var imageGetterCount: Int = 0
   private var visitedUrls = Set[String]()
-  private val urlBank = context.actorOf(Props(classOf[UrlBank]), "UrlBank")
   private val getterMaxCount = context.system.settings.config.getInt("imadz.web.explorer.getterCount")
+
   urlBank ! WithDraw(getterMaxCount)
 
   self ! PageRequest(headers, domainUrl, domainName, None, 0)
@@ -103,5 +103,5 @@ object HttpRequestDispatcher {
   val name: String = "HttpRequestDispatcher"
   val path = Main.path + name
 
-  def props(headers: Map[String, String], excludes: Set[String], initialUrl: String, initialName: String, domainConstraints: Set[String], maxDepth: Int) = Props(classOf[HttpRequestDispatcher], headers, excludes, initialUrl, initialName, domainConstraints, maxDepth)
+  def props(urlBank: ActorRef, headers: Map[String, String], excludes: Set[String], initialUrl: String, initialName: String, domainConstraints: Set[String], maxDepth: Int) = Props(classOf[HttpRequestDispatcher], urlBank, headers, excludes, initialUrl, initialName, domainConstraints, maxDepth)
 }
