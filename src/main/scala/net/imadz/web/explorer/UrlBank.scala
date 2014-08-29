@@ -31,7 +31,7 @@ class UrlBank extends Actor with FSM[State, Data] with ActorLogging {
   when(Empty) {
     wrap {
       case Event(WithDraw(n), NoHttpRequest) =>
-        goto(InDebt) using Debt(n)
+        goto(InDebt) using Debt(n, sender)
       case Event(Deposit(requests), NoHttpRequest) =>
         goto(Abundance) using deposit(requests)
 
@@ -39,9 +39,9 @@ class UrlBank extends Actor with FSM[State, Data] with ActorLogging {
   }
   when(InDebt) {
     wrap {
-      case Event(WithDraw(m), Debt(n)) =>
-        stay using Debt(n + m)
-      case Event(Deposit(requests), Debt(n)) =>
+      case Event(WithDraw(m), Debt(n, dispatcher)) =>
+        stay using Debt(n + m, dispatcher)
+      case Event(Deposit(requests), Debt(n, dispatcher)) =>
         if (requests.size > n) goto(Abundance) using {
           dispatcher ! Payback(requests.take(n))
           deposit(requests.drop(n))
@@ -50,7 +50,7 @@ class UrlBank extends Actor with FSM[State, Data] with ActorLogging {
           NoHttpRequest
         } else stay using {
           dispatcher ! Payback(requests)
-          Debt(n - requests.size)
+          Debt(n - requests.size, dispatcher)
         }
     }
   }
@@ -87,35 +87,35 @@ class UrlBank extends Actor with FSM[State, Data] with ActorLogging {
   private def processWithDrawOnAbundance(n: Int, asset: Asset) = asset match {
     case Asset(_, cachedRequests) if cachedRequests.size > n =>
       stay using {
-        dispatcher ! Payback(cachedRequests.take(n))
+        sender ! Payback(cachedRequests.take(n))
         asset.copy(cache = cachedRequests.drop(n))
       }
     case Asset(0, cachedRequests) if cachedRequests.size == n =>
       goto(Empty) using {
-        dispatcher ! Payback(cachedRequests)
+        sender ! Payback(cachedRequests)
         NoHttpRequest
       }
     case Asset(0, cachedRequests) if cachedRequests.size < n =>
       goto(InDebt) using {
-        dispatcher ! Payback(cachedRequests)
-        Debt(n - cachedRequests.size)
+        sender ! Payback(cachedRequests)
+        Debt(n - cachedRequests.size, sender)
       }
     case Asset(persistedTotal, cachedRequests) if cachedRequests.size == n =>
       stay using {
-        dispatcher ! Payback(cachedRequests)
+        sender ! Payback(cachedRequests)
         fillCache(persistedTotal)
       }
     case Asset(persistedTotal, cachedRequests) if cachedRequests.size < n =>
       if (persistedTotal + cachedRequests.size == n) goto(Empty) using {
-        dispatcher ! Payback(cachedRequests ::: pop(persistedTotal))
+        sender ! Payback(cachedRequests ::: pop(persistedTotal))
         NoHttpRequest
       }
       else if (persistedTotal + cachedRequests.size > n) stay using {
-        dispatcher ! Payback(cachedRequests ::: pop(n - cachedRequests.size))
+        sender ! Payback(cachedRequests ::: pop(n - cachedRequests.size))
         fillCache(persistedTotal + cachedRequests.size - n)
       } else goto(InDebt) using {
-        dispatcher ! Payback(cachedRequests ::: pop(persistedTotal))
-        Debt(n - persistedTotal - cachedRequests.size)
+        sender ! Payback(cachedRequests ::: pop(persistedTotal))
+        Debt(n - persistedTotal - cachedRequests.size, sender)
       }
   }
 
@@ -123,10 +123,6 @@ class UrlBank extends Actor with FSM[State, Data] with ActorLogging {
   def fillCache(persistedLeft: Int): Asset = {
     if (persistedLeft >= maxCacheSize) Asset(persistedLeft - maxCacheSize, pop(maxCacheSize))
     else Asset(0, pop(persistedLeft))
-  }
-
-  def dispatcher: ActorRef = {
-    context.parent
   }
 
   def deposit(requests: List[HttpRequest]): Asset = {
@@ -180,7 +176,7 @@ object UrlBank {
 
   case object NoHttpRequest extends Data
 
-  case class Debt(n: Int) extends Data
+  case class Debt(n: Int, dispatcher: ActorRef) extends Data
 
   case class Asset(persisted: Int, cache: List[HttpRequest]) extends Data
 
