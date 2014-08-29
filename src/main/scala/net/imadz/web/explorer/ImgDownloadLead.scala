@@ -24,7 +24,7 @@ class ImgDownloadLead(urlBank: ActorRef) extends Actor {
 
   def shuttingDown: Receive = {
     case ImgDownloadRequest(url, pageRequest) =>
-      urlBank ! Deposit(ImageRequest(pageRequest.headers, url, "Image got no name", pageRequest, pageRequest.depth + 1))
+      urlBank ! Deposit(List(ImageRequest(pageRequest.headers, url, "Image got no name", pageRequest, pageRequest.depth + 1)))
     case ReceiveTimeout =>
       context stop self
   }
