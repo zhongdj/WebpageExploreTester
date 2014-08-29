@@ -1,23 +1,20 @@
 package net.imadz.web.explorer
 
-
-import java.util.concurrent.{ThreadFactory, Executors}
-
-import akka.actor.{Props, Actor}
-import java.util.concurrent.atomic.AtomicInteger
-import com.ning.http.client.{HttpResponseHeaders, AsyncHttpClient}
-import java.net.{URL, URLConnection, HttpURLConnection}
 import java.io._
-import scala.concurrent.ExecutionContext
-import scala.util.Try
+import java.net.{HttpURLConnection, URL}
+import java.util.concurrent.atomic.AtomicInteger
+
+import akka.actor.{Actor, Props}
 import akka.event.LoggingReceive
+
+import scala.util.Try
 
 /**
  * Created by geek on 5/11/14.
  */
 class ImgDownloader extends Actor {
 
-  import ImgDownloader.{ImgUrl, imgSeq, foldSeq, imgRepo, sizeFilter}
+  import net.imadz.web.explorer.ImgDownloader.{ImgUrl, foldSeq, imgRepo, imgSeq, sizeFilter}
 
   def receive = LoggingReceive {
     case ImgUrl(urlString) =>
@@ -80,6 +77,7 @@ object ImgDownloader {
   val downloaderSeq = new AtomicInteger(1)
 
   case class ImgUrl(val url: String)
+
   def propsOfImages = Props(classOf[ImgDownloader]).withDispatcher("images-download-dispatcher")
 
 }
