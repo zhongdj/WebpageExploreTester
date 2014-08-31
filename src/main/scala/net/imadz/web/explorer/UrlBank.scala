@@ -5,7 +5,6 @@ import net.imadz.web.explorer.StateUpdate.{Processed, ShuttingDown, Stopped, Url
 import net.imadz.web.explorer.UrlBank._
 
 import scala.concurrent.duration._
-import scala.util.matching.Regex
 
 /**
  * Created by Scala on 14-8-25.
@@ -233,13 +232,10 @@ class UrlBank(val excludes: Set[String], val domainConstraints: Set[String], val
     excludes.exists(x => if (x.isEmpty) false else url.startsWith(x))
   }
 
-  private def obeyDomainConstraints(url: String): Boolean = {
-    val domainPrefixReg = new Regex( """(http|https)://.*?/""")
-    val domainUrl: String = domainPrefixReg.findFirstIn(url).getOrElse(url)
-    if (domainUrl != "") {
-      domainConstraints.exists(keyword => domainUrl.contains(keyword))
-    }
-    else false
+  private def obeyDomainConstraints(rawUrl: String): Boolean = {
+    """http[s]?://[^/]*/?""".r findFirstIn(rawUrl) map { domainUrl: String =>
+        domainConstraints.exists(domainUrl.contains)
+      } getOrElse(false)
   }
 
   var db = List[HttpRequest]()
