@@ -8,3 +8,7 @@ target/
 .idea/modules/webpageexploretester.iml
 
 .idea/misc.xml
+
+.idea/sbt.xml
+
+.idea/vcs.xml
