@@ -18,7 +18,10 @@ case class BadStatus(status: Int) extends RuntimeException
 
 object AsyncWebClient {
 
-  lazy val pageGetThreadPool: ExecutorService = Executors.newFixedThreadPool(10, new ThreadFactory {
+  var getterNumber: Int = 10
+  def setGetterNumber(num: Int) {getterNumber = num}
+
+  lazy val pageGetThreadPool: ExecutorService = Executors.newFixedThreadPool(getterNumber, new ThreadFactory {
     var counter = 0;
 
     override def newThread(r: Runnable): Thread = {
@@ -46,10 +49,6 @@ object AsyncWebClient {
         } else if (conn.getResponseCode >= 300) {
           val rawUrl = conn.getHeaderField("Location")
           val newUrl = LinkUtils.absoluteUrl(rawUrl, url)
-          println("Response Code: " + conn.getResponseCode)
-          println("Redirect Found on url: " + url)
-          println("raw Url is: " + rawUrl)
-          println("new Url is: " + newUrl)
           if (null != newUrl) {
             urlBank ! Deposit(List(PageRequest(headers, newUrl, "RedirectPage", Some(pageRequest), pageRequest.depth + 1)))
             ""

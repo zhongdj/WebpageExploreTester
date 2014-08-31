@@ -15,6 +15,7 @@ class HttpRequestDispatcher(val urlBank: ActorRef, observer: Option[ActorRef]) e
   private var pageGetterCount: Int = 0
   private var imageGetterCount: Int = 0
   private val getterMaxCount = context.system.settings.config.getInt("imadz.web.explorer.getterCount")
+  AsyncWebClient.setGetterNumber(getterMaxCount)
 
   urlBank ! WithDraw(getterMaxCount)
 
