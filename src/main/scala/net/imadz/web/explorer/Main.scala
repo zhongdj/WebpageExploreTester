@@ -75,10 +75,10 @@ object StateUpdate {
 }
 
 case class TestRun(targetUrl: String, headerText: String, exclusions: String, inclusions: String, checkImage: Boolean, depth: Int) {
-  def exclusionList = exclusions.split("\n").toSet
+  def exclusionList = exclusions.split("\n").map(_.trim).toSet
 
-  def inclusionList = inclusions.split("\n").toSet
-
+  def inclusionList = inclusions.split("\n").map(_.trim).toSet
+  
   def headers: Map[String, String] =  Map[String, String](
     "Accept" -> "text/html,application/xhtml+xml,text/xml,application/xml;q=0.9,image/webp,image/GIF,image/jpeg,text/plain, image/png, image/tiff, image/x-icon",
     //      "Accept-Encoding" -> "gzip,deflate,sdch",
