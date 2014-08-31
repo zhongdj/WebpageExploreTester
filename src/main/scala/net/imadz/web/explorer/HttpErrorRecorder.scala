@@ -22,7 +22,7 @@ class HttpErrorRecorder(errorHandler: Option[ActorRef], observer: Option[ActorRe
 
   private def notifyHttpError: PartialFunction[Any, HttpErrorRequest] = {
     case error: HttpErrorRequest =>
-      for (handler <- errorHandler) yield handler ! error
+      for (handler <- errorHandler) yield handler ! HttpError(error.responseCode, error.httpRequest)
       for (listener <- observer) yield listener ! HttpErrorFound(HttpError(error.responseCode, error.httpRequest))
       error
   }
