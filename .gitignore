@@ -3,12 +3,10 @@
 .idea/
 
 target/
-.idea/workspace.xml
 
-.idea/modules/webpageexploretester.iml
+*.iml
 
-.idea/misc.xml
 
-.idea/sbt.xml
+.idea/modules/webpageexploretester-build.iml
 
 .idea/vcs.xml
