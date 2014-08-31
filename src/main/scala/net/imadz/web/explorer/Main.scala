@@ -96,7 +96,7 @@ case class TestRun(targetUrl: String, headerText: String, exclusions: String, in
 
 object Main {
   val name = "Main"
-  val path = "akka://" + name + "/user/app/"
+  val path = "akka://spiderman/user/" + name + "/"
 
   def props(errorHandler: Option[ActorRef], observer: Option[ActorRef]) = Props(classOf[Main], errorHandler, observer)
 
