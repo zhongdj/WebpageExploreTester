@@ -1,13 +1,11 @@
 package net.imadz.web.explorer
 
-import java.net.ConnectException
-import java.util.concurrent.{Executors, ThreadFactory, TimeoutException}
+import java.util.concurrent.{Executors, ThreadFactory}
 
 import akka.actor._
 import akka.event.LoggingReceive
 import net.imadz.web.explorer.HttpErrorRecorder.HttpErrorRequest
 import net.imadz.web.explorer.ImgDownloadLead.ImgDownloadRequest
-import net.imadz.web.explorer.ParserLead.ParseRequest
 
 import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
@@ -28,23 +26,28 @@ class HttpUrlGetter(httpRequest: HttpRequest, urlBank: ActorRef) extends Actor w
 
   override def receive: Receive = LoggingReceive {
     case p@PageRequest(_, url, name, pre, _) =>
+      val anchorFSM = context.actorOf(AnchorFSM.props(p))
+      val imgFSM = context.actorOf(ImgFSM.props(p))
+      context.watch(anchorFSM)
+      context.watch(imgFSM)
 
       val headers: Map[String, String] = httpRequest.headers
 
-      client.get(headers)(encodeUrl(url))(urlBank, p) onComplete {
+      def shutdownChildren {
+        anchorFSM ! Shutdown
+        imgFSM ! Shutdown
+      }
+      client.get(headers)(encodeUrl(url))(urlBank, p, anchorFSM, imgFSM) onComplete {
         case Success(body) =>
           if (null != context) {
-            val parserLead: ActorSelection = context.actorSelection(ParserLead.path)
-            if (null != parserLead) parserLead ! ParseRequest(body, p)
-            context.stop(self)
+            shutdownChildren
           }
         case Failure(BadStatus(code)) =>
           HttpUrlGetter.reporterCount += 1
           context.actorSelection(HttpErrorRecorder.path) ! HttpErrorRequest(code, p)
-          context.stop(self)
+          shutdownChildren
         case Failure(t) =>
-          context.stop(self)
-        //handleFailure(t, p)
+          shutdownChildren
       }
 
     case i@ImageRequest(_, url, name, pre, _) =>
@@ -64,41 +67,17 @@ class HttpUrlGetter(httpRequest: HttpRequest, urlBank: ActorRef) extends Actor w
             context.stop(self)
           case Failure(t) =>
             context.stop(self)
-          //handleFailure(t, i)
         }
       }
+    case Terminated(child) => {
+      if (context.children.isEmpty) {
+        context.stop(self)
+      }
+    }
   }
 
   def encodeUrl(url: String): String = {
     url.replaceAll(" ", "%20")
-  }
-
-  def handleFailure(t: Throwable, i: HttpRequest): Unit = {
-    //context.parent ! SlowDown
-    t match {
-      case e: TimeoutException =>
-        self ! i
-      case e: ConnectException =>
-        if (e.getMessage.contains("Handshake did not complete")) {
-          HttpUrlGetter.reporterCount += 1
-          context.actorSelection(HttpErrorRecorder.path) ! HttpError(HANDSHAKE_NOT_COMPLETE, i)
-          context.stop(self)
-        } else if (e.getMessage.contains("Connection reset by peer")) {
-          //todo waiting
-          self ! i
-        } else if (e.getMessage.contains("Operation timed out")) {
-          self ! i
-        } else {
-          log.error(e, "Unhandled Exception")
-          context.stop(self)
-        }
-      case e: Throwable =>
-        log.error(e, "Unhandled Exception")
-        context.stop(self)
-      case _ =>
-        log.error(t, i.toString)
-        context.stop(self)
-    }
   }
 }
 

@@ -192,6 +192,7 @@ class UrlBank(val excludes: Set[String], val domainConstraints: Set[String], val
   private def logEventEnd: scala.PartialFunction[State, State] = {
     case state: State =>
       log.debug("newState: " + state.stateName + ", stateData: " + dataStr(state.stateData))
+      log.debug("visited Url total: " + visitedUrls.size)
       log.debug("----------------------------------------------------------------------------")
       state
   }

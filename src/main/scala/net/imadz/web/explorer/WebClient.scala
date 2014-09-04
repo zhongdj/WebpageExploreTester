@@ -33,7 +33,7 @@ object AsyncWebClient {
     ExecutionContext.fromExecutor(pageGetThreadPool)
   }
 
-  def get(headers: Map[String, String])(url: String)(urlBank: ActorRef, pageRequest: PageRequest): Future[String] = {
+  def get(headers: Map[String, String])(url: String)(urlBank: ActorRef, pageRequest: PageRequest, anchorFSM: ActorRef, imgFSM: ActorRef): Future[String] = {
 
     Future {
       var conn: HttpURLConnection = null
@@ -61,6 +61,8 @@ object AsyncWebClient {
           val resultBuilder = new StringBuilder(line)
 
           while (line != null) {
+            anchorFSM ! AnchorFSM.NewLine(line)
+            imgFSM ! ImgFSM.NewLine(line)
             line = reader.readLine
             resultBuilder.append("\n").append(line)
           }
@@ -111,7 +113,7 @@ object AsyncWebClient {
 
 }
 
-object test extends App {
+object test{
 
   val url = "http://help-en-cn.nike.com/app/answers/detail/article/nike-jobs/snav/p/navt/About%20Nike%2C%20Inc./a_id/34193"
   val headers = Map.empty
