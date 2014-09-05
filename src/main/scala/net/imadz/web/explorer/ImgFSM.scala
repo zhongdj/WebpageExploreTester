@@ -9,12 +9,12 @@ import net.imadz.web.explorer.ImgFSM.NewLine
  * Created by Scala on 14-9-4.
  */
 class ImgFSM(p: PageRequest) extends Actor with FSM[State, Data] with ActorLogging {
-  startWith(WaitImgStart, NoLineData)
+  startWith(WaitImgStart, Empty)
   val parserLead: ActorSelection = context.actorSelection(ParserLead.path)
   assert(null != parserLead)
 
   when(WaitImgStart) {
-    case Event(NewLine(newLine), NoLineData) => {
+    case Event(NewLine(newLine), Empty) => {
       if (newLine.contains("<img")) {
         val result = newLine.split("<img")
         assert(result.length != 1)
@@ -22,7 +22,7 @@ class ImgFSM(p: PageRequest) extends Actor with FSM[State, Data] with ActorLoggi
           x => parserLead ! ParseRequest("<img" + result(x), p)
         }
       }
-        stay using NoLineData
+      stay using Empty
     }
 
     case Event(Shutdown, _) => {
@@ -30,6 +30,8 @@ class ImgFSM(p: PageRequest) extends Actor with FSM[State, Data] with ActorLoggi
       stay
     }
   }
+
+  initialize()
 }
 
 
@@ -43,7 +45,7 @@ object ImgFSM {
 
   sealed trait Data
 
-  case object NoLineData extends Data
+  case object Empty extends Data
 
   case class WaitImgEndData(lines: List[String]) extends Data
 

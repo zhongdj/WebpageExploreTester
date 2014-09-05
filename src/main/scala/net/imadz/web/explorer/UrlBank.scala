@@ -9,7 +9,7 @@ import scala.concurrent.duration._
 /**
  * Created by Scala on 14-8-25.
  */
-class UrlBank(val excludes: Set[String], val domainConstraints: Set[String], val maxDepth: Int, val observer: Option[ActorRef]) extends Actor with FSM[State, Data] with ActorLogging {
+class UrlBank(val excludes: Set[String], val inclusions: Set[String], val maxDepth: Int, val observer: Option[ActorRef]) extends Actor with FSM[State, Data] with ActorLogging {
 
   startWith(Empty, NoHttpRequest)
   var visitedUrls = Set[String]()
@@ -218,14 +218,14 @@ class UrlBank(val excludes: Set[String], val domainConstraints: Set[String], val
         !request.url.contains("#") &&
         request.url.length > 10 &&
         depth <= maxDepth &&
-        obeyDomainConstraints(request.previousRequest.get.url)
+        obeyInclusions(request.previousRequest.get.url)
     } else {
       !visitedUrls.contains(request.url) &&
         !exclude(request.url) &&
         !request.url.contains("#") &&
         request.url.length > 10 &&
         depth <= maxDepth &&
-        obeyDomainConstraints(request.url)
+        obeyInclusions(request.url)
     }
   }
 
@@ -233,10 +233,8 @@ class UrlBank(val excludes: Set[String], val domainConstraints: Set[String], val
     excludes.exists(x => if (x.isEmpty) false else url.startsWith(x))
   }
 
-  private def obeyDomainConstraints(rawUrl: String): Boolean = {
-    """http[s]?://[^/]*/?""".r findFirstIn(rawUrl) map { domainUrl: String =>
-        domainConstraints.exists(domainUrl.contains)
-      } getOrElse(false)
+  private def obeyInclusions(rawUrl: String): Boolean = {
+        inclusions.exists(rawUrl.contains)
   }
 
   var db = List[HttpRequest]()

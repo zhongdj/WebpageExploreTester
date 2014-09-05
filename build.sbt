@@ -19,4 +19,4 @@ libraryDependencies ++= Seq(
   "com.ning" % "async-http-client" % "1.8.13",
   "ch.qos.logback" % "logback-classic" % "1.0.7")
 
-javaOptions += "-Dakka.loglevel=DEBUG"
+//javaOptions += "-Dakka.loglevel=DEBUG"

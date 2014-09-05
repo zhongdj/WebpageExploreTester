@@ -33,7 +33,7 @@ object AsyncWebClient {
     ExecutionContext.fromExecutor(pageGetThreadPool)
   }
 
-  def get(headers: Map[String, String])(url: String)(urlBank: ActorRef, pageRequest: PageRequest, anchorFSM: ActorRef, imgFSM: ActorRef): Future[String] = {
+  def get(headers: Map[String, String])(url: String)(urlBank: ActorRef, pageRequest: PageRequest, anchorFSM: ActorRef, imgFSM: ActorRef): Future[Unit] = {
 
     Future {
       var conn: HttpURLConnection = null
@@ -58,15 +58,11 @@ object AsyncWebClient {
         } else {
           reader = new BufferedReader(new InputStreamReader(conn.getInputStream))
           var line = reader.readLine
-          val resultBuilder = new StringBuilder(line)
-
           while (line != null) {
             anchorFSM ! AnchorFSM.NewLine(line)
             imgFSM ! ImgFSM.NewLine(line)
             line = reader.readLine
-            resultBuilder.append("\n").append(line)
           }
-          resultBuilder.toString
         }
       } finally {
         if (null != reader) reader.close

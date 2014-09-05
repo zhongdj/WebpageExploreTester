@@ -7,80 +7,62 @@ import net.imadz.web.explorer.ParserLead.ParseRequest
 /**
  * Created by Scala on 14-9-4.
  */
-class AnchorFSM(p: PageRequest) extends Actor with FSM[State, Data] with ActorLogging {
+class AnchorFSM(previousPageRequest: PageRequest) extends Actor with FSM[State, Data] with ActorLogging {
   startWith(WaitAnchorStart, Empty)
   val parserLead: ActorSelection = context.actorSelection(ParserLead.path)
-
   assert(null != parserLead)
 
+  val ANCHOR_START: String = "<a"
+  val ANCHOR_END: String = "</a>"
+  val PLACE_HOLDER: String = "MADZ_PLACE_HOLDER"
+
   when(WaitAnchorStart) {
-    case Event(NewLine(rawLine), Empty) => {
-      try {
-        val newLine = rawLine.trim
-        if (newLine.contains("<a")) {
-          val result = newLine.split("</a>")
-          if (result.length == 1) goto(WaitAnchorEnd) using Buffer(lines = List(result(0)))
-          else {
-            (0 until (result.length - 1)) map { x =>
-              val body = result(x) + "</a>"
-              parserLead ! ParseRequest(body, p)
-            }
-            if (result(result.length - 1).contains("<a")) {
-              goto(WaitAnchorEnd) using Buffer(lines = List(result(result.length - 1)))
-            } else {
-              stay using Empty
-            }
-          }
-        } else {
-          stay using Empty
+    case Event(NewLine(rawLine), Empty) =>
+      val newLine = rawLine.trim
+      if (!newLine.contains(ANCHOR_START)) {
+        stay using Empty
+      } else {
+        val totalLines = (newLine + PLACE_HOLDER).trim.split(ANCHOR_END).toList
+        linkLinesOf(totalLines) map toLink foreach {
+          parserLead ! ParseRequest(_, previousPageRequest)
         }
-      } catch {
-        case e: Exception => log.error(e, e.getMessage)
-          stay
+        toState(totalLines)
       }
-    }
-    case Event(Shutdown, _) => {
+    case Event(Shutdown, _) =>
       context stop self
       stay
-    }
   }
 
   when(WaitAnchorEnd) {
-    case Event(NewLine(rawLine), Buffer(data)) => {
-      try {
-        val newLine = rawLine.trim
-        val result = newLine.split("</a>")
-        if (result.length == 0) {
-          val last = data :+ "</a>"
-
-          parserLead ! ParseRequest(last mkString, p)
-          goto(WaitAnchorStart) using Empty
-        } else if (result.length == 1) {
-          stay using Buffer(lines = data :+ result(0))
-        } else {
-          val last = data :+ result(0) :+ "</a>"
-          parserLead ! ParseRequest(last mkString, p)
-
-          1 until (result.length - 1) map { x =>
-            parserLead ! ParseRequest(result(x) + "</a>", p)
-          }
-
-          if (result(result.length - 1).contains("<a")) {
-            stay using Buffer(lines = List(result(result.length - 1)))
-          } else {
-            goto(WaitAnchorStart) using Empty
-          }
-        }
-      } catch {
-        case e: Exception => log.error(e, e.getMessage)
-          stay
+    case Event(NewLine(rawLine), Buffer(cachedData)) =>
+      val totalLines = (cachedData :+ rawLine :+ PLACE_HOLDER mkString).trim.split(ANCHOR_END).toList
+      linkLinesOf(totalLines) map toLink foreach {
+          parserLead ! ParseRequest(_, previousPageRequest)
       }
-    }
-    case Event(Shutdown, _) => {
+      toState(totalLines)
+    case Event(Shutdown, _) =>
       context stop self
       stay
-    }
   }
+
+  def linkLinesOf: List[String] => List[String] = {
+    case Nil => List(ANCHOR_END)
+    case x :: Nil => Nil
+    case x :: xs => x :: linkLinesOf(xs)
+  }
+
+  def toState: List[String] => State = {
+    case Nil => goto(WaitAnchorStart) using Empty
+    case lastLine :: Nil if lastLine contains ANCHOR_START => goto(WaitAnchorEnd) using Buffer(lastLine.replace(PLACE_HOLDER, "") :: Nil)
+    case lastLine :: Nil => goto(WaitAnchorStart) using Empty
+    case x :: xs => toState(xs)
+  }
+
+  private def toLink: String => String = {
+    case line: String => line + ANCHOR_END
+  }
+
+  initialize()
 }
 
 object AnchorFSM {
