@@ -12,7 +12,7 @@ class AnchorFSM(previousPageRequest: PageRequest) extends Actor with FSM[State, 
   val parserLead: ActorSelection = context.actorSelection(ParserLead.path)
   assert(null != parserLead)
 
-  val ANCHOR_START: String = "<a"
+  val ANCHOR_START: String = "<a "
   val ANCHOR_END: String = "</a>"
   val PLACE_HOLDER: String = "MADZ_PLACE_HOLDER"
 
