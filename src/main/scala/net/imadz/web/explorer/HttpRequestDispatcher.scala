@@ -42,6 +42,7 @@ class HttpRequestDispatcher(val urlBank: ActorRef, observer: Option[ActorRef]) e
     case ReceiveTimeout =>
       shutdownNow
     case Terminated(child) => resetTimeout {
+      System.gc
       notifyGetting
       urlBank ! WithDraw(1)
     }

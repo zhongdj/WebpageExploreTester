@@ -10,6 +10,7 @@ import net.imadz.web.explorer.utils.LinkUtils
 
 import scala.collection.immutable.ListSet
 import scala.concurrent.{ExecutionContext, Future}
+import java.nio.charset.Charset
 
 trait WebClient {
   def get(headers: Map[String, String])(url: String)(implicit exec: Executor): Future[String]
@@ -60,6 +61,7 @@ object AsyncWebClient {
           reader = new BufferedReader(new InputStreamReader(conn.getInputStream))
           var line = reader.readLine
           while (line != null) {
+            line = new String(line.getBytes(), Charset.forName("UTF8"))
             anchorFSM ! AnchorFSM.NewLine(line)
             imgFSM ! ImgFSM.NewLine(line)
             line = reader.readLine
