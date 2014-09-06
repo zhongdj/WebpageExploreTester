@@ -5,6 +5,7 @@ import akka.event.LoggingReceive
 import net.imadz.web.explorer.StateUpdate.Stopped
 import net.imadz.web.explorer.UrlBank.Deposit
 
+import scala.collection.immutable.ListSet
 import scala.concurrent.duration._
 
 /**
@@ -16,7 +17,7 @@ class Main(errorHandler: Option[ActorRef], observer: Option[ActorRef]) extends A
     case run: TestRun =>
 
       val urlBank = UrlBank(context, run, observer)
-      urlBank ! Deposit(List(PageRequest(run.headers, run.targetUrl, "Landing Page", None, 0)))
+      urlBank ! Deposit(ListSet(PageRequest(run.headers, run.targetUrl, "Landing Page", None, 0)))
 
       val dispatcher = HttpRequestDispatcher(context, urlBank, observer)
       val errorRecorder = HttpErrorRecorder(context, errorHandler, observer)

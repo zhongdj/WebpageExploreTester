@@ -122,11 +122,11 @@ object HttpError {
   def stepsFrom(request: HttpRequest): List[NavigateSegment] = request match {
     case PageRequest(_, url, _, None, _) => List[NavigateSegment](LandingPage(url))
     case PageRequest(_, url, name, Some(previousPageRequest), _) => stepsFrom(previousPageRequest) :+ Step(name, url)
-    case ImageRequest(_, url, _, pageRequest, _) =>  stepsFrom(pageRequest) :+ Step("Image", url)
+    case ImageRequest(_, url, _, pageRequest, _) => stepsFrom(pageRequest) :+ Step("Image", url)
   }
 
   def apply(responseCode: Int, httpRequest: HttpRequest): HttpError = {
-    new HttpError(responseCode, httpRequest.url, httpRequest.previousRequest.get.url, stepsFrom(httpRequest), httpRequest)
+    new HttpError(responseCode, httpRequest.previousRequest.get.url, httpRequest.url, stepsFrom(httpRequest), httpRequest)
   }
 }
 

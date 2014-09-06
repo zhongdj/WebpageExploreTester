@@ -26,8 +26,7 @@ class ImgFSM(p: PageRequest) extends Actor with FSM[State, Data] with ActorLoggi
     }
 
     case Event(Shutdown, _) => {
-      context stop self
-      stay
+      stop
     }
   }
 

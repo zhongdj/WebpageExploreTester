@@ -3,6 +3,8 @@ package net.imadz.web.explorer
 import akka.actor.{Actor, ActorLogging, ActorRef, Props}
 import net.imadz.web.explorer.utils.LinkUtils
 
+import scala.collection.immutable.ListSet
+
 /**
  * Created by geek on 8/20/14.
  */
@@ -13,7 +15,7 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, urlBank: ActorRef) 
   override def receive: Receive = {
     case body: String =>
       parse(body) { request =>
-        urlBank ! UrlBank.Deposit(List(request))
+        urlBank ! UrlBank.Deposit(ListSet(request))
       }
       context.stop(self)
   }

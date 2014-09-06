@@ -6,6 +6,7 @@ import net.imadz.web.explorer.ImgDownloadLead.ImgDownloadRequest
 import net.imadz.web.explorer.ImgDownloader.ImgUrl
 import net.imadz.web.explorer.UrlBank.Deposit
 
+import scala.collection.immutable.ListSet
 import scala.concurrent.duration._
 
 /**
@@ -24,7 +25,7 @@ class ImgDownloadLead(urlBank: ActorRef) extends Actor {
 
   def shuttingDown: Receive = {
     case ImgDownloadRequest(url, pageRequest) =>
-      urlBank ! Deposit(List(ImageRequest(pageRequest.headers, url, "Image got no name", pageRequest, pageRequest.depth + 1)))
+      urlBank ! Deposit(ListSet(ImageRequest(pageRequest.headers, url, "Image got no name", pageRequest, pageRequest.depth + 1)))
     case ReceiveTimeout =>
       context stop self
   }

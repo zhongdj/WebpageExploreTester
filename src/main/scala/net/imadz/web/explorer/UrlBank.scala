@@ -4,6 +4,7 @@ import akka.actor._
 import net.imadz.web.explorer.StateUpdate.{Processed, ShuttingDown, Stopped, UrlQueueSize}
 import net.imadz.web.explorer.UrlBank._
 
+import scala.collection.immutable.ListSet
 import scala.concurrent.duration._
 
 /**
@@ -15,6 +16,7 @@ class UrlBank(val excludes: Set[String], val inclusions: Set[String], val maxDep
   var visitedUrls = Set[String]()
 
   when(Empty) {
+    implicit val currentUrls: ListSet[HttpRequest] = ListSet.empty[HttpRequest]
     onEvent {
       case Event(WithDraw(n), NoHttpRequest) => goto(InDebt) using Debt(n, sender)
       case Event(Deposit(requests), NoHttpRequest) => goto(Abundance) using deposit(requests)
@@ -25,6 +27,7 @@ class UrlBank(val excludes: Set[String], val inclusions: Set[String], val maxDep
   }
 
   when(InDebt) {
+    implicit val currentUrls: ListSet[HttpRequest] = ListSet.empty[HttpRequest]
     onEvent {
       case Event(WithDraw(m), Debt(n, dispatcher)) =>
         stay using Debt(n + m, dispatcher)
@@ -47,6 +50,10 @@ class UrlBank(val excludes: Set[String], val inclusions: Set[String], val maxDep
   }
 
   when(Abundance) {
+    implicit val currentUrls: ListSet[HttpRequest] = if (this.stateData.isInstanceOf[Asset])
+      this.stateData.asInstanceOf[Asset].cache
+    else ListSet.empty[HttpRequest]
+
     onEvent {
       case Event(WithDraw(n), asset: Asset) =>
         processWithDrawOnAbundance(n, asset)
@@ -60,11 +67,11 @@ class UrlBank(val excludes: Set[String], val inclusions: Set[String], val maxDep
   }
 
   when(WaitingForShutdown, 10 seconds) {
+    implicit val currentUrls: ListSet[HttpRequest] = ListSet.empty[HttpRequest]
     onEvent {
       case Event(StateTimeout, _) =>
         for (listener <- observer) listener ! Stopped(self)
-        context stop self
-        stay
+        stop
       case Event(Deposit(requests), _) => {
         persist(requests)
         stay
@@ -73,44 +80,64 @@ class UrlBank(val excludes: Set[String], val inclusions: Set[String], val maxDep
     }
   }
 
-  private def onEvent(processEvents: => StateFunction): PartialFunction[Event, State] = {
-    filterInvalidUrls andThen logEventStart andThen (stayWhileNoRequest orElse processEvents) andThen logEventEnd andThen notifyObserver
+  private def onEvent(processEvents: => StateFunction)(implicit currentUrls: ListSet[HttpRequest]): PartialFunction[Event, State] = {
+    filterInvalidUrls(currentUrls) andThen logEventStart andThen (stayWhileNoRequest orElse processEvents) andThen logEventEnd andThen notifyObserver
   }
 
   private def validateFunc: HttpRequest => Boolean = {
     case request: HttpRequest => needVisit(request, request.depth)
   }
 
-  private def filterInvalidUrls: scala.PartialFunction[Event, Event] = {
+  def needVisit(request: HttpRequest, depth: Int): Boolean = {
+    if (request.previousRequest.isDefined) {
+      !visitedUrls.contains(request.url) &&
+        !exclude(request.url) &&
+        !request.url.contains("#") &&
+        request.url.length > 10 &&
+        depth <= maxDepth &&
+        obeyInclusions(request.previousRequest.get.url)
+    } else {
+      !visitedUrls.contains(request.url) &&
+        !exclude(request.url) &&
+        !request.url.contains("#") &&
+        request.url.length > 10 &&
+        depth <= maxDepth &&
+        obeyInclusions(request.url)
+    }
+  }
+
+  private def filterInvalidUrls(currentUrls: ListSet[HttpRequest]): scala.PartialFunction[Event, Event] = {
     case Event(Deposit(requests), data) =>
-      Event(Deposit(requests filter validateFunc), data)
+      Event(Deposit(requests filter validateFunc filter { request =>
+        !currentUrls.contains(request) && !db.contains(request)
+      }), data)
     case otherEvent => otherEvent
   }
 
   private def stayWhileNoRequest: StateFunction = {
-    case Event(Deposit(Nil), data) => stay
+    case Event(Deposit(empty), data) if empty.size == 0 => stay
   }
 
-  private def processWithDepositOnAbundance(requests: List[HttpRequest], asset: Asset) = asset match {
+  private def processWithDepositOnAbundance(requests: ListSet[HttpRequest], asset: Asset) = asset match {
 
     case Asset(persistedTotal, cachedRequests) if cachedRequests.size == maxCacheSize =>
       stay using {
         persist(requests)
-        asset.copy(persisted = persistedTotal + requests.length)
+        asset.copy(persisted = persistedTotal + requests.size)
       }
-    case Asset(_, cachedRequests) if requests.length + cachedRequests.size <= maxCacheSize =>
+    case Asset(_, cachedRequests) if requests.size + cachedRequests.size <= maxCacheSize =>
       stay using {
-        asset.copy(cache = cachedRequests ::: requests)
+        asset.copy(cache = cachedRequests ++ requests)
       }
-    case Asset(persistedTotal, cachedRequests) if requests.size + cachedRequests.length > maxCacheSize =>
+    case Asset(persistedTotal, cachedRequests) if requests.size + cachedRequests.size > maxCacheSize =>
       stay using {
         val leftNumber = maxCacheSize - cachedRequests.size
         persist(requests.drop(leftNumber))
-        Asset(persistedTotal + leftNumber, cachedRequests ::: requests.take(leftNumber))
+        Asset(persistedTotal + leftNumber, cachedRequests ++ requests.take(leftNumber))
       }
   }
 
-  private def payBackRequests(receive: ActorRef, requests: List[HttpRequest]) = {
+  private def payBackRequests(receive: ActorRef, requests: ListSet[HttpRequest]) = {
     requests.foreach(r => visitedUrls += r.url)
     receive ! Payback(requests)
   }
@@ -138,14 +165,14 @@ class UrlBank(val excludes: Set[String], val inclusions: Set[String], val maxDep
       }
     case Asset(persistedTotal, cachedRequests) if cachedRequests.size < n =>
       if (persistedTotal + cachedRequests.size == n) goto(Empty) using {
-        payBackRequests(sender, cachedRequests ::: pop(persistedTotal))
+        payBackRequests(sender, cachedRequests ++ pop(persistedTotal))
         NoHttpRequest
       }
       else if (persistedTotal + cachedRequests.size > n) stay using {
-        payBackRequests(sender, cachedRequests ::: pop(n - cachedRequests.size))
+        payBackRequests(sender, cachedRequests ++ pop(n - cachedRequests.size))
         fillCache(persistedTotal + cachedRequests.size - n)
       } else goto(InDebt) using {
-        payBackRequests(sender, cachedRequests ::: pop(persistedTotal))
+        payBackRequests(sender, cachedRequests ++ pop(persistedTotal))
         Debt(n - persistedTotal - cachedRequests.size, sender)
       }
   }
@@ -203,7 +230,7 @@ class UrlBank(val excludes: Set[String], val inclusions: Set[String], val maxDep
     else Asset(0, pop(persistedLeft))
   }
 
-  def deposit(requests: List[HttpRequest]): Asset = {
+  def deposit(requests: ListSet[HttpRequest]): Asset = {
     if (requests.size <= maxCacheSize) Asset(0, requests)
     else {
       persist(requests.drop(maxCacheSize))
@@ -211,39 +238,22 @@ class UrlBank(val excludes: Set[String], val inclusions: Set[String], val maxDep
     }
   }
 
-  def needVisit(request: HttpRequest, depth: Int): Boolean = {
-    if (request.previousRequest.isDefined) {
-      !visitedUrls.contains(request.url) &&
-        !exclude(request.url) &&
-        !request.url.contains("#") &&
-        request.url.length > 10 &&
-        depth <= maxDepth &&
-        obeyInclusions(request.previousRequest.get.url)
-    } else {
-      !visitedUrls.contains(request.url) &&
-        !exclude(request.url) &&
-        !request.url.contains("#") &&
-        request.url.length > 10 &&
-        depth <= maxDepth &&
-        obeyInclusions(request.url)
-    }
-  }
 
   private def exclude(url: String) = {
     excludes.exists(x => if (x.isEmpty) false else url.startsWith(x))
   }
 
   private def obeyInclusions(rawUrl: String): Boolean = {
-        inclusions.exists(rawUrl.contains)
+    inclusions.exists(rawUrl.contains)
   }
 
-  var db = List[HttpRequest]()
+  var db = ListSet[HttpRequest]()
 
-  private def persist(requests: List[HttpRequest]) = {
-    db = db ::: requests
+  private def persist(requests: ListSet[HttpRequest]) = {
+    db = db ++ requests
   }
 
-  private def pop(quantity: Int): List[HttpRequest] = {
+  private def pop(quantity: Int): ListSet[HttpRequest] = {
     val old = db
     db = db.drop(quantity)
     old.take(quantity)
@@ -266,12 +276,12 @@ object UrlBank {
   var cache = List[HttpRequest]()
 
   //received events
-  final case class Deposit(requests: List[HttpRequest])
+  final case class Deposit(requests: ListSet[HttpRequest])
 
   final case class WithDraw(n: Int)
 
   //send events
-  final case class Payback(requests: List[HttpRequest])
+  final case class Payback(requests: ListSet[HttpRequest])
 
   //state
   // states
@@ -291,7 +301,7 @@ object UrlBank {
 
   case class Debt(n: Int, dispatcher: ActorRef) extends Data
 
-  case class Asset(persisted: Int, cache: List[HttpRequest]) extends Data
+  case class Asset(persisted: Int, cache: ListSet[HttpRequest]) extends Data
 
   def props(excludes: Set[String], domainConstraints: Set[String], maxDepth: Int) = Props(classOf[UrlBank], excludes, domainConstraints, maxDepth, "urlRepository")
 

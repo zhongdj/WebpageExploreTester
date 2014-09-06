@@ -29,8 +29,7 @@ class AnchorFSM(previousPageRequest: PageRequest) extends Actor with FSM[State, 
         toState(totalLines)
       }
     case Event(Shutdown, _) =>
-      context stop self
-      stay
+      stop
   }
 
   when(WaitAnchorEnd) {
@@ -41,8 +40,7 @@ class AnchorFSM(previousPageRequest: PageRequest) extends Actor with FSM[State, 
       }
       toState(totalLines)
     case Event(Shutdown, _) =>
-      context stop self
-      stay
+      stop
   }
 
   def linkLinesOf: List[String] => List[String] = {

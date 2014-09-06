@@ -8,6 +8,7 @@ import akka.actor.ActorRef
 import net.imadz.web.explorer.UrlBank.Deposit
 import net.imadz.web.explorer.utils.LinkUtils
 
+import scala.collection.immutable.ListSet
 import scala.concurrent.{ExecutionContext, Future}
 
 trait WebClient {
@@ -50,7 +51,7 @@ object AsyncWebClient {
           val rawUrl = conn.getHeaderField("Location")
           val newUrl = LinkUtils.absoluteUrl(rawUrl, url)
           if (null != newUrl) {
-            urlBank ! Deposit(List(PageRequest(headers, newUrl, "RedirectPage", Some(pageRequest), pageRequest.depth + 1)))
+            urlBank ! Deposit(ListSet(PageRequest(headers, newUrl, "RedirectPage", Some(pageRequest), pageRequest.depth + 1)))
             ""
           } else {
             throw new BadStatus(conn.getResponseCode)
