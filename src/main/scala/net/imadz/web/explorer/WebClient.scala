@@ -53,7 +53,6 @@ object AsyncWebClient {
           val newUrl = LinkUtils.absoluteUrl(rawUrl, url)
           if (null != newUrl) {
             urlBank ! Deposit(ListSet(PageRequest(headers, newUrl, "RedirectPage", Some(pageRequest), pageRequest.depth + 1)))
-            ""
           } else {
             throw new BadStatus(conn.getResponseCode)
           }
@@ -69,7 +68,7 @@ object AsyncWebClient {
         }
       } finally {
         if (null != reader) reader.close
-        conn.asInstanceOf[HttpURLConnection].disconnect
+        conn.disconnect
       }
     }
   }
