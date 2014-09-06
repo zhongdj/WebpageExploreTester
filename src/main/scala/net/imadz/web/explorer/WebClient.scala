@@ -61,7 +61,7 @@ object AsyncWebClient {
           reader = new BufferedReader(new InputStreamReader(conn.getInputStream))
           var line = reader.readLine
           while (line != null) {
-            line = new String(line.getBytes(), Charset.forName("UTF8"))
+            line = new String(line.getBytes("UTF8"), Charset.forName("UTF8"))
             anchorFSM ! AnchorFSM.NewLine(line)
             imgFSM ! ImgFSM.NewLine(line)
             line = reader.readLine
