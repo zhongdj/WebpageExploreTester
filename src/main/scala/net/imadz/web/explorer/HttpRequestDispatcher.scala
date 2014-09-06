@@ -10,7 +10,7 @@ import scala.concurrent.duration._
 /**
  * Created by geek on 8/20/14.
  */
-class HttpRequestDispatcher(val urlBank: ActorRef, observer: Option[ActorRef]) extends Actor with ActorLogging {
+class HttpRequestDispatcher(val urlBank: ActorRef, observer: Option[ActorRef]) extends Actor with ActorLogging with Timeout {
 
   private var pageGetterCount: Int = 0
   private var imageGetterCount: Int = 0
@@ -21,14 +21,8 @@ class HttpRequestDispatcher(val urlBank: ActorRef, observer: Option[ActorRef]) e
 
   override def receive: Receive = processRequest
 
-  private def resetTimeout(block: => Unit)(implicit timeout: Duration = 90 seconds) = {
-    context.setReceiveTimeout(Duration.Undefined)
-    block
-    context.setReceiveTimeout(timeout)
-  }
-
   private def processRequest: Receive = timeoutReceive orElse LoggingReceive {
-    case Payback(requests) => resetTimeout {
+    case Payback(requests) => resetTimeout(context) {
       requests foreach {
         case request: PageRequest =>
           pageGetterCount += 1
@@ -41,12 +35,12 @@ class HttpRequestDispatcher(val urlBank: ActorRef, observer: Option[ActorRef]) e
     }
     case ReceiveTimeout =>
       shutdownNow
-    case Terminated(child) => resetTimeout {
+    case Terminated(child) => resetTimeout(context) {
       System.gc
       notifyGetting
       urlBank ! WithDraw(1)
     }
-    case Shutdown => resetTimeout {
+    case Shutdown => resetTimeout(context) {
       notifyShuttingdown
       context.become(timeoutReceive orElse shuttingDown)
     }(10 seconds)

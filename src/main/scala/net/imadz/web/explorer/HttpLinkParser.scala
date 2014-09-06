@@ -1,22 +1,32 @@
 package net.imadz.web.explorer
 
-import akka.actor.{Actor, ActorLogging, ActorRef, Props}
+import akka.actor._
 import net.imadz.web.explorer.utils.LinkUtils
 
 import scala.collection.immutable.ListSet
+import scala.concurrent.duration._
+import scala.concurrent.Future
 
 /**
  * Created by geek on 8/20/14.
  */
-class HttpLinkParser(body: String, httpRequest: PageRequest, urlBank: ActorRef) extends Actor with ActorLogging {
+class HttpLinkParser(body: String, httpRequest: PageRequest, urlBank: ActorRef) extends Actor with ActorLogging with Timeout {
 
   self ! body
 
   override def receive: Receive = {
-    case body: String =>
-      parse(body) { request =>
-        urlBank ! UrlBank.Deposit(ListSet(request))
-      }
+    case body: String => resetTimeout(context) {
+      implicit val exec = context.dispatcher
+      if (body.length > 2500) log.error("[HttpLinkParser] The body is too long, the body is : " + body)
+      Future {
+        parse(body) { request =>
+          urlBank ! UrlBank.Deposit(ListSet(request))
+        }
+      } onComplete (_ => context.stop(self))
+    }(30 seconds)
+    case ReceiveTimeout =>
+      log.warning("Parser cost too much time. Over 30 seconds, being Killed, content as following: ")
+      log.warning(body)
       context.stop(self)
   }
 

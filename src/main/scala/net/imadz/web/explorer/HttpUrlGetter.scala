@@ -9,11 +9,12 @@ import net.imadz.web.explorer.ImgDownloadLead.ImgDownloadRequest
 
 import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
+import scala.concurrent.duration._
 
 /**
  * Created by geek on 8/20/14.
  */
-class HttpUrlGetter(httpRequest: HttpRequest, urlBank: ActorRef) extends Actor with ActorLogging {
+class HttpUrlGetter(httpRequest: HttpRequest, urlBank: ActorRef) extends Actor with ActorLogging with Timeout {
 
   val downloadDirect = false
   val HANDSHAKE_NOT_COMPLETE: Int = 900
@@ -24,19 +25,19 @@ class HttpUrlGetter(httpRequest: HttpRequest, urlBank: ActorRef) extends Actor w
 
   import net.imadz.web.explorer.HttpUrlGetter.exec
 
+  def shutdownChildren: Unit = context.children foreach (_ ! Shutdown)
+
+  implicit val timeouts = 30 seconds
+
   override def receive: Receive = LoggingReceive {
-    case p@PageRequest(_, url, name, pre, _) =>
+    case p@PageRequest(_, url, name, pre, _) => resetTimeout(context) {
       val anchorFSM = context.actorOf(AnchorFSM.props(p))
       val imgFSM = context.actorOf(ImgFSM.props(p))
-      context.watch(anchorFSM)
-      context.watch(imgFSM)
+
+      context.children foreach (context.watch(_))
 
       val headers: Map[String, String] = httpRequest.headers
 
-      def shutdownChildren {
-        anchorFSM ! Shutdown
-        imgFSM ! Shutdown
-      }
       client.get(headers)(encodeUrl(url))(urlBank, p, anchorFSM, imgFSM) onComplete {
         case Success(body) =>
           if (null != context) {
@@ -49,8 +50,8 @@ class HttpUrlGetter(httpRequest: HttpRequest, urlBank: ActorRef) extends Actor w
         case Failure(t) =>
           shutdownChildren
       }
-
-    case i@ImageRequest(_, url, name, pre, _) =>
+    }
+    case i@ImageRequest(_, url, name, pre, _) => resetTimeout(context) {
       if (downloadDirect) {
         context.actorSelection(ImgDownloadLead.path) ! ImgDownloadRequest(url, pre)
         context.stop(self)
@@ -59,7 +60,7 @@ class HttpUrlGetter(httpRequest: HttpRequest, urlBank: ActorRef) extends Actor w
         client.connectOnly(headers)(encodeUrl(url)) onComplete {
           case Success(x) =>
             log.info("image @ " + url + " is available.")
-            context.actorSelection(ImgDownloadLead.path) ! ImgDownloadRequest(url, pre)
+            //context.actorSelection(ImgDownloadLead.path) ! ImgDownloadRequest(url, pre)
             context.stop(self)
           case Failure(BadStatus(code)) =>
             log.error("image @ " + url + " is unavailable.")
@@ -69,11 +70,18 @@ class HttpUrlGetter(httpRequest: HttpRequest, urlBank: ActorRef) extends Actor w
             context.stop(self)
         }
       }
+    }
     case Terminated(child) => {
       if (context.children.isEmpty) {
         context.stop(self)
       }
     }
+    case ReceiveTimeout =>
+      log.warning("Getter cost too much time. Over 30 seconds, being Killed.")
+      context.children.foreach {
+        context.stop(_)
+      }
+      context.stop(self)
   }
 
   def encodeUrl(url: String): String = {
