@@ -32,13 +32,13 @@ class HttpUrlGetter(httpRequest: HttpRequest, urlBank: ActorRef) extends Actor w
   override def receive: Receive = LoggingReceive {
     case p@PageRequest(_, url, name, pre, _) => resetTimeout(context) {
       val anchorFSM = context.actorOf(AnchorFSM.props(p))
-      val imgFSM = context.actorOf(ImgFSM.props(p))
+      //val imgFSM = context.actorOf(ImgFSM.props(p))
 
       context.children foreach (context.watch(_))
 
       val headers: Map[String, String] = httpRequest.headers
 
-      client.get(headers)(encodeUrl(url))(urlBank, p, anchorFSM, imgFSM) onComplete {
+      client.get(headers)(encodeUrl(url))(urlBank, p, anchorFSM, null) onComplete {
         case Success(body) =>
           if (null != context) {
             shutdownChildren

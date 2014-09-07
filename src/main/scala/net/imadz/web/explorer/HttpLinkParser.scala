@@ -17,7 +17,7 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, urlBank: ActorRef) 
   override def receive: Receive = {
     case body: String => resetTimeout(context) {
       implicit val exec = context.dispatcher
-      if (body.length > 2500) log.error("[HttpLinkParser] The body is too long, the body is : " + body)
+      if (body.length > 2500) log.info("[HttpLinkParser] The body is too long, the body is : " + body)
       Future {
         parse(body) { request =>
           urlBank ! UrlBank.Deposit(ListSet(request))

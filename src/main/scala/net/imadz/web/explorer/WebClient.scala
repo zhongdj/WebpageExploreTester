@@ -62,7 +62,7 @@ object AsyncWebClient {
           while (line != null) {
             line = new String(line.getBytes("UTF8"), Charset.forName("UTF8"))
             anchorFSM ! AnchorFSM.NewLine(line)
-            imgFSM ! ImgFSM.NewLine(line)
+            //imgFSM ! ImgFSM.NewLine(line)
             line = reader.readLine
           }
         }
