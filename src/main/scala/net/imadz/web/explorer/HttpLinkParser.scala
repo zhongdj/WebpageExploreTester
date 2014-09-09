@@ -22,7 +22,7 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, urlBank: ActorRef) 
         parse(body) { request =>
           urlBank ! UrlBank.Deposit(ListSet(request))
         }
-      } onComplete (_ => context.stop(self))
+      } onComplete (_ => if (context != null) context.stop(self))
     }(30 seconds)
     case ReceiveTimeout =>
       log.warning("Parser cost too much time. Over 30 seconds, being Killed, content as following: ")
