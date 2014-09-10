@@ -78,9 +78,11 @@ object StateUpdate {
 case class TestRun(targetUrl: String, deviceType: String, countryAbbr: String, headerText: String, exclusions: String, inclusions: String, checkImage: Boolean, depth: Int) {
   def exclusionList = exclusions.split("\n").map(_.trim).toSet
 
-  def inclusionList = inclusions.split("\n").map(_.trim).toSet + targetUrl.trim
-  
-  def headers: Map[String, String] =  Map[String, String](
+  def inclusionList = if (inclusions.trim.isEmpty) Set(targetUrl.trim)
+  else
+    inclusions.split("\n").map(_.trim).toSet + targetUrl.trim
+
+  def headers: Map[String, String] = Map[String, String](
     "Accept" -> "text/html,application/xhtml+xml,text/xml,application/xml;q=0.9,image/webp,image/GIF,image/jpeg,text/plain, image/png, image/tiff, image/x-icon",
     //      "Accept-Encoding" -> "gzip,deflate,sdch",
     //      "Accept-Language" -> "en-US,en;q=0.8,zh-CN;q=0.6",
