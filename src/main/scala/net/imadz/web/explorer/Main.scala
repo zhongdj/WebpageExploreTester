@@ -75,7 +75,7 @@ object StateUpdate {
 
 }
 
-case class TestRun(targetUrl: String, headerText: String, exclusions: String, inclusions: String, checkImage: Boolean, depth: Int) {
+case class TestRun(targetUrl: String, deviceType: String, countryAbbr: String, headerText: String, exclusions: String, inclusions: String, checkImage: Boolean, depth: Int) {
   def exclusionList = exclusions.split("\n").map(_.trim).toSet
 
   def inclusionList = inclusions.split("\n").map(_.trim).toSet

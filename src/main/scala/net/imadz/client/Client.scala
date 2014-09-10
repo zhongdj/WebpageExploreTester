@@ -33,6 +33,8 @@ object ClientApp extends App {
   val engine = system.actorOf(Main.props(Some(cl), Some(cl)), Main.name)
 
   val targetUrl: String = "http://www.nike.com/cn/zh_cn/"
+  val deviceType: String = "Desktop"
+  val countryAbbr: String = "CN"
 
   val headerText: String = ""
 
@@ -49,6 +51,6 @@ object ClientApp extends App {
 
   val depth: Int = 10
 
-  engine ! TestRun(targetUrl, headerText, exclusions, inclusions, checkImage, depth)
+  engine ! TestRun(targetUrl, deviceType, countryAbbr, headerText, exclusions, inclusions, checkImage, depth)
 
 }
