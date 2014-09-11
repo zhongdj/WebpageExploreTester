@@ -76,12 +76,15 @@ object StateUpdate {
 
 }
 
+
 case class TestRun(targetUrl: String, headerText: String, exclusions: String, inclusions: String, checkImage: Boolean, depth: Int) {
   val seperator: String = "\n"
 
   def exclusionList = exclusions.split(seperator).map(_.trim).toSet
 
-  def inclusionList = inclusions.split(seperator).map(_.trim).toSet
+  def inclusionList = if (inclusions.trim.isEmpty) Set(targetUrl.trim)
+  else
+    inclusions.split("\n").map(_.trim).toSet + targetUrl.trim
 
   def headers: Map[String, String] = {
     val result: List[(String, String)] = headerText.split(seperator).toList.map { line: String =>
@@ -93,6 +96,7 @@ case class TestRun(targetUrl: String, headerText: String, exclusions: String, in
       "Accept" -> "text/html,application/xhtml+xml,text/xml,application/xml;q=0.9,image/webp,image/GIF,image/jpeg,text/plain, image/png, image/tiff, image/x-icon"
     )
   }
+
 }
 
 object Main {

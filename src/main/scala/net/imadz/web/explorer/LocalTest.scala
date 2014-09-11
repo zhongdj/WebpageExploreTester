@@ -8,5 +8,5 @@ import akka.actor.{Props, ActorSystem}
 object LocalTest extends App {
 
   val engine = ActorSystem("spiderman").actorOf(Props(classOf[Main], None, None), Main.name)
-  engine ! TestRun("http://www.nike.com", "", "", "nike", false, 15)
+  engine ! TestRun("http://www.nike.com", "Desktop", "CN","", "", "nike", false, 15)
 }
