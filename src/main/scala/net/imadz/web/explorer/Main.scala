@@ -84,12 +84,10 @@ case class TestRun(targetUrl: String, deviceType: String, countryAbbr: String,he
 
   def exclusionList = exclusions.split(seperator).map(_.trim).toSet
 
-  def inclusionList = if (inclusions.trim.isEmpty) Set(targetUrl.trim)
-  else
-    inclusions.split("\n").map(_.trim).toSet + targetUrl.trim
+  def inclusionList = inclusions.split("\n").map(_.trim).filter(!_.isEmpty).toSet + targetUrl.trim
 
   def headers: Map[String, String] = {
-    val result: List[(String, String)] = headerText.split(seperator).toList.map { line: String =>
+    val result: List[(String, String)] = headerText.split(seperator).toList.filter(_.contains(":")).map { line: String =>
       val separator = line.indexOf(":")
       (line.substring(0, separator).trim, line.substring(separator + 1).trim)
     }
