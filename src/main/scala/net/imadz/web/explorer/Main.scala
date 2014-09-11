@@ -77,7 +77,7 @@ object StateUpdate {
 }
 
 
-case class TestRun(targetUrl: String, headerText: String, exclusions: String, inclusions: String, checkImage: Boolean, depth: Int) {
+case class TestRun(targetUrl: String, deviceType: String, countryAbbr: String,headerText: String, exclusions: String, inclusions: String, checkImage: Boolean, depth: Int) {
   val seperator: String = "\n"
 
   def exclusionList = exclusions.split(seperator).map(_.trim).toSet
