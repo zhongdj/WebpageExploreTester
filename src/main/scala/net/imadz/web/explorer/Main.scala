@@ -74,6 +74,8 @@ object StateUpdate {
 
   case class HttpErrorFound(error: HttpError)
 
+  case class UrlParsed(urlParsed: UrlParsedInfo)
+
 }
 
 

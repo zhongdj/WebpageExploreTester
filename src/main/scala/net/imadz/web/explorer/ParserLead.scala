@@ -14,7 +14,7 @@ class ParserLead(urlbank: ActorRef, observer: Option[ActorRef]) extends Actor {
   override def receive: Receive = {
     case ParseRequest(body, page) =>
       ParserLead.parserCount += 1
-      val parser = context.actorOf(HttpLinkParser.props(body, page, urlbank), "HttpLinkParser-" + ParserLead.parserCount)
+      val parser = context.actorOf(HttpLinkParser.props(body, page, urlbank, observer), "HttpLinkParser-" + ParserLead.parserCount)
       context.watch(parser)
       notifyParsing
     case Terminated(_) =>
