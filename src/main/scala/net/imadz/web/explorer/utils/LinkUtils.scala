@@ -14,7 +14,10 @@ object LinkUtils {
   private val ANCHOR_GREEDY_TAG = """(?s)(?i)<a (.*)>(.+)?</a>""".r
   private val ANCHOR_NON_GREEDY_TAG = """(?s)(?i)<a (.+?)>(.+?)</a>""".r
   private val HREF_ATTR = """(?s)\s*(?i)href\s*=\s*\\?(?:"([^"\\]*)\\?"|'([^'\\]*)\\?'|([^'">\s]+))\s*""".r
-  private val COMP_TAG = """(?s)(?i)(?:[^>]*>([^<]*)<.*|(.*))""".r
+  private val COMP_TAG = """(?s)(?i)(?:.*?<span>(.*)?</span>.*|(.*))""".r
+
+  //"""(?s)(?i)(?:[^>]*>([^<]*)<.*|(.*))""".r
+
   private val invalidChars = '|' :: '\\' :: '\"' :: '\'' :: '{' :: '[' :: Nil
 
   def findLinks(htmlContent: String, httpRequest: PageRequest, withImageLink: Boolean = false): List[HttpRequest] = {
@@ -124,4 +127,3 @@ object LinkUtils {
     else bare trim
   }
 }
-
