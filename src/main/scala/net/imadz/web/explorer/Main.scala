@@ -35,6 +35,7 @@ class Main(errorHandler: Option[ActorRef], observer: Option[ActorRef]) extends A
   def shutdown {
     AsyncWebClient.shutdown
     for (listener <- observer) yield listener ! Stopped(self)
+    for (handler <- errorHandler) yield handler ! Stopped(self)
     context stop self
     context.system.shutdown
   }
