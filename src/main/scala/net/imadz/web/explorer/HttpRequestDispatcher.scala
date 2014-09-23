@@ -2,6 +2,7 @@ package net.imadz.web.explorer
 
 import akka.actor._
 import akka.event.LoggingReceive
+import net.imadz.web.explorer.ParserLead.{PageParsed, PageEnd}
 import net.imadz.web.explorer.StateUpdate.Getting
 import net.imadz.web.explorer.UrlBank.{Deposit, Payback, WithDraw}
 
@@ -15,6 +16,8 @@ class HttpRequestDispatcher(val urlBank: ActorRef, observer: Option[ActorRef]) e
   private var pageGetterCount: Int = 0
   private var imageGetterCount: Int = 0
   private val getterMaxCount = context.system.settings.config.getInt("imadz.web.explorer.getterCount")
+  private var getterUrlMap = Map[String, String]().withDefaultValue("")
+
   AsyncWebClient.setGetterNumber(getterMaxCount)
 
   urlBank ! WithDraw(getterMaxCount)
@@ -26,7 +29,9 @@ class HttpRequestDispatcher(val urlBank: ActorRef, observer: Option[ActorRef]) e
       requests foreach {
         case request: PageRequest =>
           pageGetterCount += 1
-          context.watch(context.actorOf(HttpUrlGetter.propsOfPages(request, urlBank), "PageGetter-" + pageGetterCount))
+          val pageGetter: ActorRef = context.actorOf(HttpUrlGetter.propsOfPages(request, urlBank), "PageGetter-" + pageGetterCount)
+          getterUrlMap += pageGetter.path.toString -> request.url
+          context.watch(pageGetter)
         case request: ImageRequest =>
           imageGetterCount += 1
           context.watch(context.actorOf(HttpUrlGetter.propsOfPages(request, urlBank), "ImageGetter-" + imageGetterCount))
@@ -35,15 +40,17 @@ class HttpRequestDispatcher(val urlBank: ActorRef, observer: Option[ActorRef]) e
     }
     case ReceiveTimeout =>
       shutdownNow
-    case Terminated(child) => resetTimeout(context) {
-      System.gc
+    case Terminated(pageGetter) => resetTimeout(context) {
       notifyGetting
-      urlBank ! WithDraw(1)
+      context.parent ! PageEnd(getterUrlMap(pageGetter.path.toString))
+      getterUrlMap -= pageGetter.path.toString
     }
     case Shutdown => resetTimeout(context) {
       notifyShuttingdown
       context.become(timeoutReceive orElse shuttingDown)
     }(10 seconds)
+    case PageParsed(url) =>
+      urlBank ! WithDraw(1)
   }
 
 

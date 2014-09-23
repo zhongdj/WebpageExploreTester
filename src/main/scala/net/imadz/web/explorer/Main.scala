@@ -3,6 +3,7 @@ package net.imadz.web.explorer
 
 import akka.actor._
 import akka.event.LoggingReceive
+import net.imadz.web.explorer.ParserLead.PageEnd
 import net.imadz.web.explorer.StateUpdate.Stopped
 import net.imadz.web.explorer.UrlBank.Deposit
 
@@ -22,7 +23,7 @@ class Main(errorHandler: Option[ActorRef], observer: Option[ActorRef]) extends A
 
       val dispatcher = HttpRequestDispatcher(context, urlBank, observer)
       val errorRecorder = HttpErrorRecorder(context, errorHandler, observer)
-      val parserLead = ParserLead(context, urlBank, observer)
+      val parserLead = ParserLead(context, urlBank, dispatcher, observer)
       val imageLead = context.actorOf(Props(classOf[ImgDownloadLead], urlBank), ImgDownloadLead.name)
 
       context.children.foreach {
@@ -52,6 +53,8 @@ class Main(errorHandler: Option[ActorRef], observer: Option[ActorRef]) extends A
       }
       context.setReceiveTimeout(15 seconds)
     case ReceiveTimeout => shutdown
+    case PageEnd(url) =>
+      parserLead ! PageEnd(url)
   }
 }
 
@@ -80,7 +83,7 @@ object StateUpdate {
 }
 
 
-case class TestRun(targetUrl: String, deviceType: String, countryAbbr: String,headerText: String, exclusions: String, inclusions: String, checkImage: Boolean, depth: Int) {
+case class TestRun(targetUrl: String, deviceType: String, countryAbbr: String, headerText: String, exclusions: String, inclusions: String, checkImage: Boolean, depth: Int) {
   val seperator: String = "\n"
 
   def exclusionList = exclusions.split(seperator).map(_.trim).toSet
