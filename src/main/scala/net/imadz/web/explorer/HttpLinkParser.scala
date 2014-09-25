@@ -22,7 +22,7 @@ class HttpLinkParser(body: String, httpRequest: PageRequest, urlBank: ActorRef, 
       Future {
         parse(body) { request =>
         {
-          for (o <- observer) o ! UrlParsed(UrlParsedInfo(request.url, request.name, request.depth))
+          //for (o <- observer) o ! UrlParsed(UrlParsedInfo(request.url, request.name, request.depth))
           urlBank ! UrlBank.Deposit(ListSet(request))
         }
         }

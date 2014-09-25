@@ -196,7 +196,7 @@ class UrlBank(val excludes: Set[String], val inclusions: Set[String], val maxDep
 
   private def notifyProcessed: Unit = for (listener <- observer) yield listener ! Processed(visitedUrls.size)
 
-  private def notifyUrlQueueSize(size: Int): Unit = for (listener <- observer) yield listener ! UrlQueueSize(size)
+  private def notifyUrlQueueSize(size: Int): Unit = {}//for (listener <- observer) yield listener ! UrlQueueSize(size)
 
   private def notifyObserver: PartialFunction[State, State] = {
     case state: State => state.stateName match {

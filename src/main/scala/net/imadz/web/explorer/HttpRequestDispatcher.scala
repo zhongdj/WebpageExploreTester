@@ -55,7 +55,7 @@ class HttpRequestDispatcher(val urlBank: ActorRef, observer: Option[ActorRef]) e
 
 
   def notifyGetting {
-    for (listener <- observer) yield listener ! Getting(context.children.size)
+    //for (listener <- observer) yield listener ! Getting(context.children.size)
   }
 
   private def timeoutReceive: Receive = {

@@ -47,7 +47,7 @@ class ParserLead(urlbank: ActorRef, dispatcher: ActorRef, observer: Option[Actor
       if (urlParserMap(pageUrl).isEmpty) dispatcher ! PageParsed(pageUrl)
   }
 
-  def notifyParsing = for (listener <- observer) yield listener ! Parsing(context.children.size)
+  def notifyParsing = {}//for (listener <- observer) yield listener ! Parsing(context.children.size)
 
   def notifyShuttingDown = for (listener <- observer) yield listener ! ShuttingDown(self)
 
