@@ -78,15 +78,7 @@ object LinkUtils {
     else None
   }
 
-  private def extractLinkName(y: String): String = {
-    for {
-      COMP_TAG(name1, name2) <- COMP_TAG.findAllIn(y)
-    } yield {
-      if (null != name1) name1 trim
-      else if (null != name2) name2 trim
-      else ""
-    }
-  }.toList.mkString.trim
+  private def extractLinkName(linkHtml: String): String = if (linkHtml contains "<") nameInsideLinkHtml(linkHtml) else linkHtml
 
 
   def absoluteUrl(rawUrl: String, contextUrl: String): String = {
@@ -105,6 +97,10 @@ object LinkUtils {
       prefixUrl + rawUrl
     }
   }
+
+  def nameInsideLinkHtml(text: String) = {
+    for (m <- """<[^>]+>([^<]+)<""".r.findAllMatchIn(text)) yield m.group(m.groupCount)
+  }.mkString(" ")
 
   private def trancateInavlidChars(rawUrl: String): String = {
     def exists: (Int) => Boolean = _ > 0
