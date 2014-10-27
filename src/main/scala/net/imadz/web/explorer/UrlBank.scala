@@ -33,12 +33,15 @@ class UrlBank(val excludes: Set[String], val inclusions: Set[String], val maxDep
         stay using Debt(n + m, dispatcher)
       case Event(Deposit(requests), Debt(n, dispatcher)) =>
         if (requests.size > n) goto(Abundance) using {
+          requests.take(n).foreach(request => visitedUrls += request.url)
           dispatcher ! Payback(requests.take(n))
           deposit(requests.drop(n))
         } else if (requests.size == n) goto(Empty) using {
+          requests.foreach(request => visitedUrls += request.url)
           dispatcher ! Payback(requests)
           NoHttpRequest
         } else stay using {
+          requests.foreach(request => visitedUrls += request.url)
           dispatcher ! Payback(requests)
           Debt(n - requests.size, dispatcher)
         }
