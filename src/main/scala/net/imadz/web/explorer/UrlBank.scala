@@ -92,14 +92,14 @@ class UrlBank(val excludes: Set[String], val inclusions: Set[String], val maxDep
     if (request.previousRequest.isDefined) {
       !visitedUrls.contains(request.url) &&
         !exclude(request.url) &&
-        !request.url.contains("#") &&
+        !request.url.trim.startsWith("#") &&
         request.url.length > 10 &&
         depth <= maxDepth &&
         obeyInclusions(request.previousRequest.get.url)
     } else {
       !visitedUrls.contains(request.url) &&
         !exclude(request.url) &&
-        !request.url.contains("#") &&
+        !request.url.trim.startsWith("#") &&
         request.url.length > 10 &&
         depth <= maxDepth &&
         obeyInclusions(request.url)

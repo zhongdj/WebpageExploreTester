@@ -12,7 +12,7 @@ object LinkUtils {
   private val IMG_TAG = "(?s)(?i)<img ([^<]+)>".r
   private val IMG_SRC = """\s*(?i)src\s*=\s*(?:"([^"]*)"|'([^']*)'|([^'">\s]+))\s*""".r
   private val ANCHOR_GREEDY_TAG = """(?s)(?i)<a (.*)>(.+)?</a>""".r
-  private val ANCHOR_NON_GREEDY_TAG = """(?s)(?i)<a (.+?)>(.+?)</a>""".r
+  private val ANCHOR_NON_GREEDY_TAG = """(?s)(?i)<a (.+?)>(.+?|)</a>""".r
   private val HREF_ATTR = """(?s)\s*(?i)href\s*=\s*\\?(?:"([^"\\]*)\\?"|'([^'\\]*)\\?'|([^'">\s]+))\s*""".r
   private val COMP_TAG = """(?s)(?i)(?:.*?<span>(.*)?</span>.*|(.*))""".r
 
@@ -49,7 +49,7 @@ object LinkUtils {
 
   private def isValidUrl: (String) => Boolean = {
     case rawUrl =>
-      rawUrl.size > 0 && !rawUrl.contains("#") && !rawUrl.contains("javascript") && !rawUrl.startsWith("mailto:")
+      rawUrl.size > 0 && !rawUrl.trim.startsWith("#") && !rawUrl.contains("javascript") && !rawUrl.startsWith("mailto:")
   }
 
 

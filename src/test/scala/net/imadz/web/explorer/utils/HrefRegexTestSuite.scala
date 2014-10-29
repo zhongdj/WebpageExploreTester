@@ -49,6 +49,30 @@ class HrefRegexTestSuite extends Suite{
     assert (expectedResult === actualResult.head._1)
   }
 
+  /* <a .*></a> */
+  def testAnchorWithEmptyContent() {
+    val sample = """<div class="nike-cq-block-container-component nike-cq-touts-full-screen-tout-touts-blocks-resource"><a class=" nike-cq-fst-anchor" href="http://store.nike.com/cn/zh_cn/pw/running-nike-flash-pack/cr2Z8yz"></a>"""
+    val expectedResult = "http://store.nike.com/cn/zh_cn/pw/running-nike-flash-pack/cr2Z8yz"
+    val expectedName = ""
+    val actualResult = LinkUtils.findPageLinkWithName(sample)
+    assert (!actualResult.isEmpty)
+    assert (actualResult.size == 1)
+    assert (expectedResult === actualResult.head._1)
+    assert (expectedName === actualResult.head._2)
+  }
+
+  /*Url has '#' which will be ignored by UrlBank*/
+  def testAnchorWithUrlWithSharp() {
+    val sample = """<a href="http://store.nike.com/cn/zh_cn/%20product/air-zoom-structure-18-flash-id/?piid=38572&amp;pbid=952788694#?pbid=952788694">立即定制</a>"""
+    val expectedResult = "http://store.nike.com/cn/zh_cn/%20product/air-zoom-structure-18-flash-id/?piid=38572&amp;pbid=952788694#?pbid=952788694"
+    val expectedName = "立即定制"
+    val actualResult = LinkUtils.findPageLinkWithName(sample)
+    assert (!actualResult.isEmpty)
+    assert (actualResult.size == 1)
+    assert (expectedResult === actualResult.head._1)
+    assert (expectedName === actualResult.head._2)
+  }
+
   def testMultiAnchors() {
     val sample =
       """
