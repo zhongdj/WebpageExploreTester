@@ -63,6 +63,7 @@ object Shutdown
 
 //status update for observer
 object StateUpdate {
+  import HttpErrorProtocol.HttpError
 
   case class UrlQueueSize(number: Int)
 

@@ -1,8 +1,8 @@
 package net.imadz.client
 
 import akka.actor._
-import net.imadz.web.explorer.HttpError
 import net.imadz.web.explorer.StateUpdate._
+import net.imadz.web.explorer.HttpErrorProtocol.HttpError
 
 /**
  * Created by geek on 9/5/14.
