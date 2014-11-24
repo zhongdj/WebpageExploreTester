@@ -64,8 +64,8 @@ object HttpErrorProtocol {
     }
 
     def apply(responseCode: Int, httpRequest: HttpRequest): HttpError = httpRequest.previousRequest match {
-      case Some(pre) => new HttpError(responseCode, pre.get.url, httpRequest.url, stepsFrom(httpRequest), httpRequest)
-      case None => new HttpError(responseCode, None, httpRequest.url, stepsFrom(httpRequest), httpRequest)
+      case Some(pre) => new HttpError(responseCode, pre.url, httpRequest.url, stepsFrom(httpRequest), httpRequest)
+      case None => new HttpError(responseCode, "", httpRequest.url, stepsFrom(httpRequest), httpRequest)
     }
   }
 
