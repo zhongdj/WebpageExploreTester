@@ -63,8 +63,9 @@ object HttpErrorProtocol {
       case ImageRequest(_, url, _, pageRequest, _) => stepsFrom(pageRequest) :+ Step("Image", url)
     }
 
-    def apply(responseCode: Int, httpRequest: HttpRequest): HttpError = {
-      new HttpError(responseCode, httpRequest.previousRequest.get.url, httpRequest.url, stepsFrom(httpRequest), httpRequest)
+    def apply(responseCode: Int, httpRequest: HttpRequest): HttpError = httpRequest.previousRequest match {
+      case Some(pre) => new HttpError(responseCode, pre.get.url, httpRequest.url, stepsFrom(httpRequest), httpRequest)
+      case None => new HttpError(responseCode, None, httpRequest.url, stepsFrom(httpRequest), httpRequest)
     }
   }
 
